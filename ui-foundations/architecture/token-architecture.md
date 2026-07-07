@@ -31,11 +31,11 @@ Token architecture gives UI Foundations a stable way to separate raw values, con
 
 ## Core Concepts
 
-- Core tokens hold primitive values.
-- Mode tokens represent contextual variation.
-- Theme tokens represent brand-level interpretation.
-- Semantic tokens name reusable meaning.
-- Pattern and component tokens express local surface decisions.
+- **Core** tokens hold primitive values.
+- **Mode** tokens represent contextual variation.
+- **Theme** tokens represent brand-level interpretation.
+- **Semantic** tokens name reusable meaning.
+- **Pattern** and **component** tokens express local surface decisions.
 - References move from specific decisions toward more foundational layers.
 
 ## Architecture
