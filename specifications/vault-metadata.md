@@ -31,8 +31,8 @@ Every markdown document should begin with YAML frontmatter.
 
 ```yaml
 ---
-id: principle.design-intelligence
-title: Design Intelligence
+id: principle.foundation.design-principles
+title: Design Principles
 type: principle
 status: accepted
 owners:
@@ -226,7 +226,7 @@ Example:
 ```yaml
 related:
   depends_on:
-    - principle.design-intelligence
+    - principle.foundation.design-principles
   governs:
     - workflow.component-review
 ```
@@ -476,8 +476,8 @@ Do not add these fields until there is a real consumer or governance need.
 
 ```yaml
 ---
-id: principle.design-intelligence
-title: Design Intelligence
+id: principle.foundation.design-principles
+title: Design Principles
 type: principle
 status: accepted
 owners:
@@ -485,7 +485,7 @@ owners:
 created: 2026-07-07
 updated: 2026-07-07
 authority: source
-summary: Design knowledge should be explicit enough for humans and agents to apply without guessing.
+summary: Good design should be clear, usable, intentional, and inclusive.
 tags:
   - design
   - quality
@@ -539,7 +539,7 @@ related:
   governed_by:
     - governance.verification-review
   depends_on:
-    - principle.design-intelligence
+    - principle.foundation.design-principles
 verification:
   status: partially-verified
 ---
@@ -670,8 +670,8 @@ verification:
 
 ```yaml
 ---
-id: glossary.design-intelligence
-title: Design Intelligence
+id: glossary.affordance
+title: Affordance
 type: glossary
 status: review
 owners:
@@ -679,7 +679,7 @@ owners:
 created: 2026-07-07
 updated: 2026-07-07
 authority: source
-summary: Defines design intelligence for the UI Foundations ecosystem.
+summary: Defines affordance as a perceptible cue that suggests possible action.
 tags:
   - vocabulary
 verification:

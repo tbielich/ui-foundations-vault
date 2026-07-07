@@ -41,6 +41,7 @@ It is not:
 ## Repository Shape
 
 - `docs/`: high-level architecture and orientation
+- `foundations/`: immutable design knowledge independent of tools and implementations
 - `principles/`: durable product, design, engineering, and agent principles
 - `governance/`: review rules, decision rights, verification practices
 - `decisions/`: architecture and operating decisions

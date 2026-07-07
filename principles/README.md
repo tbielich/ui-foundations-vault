@@ -14,3 +14,5 @@ summary: Entry point for durable UI Foundations principles.
 # Principles
 
 Durable beliefs and quality bars that guide UI Foundations decisions.
+
+Immutable design knowledge belongs in `foundations/`. Use this directory only for non-foundational principles that govern the UI Foundations ecosystem.

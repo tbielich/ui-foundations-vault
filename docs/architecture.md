@@ -126,6 +126,7 @@ Informative documents can guide action, but they do not override normative docum
 Use these locations for governed content:
 
 - `principles/`: durable principles
+- `foundations/`: immutable design knowledge independent of tools and implementations
 - `governance/`: lifecycle, precedence, review, and ownership rules
 - `decisions/`: ADRs and durable decisions
 - `specifications/`: canonical specifications

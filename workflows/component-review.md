@@ -14,7 +14,7 @@ related:
     - governance.precedence
     - governance.lifecycle
   depends_on:
-    - principle.design-intelligence
+    - principle.foundation.design-intelligence
     - governance.verification-review
 ---
 
