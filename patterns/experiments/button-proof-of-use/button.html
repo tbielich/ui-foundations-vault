@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Button Proof of Use</title>
+    <link rel="stylesheet" href="./button.css">
+  </head>
+  <body>
+    <main class="page">
+      <h1>Button Proof of Use</h1>
+
+      <section class="example-set" aria-labelledby="button-examples-heading">
+        <h2 id="button-examples-heading">Examples</h2>
+
+        <div class="example-row">
+          <button class="button" type="button">
+            Continue
+          </button>
+
+          <button class="button outline is-disabled" type="button" disabled>
+            Save changes
+          </button>
+
+          <button class="button ghost icon-only" type="button" aria-label="Close dialog">
+            <span class="icon" aria-hidden="true">x</span>
+          </button>
+
+          <button class="button is-loading is-disabled" type="button" aria-busy="true" disabled>
+            <span class="spinner" aria-hidden="true"></span>
+            <span class="label-content">
+              <span class="label-content-text">Save changes</span>
+            </span>
+          </button>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
