@@ -31,12 +31,12 @@ It is not:
 - The A2A orchestrator
 - The visual workspace or dashboard
 
-## Related Repositories
+## UI Foundations Ecosystem
 
-- `ui-foundations`: runtime, tokens, CSS, components, docs
-- `ui-foundations-a2a`: local agent-to-agent orchestration
-- `ui-foundations-studio`: visual workspace/dashboard
-- `ui-foundations-vault`: curated knowledge and governance
+- `ui-foundations`: runtime assets for the UI Foundations ecosystem.
+- `ui-foundations-vault`: canonical knowledge for the UI Foundations ecosystem.
+- `ui-foundations-intelligence`: reasoning and execution engine for the UI Foundations ecosystem.
+- `ui-foundations-studio`: workspace for the UI Foundations ecosystem.
 
 ## Repository Shape
 

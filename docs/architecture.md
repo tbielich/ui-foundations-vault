@@ -23,12 +23,12 @@ UI Foundations Vault is the knowledge and governance layer for the UI Foundation
 
 ## Position in the Ecosystem
 
-The vault stores durable knowledge that informs work in related repositories:
+The UI Foundations ecosystem is split across focused repositories:
 
-- `ui-foundations` implements runtime assets, tokens, CSS, components, and documentation.
-- `ui-foundations-a2a` coordinates local agent-to-agent workflows.
-- `ui-foundations-studio` provides visual workspace and dashboard experiences.
-- `ui-foundations-vault` records the principles, decisions, specifications, prompts, and workflows that guide those systems.
+- `ui-foundations`: runtime assets for the UI Foundations ecosystem.
+- `ui-foundations-vault`: canonical knowledge for the UI Foundations ecosystem.
+- `ui-foundations-intelligence`: reasoning and execution engine for the UI Foundations ecosystem.
+- `ui-foundations-studio`: workspace for the UI Foundations ecosystem.
 
 ## Boundary
 
