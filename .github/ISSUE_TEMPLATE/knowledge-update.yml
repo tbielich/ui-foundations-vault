@@ -5,116 +5,160 @@ body:
   - type: markdown
     attributes:
       value: |
-        Use this form for Knowledge-layer work owned by the vault. Do not request runtime implementation, automation, or changes in another repository here.
-  - type: textarea
-    id: purpose
-    attributes:
-      label: Purpose
-      description: Describe why this knowledge work is needed.
-      placeholder: What should this issue make clearer, more complete, or more accurate?
-    validations:
-      required: true
-  - type: textarea
-    id: knowledge-change
-    attributes:
-      label: Knowledge change
-      description: Describe the canonical knowledge to create, revise, review, or retire.
-      placeholder: Summarize the intended knowledge change.
-    validations:
-      required: true
-  - type: textarea
-    id: scope
-    attributes:
-      label: Scope
-      description: Define what is included and what is intentionally out of scope.
-      placeholder: Include in scope and out of scope notes.
-    validations:
-      required: true
+        Use this form for Knowledge-layer work owned by the vault.
+
   - type: dropdown
     id: layer
     attributes:
       label: Layer
-      description: The owning architectural layer.
+      description: Owning architectural layer.
       options:
         - Knowledge
+      default: 0
     validations:
       required: true
+
   - type: dropdown
     id: domain
     attributes:
       label: Domain
-      description: Select the Knowledge domain. This maps to the corresponding domain classification.
+      description: Select the Knowledge domain for this update.
       options:
         - Foundation
         - Reference
-        - Governance
-        - Capability
-        - Operational
         - Glossary
+        - Operational
+        - Capability
         - Architecture
+      default: 0
     validations:
       required: true
+
+  - type: input
+    id: epic
+    attributes:
+      label: Epic
+      description: Larger initiative or outcome this work belongs to, if known.
+      placeholder: Not yet selected
+    validations:
+      required: true
+
   - type: dropdown
     id: artifact
     attributes:
       label: Artifact
-      description: Select the knowledge artifact type.
+      description: Concrete knowledge artifact being created, changed, reviewed, or retired.
       options:
         - Principle
-        - Decision
-        - Specification
-        - Workflow
-        - Prompt
-        - Glossary term
-        - Agent capability
-        - Index
         - Reference
+        - Glossary term
+        - Operational guidance
+        - Agent capability
+        - Architecture knowledge
+        - Index
         - Other knowledge artifact
+      default: 0
     validations:
       required: true
+
   - type: input
     id: implementation
     attributes:
       label: Implementation
-      description: Identify the vault document, document id, repository path, or use "Not yet selected".
-      placeholder: specifications/example.md or Not yet selected
+      description: Vault document, document identifier, repository path, or "Not yet selected".
+      placeholder: foundations/design-principles.md
     validations:
       required: true
+
   - type: textarea
-    id: references
+    id: purpose
     attributes:
-      label: Required references
-      description: List governing documents, existing artifacts, and related specifications, decisions, workflows, prompts, capabilities, or glossary terms.
-      placeholder: Use stable document ids, repository paths, or "No existing reference" with a short explanation.
+      label: Purpose
+      description: Short description of the intended outcome.
+      placeholder: Describe the canonical knowledge outcome this issue should produce.
     validations:
       required: true
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope
+      description: Confirm what is in scope for this knowledge update.
+      options:
+        - label: Foundations, reference, glossary, operational, capability, or architecture knowledge is created, revised, reviewed, or retired.
+          required: true
+        - label: The update remains human-readable and agent-readable.
+          required: true
+        - label: Cross-repository impact is described without changing another repository.
+          required: true
+
+  - type: textarea
+    id: related-documents
+    attributes:
+      label: Related Documents
+      description: List canonical vault documents that govern, are affected by, or provide evidence for this work.
+      placeholder: |
+        - foundations/...
+        - governance/...
+        - specifications/...
+        - reference/...
+    validations:
+      required: true
+
+  - type: textarea
+    id: canonical-source-impact
+    attributes:
+      label: Canonical Source Impact
+      description: Describe affected canonical documents, specifications, governance, and relationships.
+      value: |
+        - Affected canonical documents:
+        - Affected specifications:
+        - Affected governance:
+        - Affected relationships:
+    validations:
+      required: true
+
   - type: textarea
     id: acceptance-criteria
     attributes:
-      label: Acceptance criteria
-      description: Include outcome, evidence, and boundary check.
+      label: Acceptance Criteria
+      description: Markdown checklist of observable completion criteria.
       value: |
-        - Outcome:
-        - Evidence:
-        - Boundary check:
+        - [ ] Intended canonical meaning is clear.
+        - [ ] Vault structure and metadata expectations are satisfied.
+        - [ ] Related documents and identifiers are traceable.
+        - [ ] Boundary check confirms the work remains in the Knowledge layer.
     validations:
       required: true
-  - type: textarea
-    id: validation-expectations
+
+  - type: checkboxes
+    id: validation
     attributes:
-      label: Validation expectations
-      description: State what must be checked, who or what can check it, required evidence, and the repository or layer boundary to preserve.
+      label: Validation
+      description: Checks required before this issue can be considered ready.
+      options:
+        - label: Metadata is valid.
+          required: true
+        - label: References resolve.
+          required: true
+        - label: Glossary terminology is used consistently.
+          required: true
+        - label: Classification model is respected.
+          required: true
+        - label: Governance has been reviewed.
+          required: true
+        - label: No duplicate canonical knowledge is introduced.
+          required: true
+
+  - type: textarea
+    id: non-goals
+    attributes:
+      label: Non-goals
+      description: Explicitly describe what must not be changed.
       value: |
-        - Check:
-        - Checked by:
-        - Evidence:
-        - Boundary:
+        - Do not change runtime implementation assets.
+        - Do not create automation.
+        - Do not change another repository.
+        - Do not redefine canonical specifications or governance unless explicitly in scope.
     validations:
       required: true
-  - type: textarea
-    id: optional-context
-    attributes:
-      label: Optional context
-      description: Add related terminology, impact on other repositories, open questions, or review notes.
-    validations:
-      required: false

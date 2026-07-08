@@ -5,107 +5,155 @@ body:
   - type: markdown
     attributes:
       value: |
-        Use this form for vault-owned governance work. Governance defines rules for trust, lifecycle, precedence, ownership, and review. Do not request runtime implementation or automation here.
-  - type: textarea
-    id: purpose
-    attributes:
-      label: Purpose
-      description: Describe why this governance work is needed.
-      placeholder: What rule, review expectation, or ownership boundary needs attention?
-    validations:
-      required: true
-  - type: textarea
-    id: knowledge-change
-    attributes:
-      label: Governance change
-      description: Describe the governance guidance to create, revise, review, or retire.
-      placeholder: Summarize the intended governance change.
-    validations:
-      required: true
-  - type: textarea
-    id: scope
-    attributes:
-      label: Scope
-      description: Define what the governance update includes and what is intentionally out of scope.
-      placeholder: Include in scope and out of scope notes.
-    validations:
-      required: true
+        Use this form for vault-owned governance work.
+
   - type: dropdown
     id: layer
     attributes:
       label: Layer
-      description: The owning architectural layer.
+      description: Owning architectural layer.
       options:
         - Knowledge
+      default: 0
     validations:
       required: true
+
   - type: dropdown
     id: domain
     attributes:
       label: Domain
-      description: The Knowledge domain for governance work.
+      description: Select the Knowledge domain for this governance update.
       options:
         - Governance
+      default: 0
     validations:
       required: true
+
+  - type: input
+    id: epic
+    attributes:
+      label: Epic
+      description: Larger initiative or outcome this work belongs to, if known.
+      placeholder: Not yet selected
+    validations:
+      required: true
+
   - type: dropdown
     id: artifact
     attributes:
       label: Artifact
-      description: Select the governance artifact type.
+      description: Concrete governance artifact being created, changed, reviewed, or retired.
       options:
         - Governance
-        - Policy
-        - Review expectation
-        - Precedence rule
         - Lifecycle rule
+        - Precedence rule
+        - Contribution model
+        - Decision rights
+        - Review expectation
         - Ownership rule
         - Other governance artifact
+      default: 0
     validations:
       required: true
+
   - type: input
     id: implementation
     attributes:
       label: Implementation
-      description: Identify the governance document, document id, repository path, or use "Not yet selected".
-      placeholder: governance/example.md or Not yet selected
+      description: Governance document, document identifier, repository path, or "Not yet selected".
+      placeholder: governance/precedence.md
     validations:
       required: true
+
   - type: textarea
-    id: references
+    id: purpose
     attributes:
-      label: Required references
-      description: List governing documents, related specifications, decisions, workflows, capabilities, or affected artifacts.
-      placeholder: Use stable document ids, repository paths, or "No existing reference" with a short explanation.
+      label: Purpose
+      description: Short description of the intended outcome.
+      placeholder: Describe the governance outcome this issue should produce.
     validations:
       required: true
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope
+      description: Confirm what is in scope for this governance update.
+      options:
+        - label: Governance, lifecycle, precedence, contribution model, or decision rights guidance is created, revised, reviewed, or retired.
+          required: true
+        - label: Trust, authority, ownership, review, or lifecycle expectations are made explicit.
+          required: true
+        - label: Affected canonical relationships and repository boundaries are identified.
+          required: true
+
+  - type: textarea
+    id: related-documents
+    attributes:
+      label: Related Documents
+      description: List canonical vault documents that govern, are affected by, or provide evidence for this work.
+      placeholder: |
+        - governance/...
+        - specifications/...
+        - reference/...
+        - foundations/...
+    validations:
+      required: true
+
+  - type: textarea
+    id: canonical-source-impact
+    attributes:
+      label: Canonical Source Impact
+      description: Describe affected canonical documents, specifications, governance, and relationships.
+      value: |
+        - Affected canonical documents:
+        - Affected specifications:
+        - Affected governance:
+        - Affected relationships:
+    validations:
+      required: true
+
   - type: textarea
     id: acceptance-criteria
     attributes:
-      label: Acceptance criteria
-      description: Include outcome, evidence, and boundary check.
+      label: Acceptance Criteria
+      description: Markdown checklist of observable completion criteria.
       value: |
-        - Outcome:
-        - Evidence:
-        - Boundary check:
+        - [ ] Governance rule or expectation is clear and enforceable.
+        - [ ] Vault structure and metadata expectations are satisfied.
+        - [ ] Required references identify governing and affected documents.
+        - [ ] Boundary check confirms governance remains tool-independent.
     validations:
       required: true
-  - type: textarea
-    id: validation-expectations
+
+  - type: checkboxes
+    id: validation
     attributes:
-      label: Validation expectations
-      description: State what must be checked, who or what can check it, required evidence, and the repository or layer boundary to preserve.
+      label: Validation
+      description: Checks required before this issue can be considered ready.
+      options:
+        - label: Metadata is valid.
+          required: true
+        - label: References resolve.
+          required: true
+        - label: Glossary terminology is used consistently.
+          required: true
+        - label: Classification model is respected.
+          required: true
+        - label: Governance has been reviewed.
+          required: true
+        - label: No duplicate canonical knowledge is introduced.
+          required: true
+
+  - type: textarea
+    id: non-goals
+    attributes:
+      label: Non-goals
+      description: Explicitly describe what must not be changed.
       value: |
-        - Check:
-        - Checked by:
-        - Evidence:
-        - Boundary:
+        - Do not change runtime implementation assets.
+        - Do not create automation.
+        - Do not make tool-specific configuration canonical.
+        - Do not change another repository.
     validations:
       required: true
-  - type: textarea
-    id: optional-context
-    attributes:
-      label: Optional context
-      description: Add non-goals, related terminology, impact on other repositories, open questions, or review notes.
-    validations:
-      required: false
