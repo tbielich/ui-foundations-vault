@@ -1,0 +1,111 @@
+name: Governance update
+description: Create, revise, review, or retire vault governance guidance.
+title: "[Knowledge] Governance: <short outcome>"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for vault-owned governance work. Governance defines rules for trust, lifecycle, precedence, ownership, and review. Do not request runtime implementation or automation here.
+  - type: textarea
+    id: purpose
+    attributes:
+      label: Purpose
+      description: Describe why this governance work is needed.
+      placeholder: What rule, review expectation, or ownership boundary needs attention?
+    validations:
+      required: true
+  - type: textarea
+    id: knowledge-change
+    attributes:
+      label: Governance change
+      description: Describe the governance guidance to create, revise, review, or retire.
+      placeholder: Summarize the intended governance change.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: Define what the governance update includes and what is intentionally out of scope.
+      placeholder: Include in scope and out of scope notes.
+    validations:
+      required: true
+  - type: dropdown
+    id: layer
+    attributes:
+      label: Layer
+      description: The owning architectural layer.
+      options:
+        - Knowledge
+    validations:
+      required: true
+  - type: dropdown
+    id: domain
+    attributes:
+      label: Domain
+      description: The Knowledge domain for governance work.
+      options:
+        - Governance
+    validations:
+      required: true
+  - type: dropdown
+    id: artifact
+    attributes:
+      label: Artifact
+      description: Select the governance artifact type.
+      options:
+        - Governance
+        - Policy
+        - Review expectation
+        - Precedence rule
+        - Lifecycle rule
+        - Ownership rule
+        - Other governance artifact
+    validations:
+      required: true
+  - type: input
+    id: implementation
+    attributes:
+      label: Implementation
+      description: Identify the governance document, document id, repository path, or use "Not yet selected".
+      placeholder: governance/example.md or Not yet selected
+    validations:
+      required: true
+  - type: textarea
+    id: references
+    attributes:
+      label: Required references
+      description: List governing documents, related specifications, decisions, workflows, capabilities, or affected artifacts.
+      placeholder: Use stable document ids, repository paths, or "No existing reference" with a short explanation.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance criteria
+      description: Include outcome, evidence, and boundary check.
+      value: |
+        - Outcome:
+        - Evidence:
+        - Boundary check:
+    validations:
+      required: true
+  - type: textarea
+    id: validation-expectations
+    attributes:
+      label: Validation expectations
+      description: State what must be checked, who or what can check it, required evidence, and the repository or layer boundary to preserve.
+      value: |
+        - Check:
+        - Checked by:
+        - Evidence:
+        - Boundary:
+    validations:
+      required: true
+  - type: textarea
+    id: optional-context
+    attributes:
+      label: Optional context
+      description: Add non-goals, related terminology, impact on other repositories, open questions, or review notes.
+    validations:
+      required: false
