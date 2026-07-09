@@ -1,0 +1,80 @@
+name: Cross-repo sync request
+description: Request reviewed consumption of vault guidance by another UI Foundations repository.
+title: "[Sync] <repo>: <pack or artifact>"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for reviewed cross-repo knowledge consumption. This does not authorize automatic sync.
+
+  - type: input
+    id: target-repository
+    attributes:
+      label: Target Repository
+      description: Repository expected to consume vault guidance.
+      placeholder: ui-foundations
+    validations:
+      required: true
+
+  - type: dropdown
+    id: consumed-pack
+    attributes:
+      label: Consumed Pack
+      description: Export pack or artifact being requested.
+      options:
+        - agent-pack
+        - governance-pack
+        - runtime-pack
+        - specific vault document
+        - other reviewed artifact
+      default: 0
+    validations:
+      required: true
+
+  - type: textarea
+    id: source
+    attributes:
+      label: Source
+      description: Vault source paths, document IDs, or export pack files.
+      placeholder: |
+        - exports/agent-pack/agents-additions.md
+        - registry/sync-contract.yml
+    validations:
+      required: true
+
+  - type: textarea
+    id: intended-target
+    attributes:
+      label: Intended Target
+      description: Target files or documentation areas in the consuming repository.
+      placeholder: |
+        - AGENTS.md additions
+        - docs/governance/
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: contract-check
+    attributes:
+      label: Sync Contract Check
+      options:
+        - label: The request follows registry/sync-contract.yml.
+          required: true
+        - label: No protected local files are silently overwritten.
+          required: true
+        - label: Runtime implementation, dependencies, CI, deployment, and secrets remain repo-local.
+          required: true
+        - label: The target repository will review the change before merge.
+          required: true
+
+  - type: textarea
+    id: review-notes
+    attributes:
+      label: Review Notes
+      description: Risks, manual review needs, or expected local adjustments.
+      value: |
+        - Risks:
+        - Manual review required for:
+        - Local repository owner:
+    validations:
+      required: true

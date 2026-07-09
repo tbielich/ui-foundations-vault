@@ -1,0 +1,70 @@
+---
+id: registry.artifact-types
+title: Artifact Type Registry
+type: registry
+status: draft
+owners:
+  - ui-foundations
+created: 2026-07-09
+updated: 2026-07-09
+authority: source
+summary: Defines artifact classes used by repository registry and sync contract documents.
+
+version: 0.1
+
+artifact_types:
+  - name: governance-rule
+    description: A normative rule governing trust, review, ownership, lifecycle, naming, tokens, components, or accessibility.
+    canonical_locations:
+      - governance/
+      - specifications/
+      - exports/governance-pack/
+
+  - name: specification
+    description: A normative definition of expected structure, behavior, or validation.
+    canonical_locations:
+      - specifications/
+      - ui-foundations/
+
+  - name: workflow
+    description: A repeatable human or agent activity that references higher-precedence rules.
+    canonical_locations:
+      - workflows/
+      - operational/
+
+  - name: prompt
+    description: A reusable session starter or agent instruction that operationalizes vault knowledge.
+    canonical_locations:
+      - prompts/
+      - exports/agent-pack/
+
+  - name: agent-guidance
+    description: Tool-independent guidance for agent roles, behavior, boundaries, and review stance.
+    canonical_locations:
+      - AGENTS.md
+      - agents/
+      - exports/agent-pack/
+
+  - name: runtime-expectation
+    description: Non-code expectation for runtime implementation, validation, package boundaries, or CSS architecture.
+    canonical_locations:
+      - ui-foundations/
+      - operational/
+      - exports/runtime-pack/
+
+  - name: accessibility-baseline
+    description: Minimum accessibility expectation reusable across UI Foundations runtime and documentation repositories.
+    canonical_locations:
+      - foundations/
+      - operational/
+      - exports/governance-pack/
+
+  - name: lesson
+    description: Extracted learning from an issue, PR, incident, experiment, or review.
+    canonical_locations:
+      - knowledge/lessons/
+
+  - name: export-pack
+    description: Curated bundle of vault guidance intended for reviewed consumption by other repositories.
+    canonical_locations:
+      - exports/

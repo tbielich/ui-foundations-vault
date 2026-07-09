@@ -80,6 +80,9 @@ Document taxonomy type.
   - `specification`
   - `adr`
   - `agent-capability`
+  - `registry`
+  - `lesson`
+  - `export-pack`
   - `template`
   - `glossary`
   - `pattern`

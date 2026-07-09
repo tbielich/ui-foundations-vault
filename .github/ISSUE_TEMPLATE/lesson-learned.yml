@@ -1,0 +1,89 @@
+name: Lesson learned
+description: Capture a reusable lesson from an issue, PR, experiment, review, or incident.
+title: "[Lesson] <short lesson>"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form to propose a lesson for knowledge/lessons/. Lessons are evidence, not governance until reviewed and promoted.
+
+  - type: input
+    id: source-repository
+    attributes:
+      label: Source Repository
+      description: Repository where the lesson was observed.
+      placeholder: ui-foundations
+    validations:
+      required: true
+
+  - type: input
+    id: source-work
+    attributes:
+      label: Source Work
+      description: Issue, PR, review, experiment, or incident reference.
+      placeholder: PR #123
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Components
+        - Tokens
+        - Accessibility
+        - Agentic
+        - Governance
+        - Runtime
+        - Cross-cutting
+      default: 0
+    validations:
+      required: true
+
+  - type: textarea
+    id: local-fact
+    attributes:
+      label: Local Fact
+      description: What happened in the concrete context?
+      placeholder: Describe the observed local fact.
+    validations:
+      required: true
+
+  - type: textarea
+    id: generalized-lesson
+    attributes:
+      label: Generalized Lesson
+      description: What reusable insight should the vault capture?
+      placeholder: Describe the reusable lesson without implementation-specific detail.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: promotion-candidate
+    attributes:
+      label: Promotion Candidate
+      description: What might this become if repeated?
+      options:
+        - Keep as lesson
+        - Governance
+        - Specification
+        - Workflow
+        - Prompt
+        - Export pack update
+      default: 0
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      value: |
+        - [ ] Source evidence is traceable.
+        - [ ] Local implementation detail is separated from reusable knowledge.
+        - [ ] Affected areas are identified.
+        - [ ] Promotion path is explicit.
+        - [ ] No runtime implementation change is included.
+    validations:
+      required: true

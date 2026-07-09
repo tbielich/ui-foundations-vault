@@ -52,6 +52,9 @@ It is not:
 - `specifications/`: product, component, token, and workflow specifications
 - `glossary/`: shared terms and definitions
 - `templates/`: reusable markdown templates
+- `knowledge/`: cross-repo lessons and reusable findings before promotion
+- `registry/`: machine-readable repository, artifact, and sync contracts
+- `exports/`: reviewed packs for cross-repo knowledge consumption
 
 ## Working Model
 
@@ -67,3 +70,5 @@ The vault follows a lightweight Version 1.0 knowledge standard:
 - `governance/lifecycle.md` defines document states and review expectations.
 - `specifications/document-structure.md` defines canonical document layouts.
 - `specifications/vault-metadata.md` defines markdown frontmatter metadata.
+- `docs/cross-repo-knowledge-sync.md` defines cross-repo consumption and feedback flow.
+- `docs/reflection-loop.md` defines how lessons become durable vault knowledge.
