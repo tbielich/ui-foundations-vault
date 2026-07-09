@@ -1,0 +1,150 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: schemas/naming-contract.schema.yml
+title: Naming Contract Schema
+type: object
+required:
+  - contract_id
+  - title
+  - type
+  - status
+  - authority
+  - owner
+  - schema_version
+  - contract_version
+  - governance_pack_version
+  - channel
+  - release_date
+  - updated
+  - normativity
+  - source_metadata
+  - rules
+  - non_normative_examples
+properties:
+  contract_id:
+    type: string
+  title:
+    type: string
+  type:
+    const: naming-contract
+  status:
+    enum:
+      - draft
+      - review
+      - accepted
+      - stable
+      - deprecated
+      - archived
+  authority:
+    enum:
+      - source
+      - supporting
+      - derived
+      - example
+  owner:
+    type: string
+  schema_version:
+    type: string
+    pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+  contract_version:
+    type: string
+    pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+  governance_pack_version:
+    type: string
+    pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+  channel:
+    enum:
+      - draft
+      - review
+      - stable
+      - deprecated
+  release_date:
+    type: string
+  updated:
+    type: string
+  normativity:
+    type: object
+    required:
+      - rules_are_normative
+      - examples_are_normative
+      - examples_label
+      - runtime_consumption
+    properties:
+      rules_are_normative:
+        const: true
+      examples_are_normative:
+        const: false
+      examples_label:
+        const: non-normative example
+      runtime_consumption:
+        type: string
+  source_metadata:
+    type: object
+    required:
+      - pack_manifest
+      - pack_changelog
+      - canonical_sources
+    properties:
+      pack_manifest:
+        type: string
+      pack_changelog:
+        type: string
+      canonical_sources:
+        type: array
+        minItems: 1
+  rules:
+    type: object
+    required:
+      - css_class_prefix
+      - css_custom_property_prefix
+      - proof_token_prefix
+      - assumption_token_prefix
+      - pattern_id_prefixes
+      - compatibility_and_deprecation_policy
+    properties:
+      css_class_prefix:
+        type: object
+        required:
+          - prefix
+      css_custom_property_prefix:
+        type: object
+        required:
+          - prefix
+      proof_token_prefix:
+        type: object
+        required:
+          - prefix
+      assumption_token_prefix:
+        type: object
+        required:
+          - prefix
+      pattern_id_prefixes:
+        type: object
+        required:
+          - base_pattern
+          - composition_pattern
+          - product_pattern
+      compatibility_and_deprecation_policy:
+        type: object
+        required:
+          - versioning_scheme
+          - major
+          - minor
+          - patch
+          - deprecated_names
+          - runtime_adoption
+  non_normative_examples:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      required:
+        - label
+        - kind
+        - value
+      properties:
+        label:
+          const: non-normative example
+        kind:
+          type: string
+        value:
+          type: string

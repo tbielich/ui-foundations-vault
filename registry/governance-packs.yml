@@ -31,7 +31,7 @@ channels:
 packs:
   - id: governance-pack
     title: Governance Pack
-    current_version: 0.6.0
+    current_version: 0.7.0
     channel: draft
     manifest: exports/governance-pack/pack.yml
     changelog: exports/governance-pack/CHANGELOG.md
@@ -42,6 +42,7 @@ packs:
       - package
       - experiment
     provided_artifacts:
+      - naming-contract
       - naming-rule
       - token-governance
       - component-governance
@@ -52,6 +53,12 @@ packs:
       - no CI or deployment changes
       - no automatic synchronization
     releases:
+      - version: 0.7.0
+        channel: draft
+        date: 2026-07-09
+        git_ref: pending-review
+        manifest: exports/governance-pack/pack.yml
+        notes: Machine-readable naming contract release for runtime consumption without duplicating Vault rules.
       - version: 0.6.0
         channel: draft
         date: 2026-07-09

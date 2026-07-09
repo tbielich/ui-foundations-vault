@@ -27,6 +27,12 @@ artifact_types:
       - governance/
       - reference/
 
+  - name: naming-contract
+    description: A machine-readable governance artifact that defines portable naming rules for runtime consumption.
+    canonical_locations:
+      - exports/governance-pack/contracts/
+      - schemas/
+
   - name: token-governance
     description: A governance artifact that defines token decision, naming, lifecycle, and consumer impact expectations.
     canonical_locations:

@@ -17,6 +17,10 @@ related:
 
 # Naming Rules
 
+## Machine-Readable Contract
+
+Runtime repositories should consume `exports/governance-pack/contracts/naming-contract.json` as the portable machine-readable naming contract. This markdown document explains governance intent; it does not replace or redefine the JSON contract for runtime consumption.
+
 ## Rules
 
 - Prefer semantic names over tool-specific or implementation-specific names.

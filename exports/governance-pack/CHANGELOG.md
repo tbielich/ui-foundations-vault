@@ -17,6 +17,24 @@ related:
 
 # Governance Pack Changelog
 
+## 0.7.0 - Machine-readable Naming Contract
+
+Status: draft
+
+### Added
+
+- Added `contracts/naming-contract.json` as the portable machine-readable naming contract for runtime consumption.
+- Added schema expectations for the naming contract artifact.
+- Added documentation clarifying that markdown may explain naming rules while runtime consumes the JSON contract.
+
+### Changed
+
+- Updated the Governance Pack manifest and registry metadata to include the naming contract artifact.
+
+### Validation
+
+- Added local validation for the naming contract prefixes, pattern ID prefixes, source metadata, version metadata, and non-normative example labels.
+
 ## 0.6.0 - Agent-readable Pattern Governance
 
 Status: draft

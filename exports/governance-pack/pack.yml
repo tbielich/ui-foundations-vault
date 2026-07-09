@@ -13,7 +13,7 @@ summary: Machine-readable manifest for the publishable UI Foundations governance
 pack:
   id: governance-pack
   title: Governance Pack
-  version: 0.6.0
+  version: 0.7.0
   channel: draft
   release_date: 2026-07-09
   owner: ui-foundations
@@ -38,6 +38,21 @@ compatibility:
     - documentation_reference
 
 artifacts:
+  - id: governance-pack.naming-contract
+    title: Naming Contract
+    type: naming-contract
+    path: exports/governance-pack/contracts/naming-contract.json
+    status: draft
+    review_required: true
+    schema: schemas/naming-contract.schema.yml
+    source_references:
+      - specification.pattern.schema
+      - template.pattern.base
+      - template.pattern.composition
+      - template.pattern.product
+      - registry.governance-packs
+      - governance.lifecycle
+
   - id: governance-pack.naming-rules
     title: Naming Rules
     type: naming-rule

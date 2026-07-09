@@ -23,12 +23,15 @@ related:
 
 The Governance Pack contains reusable rules for naming, tokens, components, and accessibility.
 
+The portable machine-readable naming source for runtime consumption is `contracts/naming-contract.json`. Markdown documentation may explain the naming rules, but runtime repositories should consume the JSON contract instead of duplicating Vault rules in local code or documentation.
+
 It is intended for reviewed consumption by runtime, documentation, package, and experiment repositories. It should be copied only when local ownership and review expectations are clear.
 
 ## Contents
 
 - `pack.yml`
 - `CHANGELOG.md`
+- `contracts/naming-contract.json`
 - `naming-rules.md`
 - `token-governance.md`
 - `component-governance.md`
@@ -36,7 +39,7 @@ It is intended for reviewed consumption by runtime, documentation, package, and 
 
 ## Version
 
-Current version: `0.6.0`
+Current version: `0.7.0`
 
 Channel: `draft`
 
