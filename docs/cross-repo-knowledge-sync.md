@@ -59,6 +59,7 @@ Runtime repositories consume vault knowledge by:
 
 - Referencing vault documents directly.
 - Copying reviewed sections from export packs.
+- Selecting a reviewed governance pack version from `registry/governance-packs.yml`.
 - Opening reviewed patches that apply selected guidance locally.
 - Recording which packs they consume in `registry/repos.yml`.
 
@@ -128,6 +129,7 @@ Manual review is required when a change:
 - Alters governance meaning.
 - Promotes lessons into governance.
 - Changes consumed export packs for a repository.
+- Changes a published governance pack version, channel, manifest, or consumer expectation.
 - Touches repository agent guidance.
 - Affects accessibility baseline, package boundaries, token semantics, or component lifecycle.
 - Changes files listed under `never_auto_overwrite` in `registry/sync-contract.yml`.

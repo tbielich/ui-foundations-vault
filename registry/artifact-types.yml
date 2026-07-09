@@ -20,6 +20,32 @@ artifact_types:
       - specifications/
       - exports/governance-pack/
 
+  - name: naming-rule
+    description: A governance artifact that defines stable naming expectations for reusable UI Foundations concepts.
+    canonical_locations:
+      - exports/governance-pack/
+      - governance/
+      - reference/
+
+  - name: token-governance
+    description: A governance artifact that defines token decision, naming, lifecycle, and consumer impact expectations.
+    canonical_locations:
+      - exports/governance-pack/
+      - ui-foundations/tokens/
+
+  - name: component-governance
+    description: A governance artifact that defines component model, lifecycle, state, composition, and review expectations.
+    canonical_locations:
+      - exports/governance-pack/
+      - ui-foundations/components/
+
+  - name: governance-pack-release
+    description: A versioned release of governance guidance intended for reviewed consuming-repo adoption.
+    canonical_locations:
+      - registry/governance-packs.yml
+      - exports/governance-pack/pack.yml
+      - exports/governance-pack/CHANGELOG.md
+
   - name: specification
     description: A normative definition of expected structure, behavior, or validation.
     canonical_locations:

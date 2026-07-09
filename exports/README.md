@@ -29,5 +29,15 @@ They are derived from canonical vault knowledge. When a pack conflicts with a so
 ## Packs
 
 - `agent-pack/`: agent guidance, behavior rules, review rules, and reusable prompts.
-- `governance-pack/`: naming rules, token governance, component governance, and accessibility baseline.
+- `governance-pack/`: versioned naming rules, token governance, component governance, and accessibility baseline.
 - `runtime-pack/`: runtime validation expectations, component implementation rules, CSS architecture rules, and package boundary rules.
+
+## Publication
+
+Governance Pack publication is declared by:
+
+- `registry/governance-packs.yml`
+- `exports/governance-pack/pack.yml`
+- `exports/governance-pack/CHANGELOG.md`
+
+Publication metadata is advisory until reviewed. It does not trigger automatic synchronization.

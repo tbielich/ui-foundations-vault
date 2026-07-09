@@ -19,6 +19,17 @@ principles:
   - Sync output must be reviewable as plain text before merge.
 
 exportable_from_vault:
+  - artifact_type: governance-pack-release
+    allowed_sources:
+      - registry/governance-packs.yml
+      - exports/governance-pack/pack.yml
+      - exports/governance-pack/
+    allowed_targets:
+      - docs/governance/
+      - docs/ui-foundations/
+      - local governance pack adoption notes
+    review_required: true
+
   - artifact_type: agent-guidance
     allowed_sources:
       - AGENTS.md
@@ -93,6 +104,7 @@ manual_review_required_for:
   - changes to governance meaning
   - changes to package boundaries
   - changes to accessibility baseline
+  - changes to published governance pack version, channel, manifest, or consumer expectations
   - changes that affect runtime validation expectations
   - changes that add or remove consumed export packs
   - any generated patch touching AGENTS.md

@@ -55,6 +55,7 @@ It is not:
 - `knowledge/`: cross-repo lessons and reusable findings before promotion
 - `registry/`: machine-readable repository, artifact, and sync contracts
 - `exports/`: reviewed packs for cross-repo knowledge consumption
+- `schemas/`: advisory schemas for registry and export-pack validation
 
 ## Working Model
 
@@ -72,3 +73,4 @@ The vault follows a lightweight Version 1.0 knowledge standard:
 - `specifications/vault-metadata.md` defines markdown frontmatter metadata.
 - `docs/cross-repo-knowledge-sync.md` defines cross-repo consumption and feedback flow.
 - `docs/reflection-loop.md` defines how lessons become durable vault knowledge.
+- `docs/governance-pack-publishing.md` defines versioned Governance Pack publication.

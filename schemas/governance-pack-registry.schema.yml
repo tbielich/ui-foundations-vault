@@ -1,0 +1,111 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: schemas/governance-pack-registry.schema.yml
+title: Governance Pack Registry Schema
+type: object
+required:
+  - id
+  - title
+  - type
+  - status
+  - owners
+  - created
+  - updated
+  - authority
+  - version
+  - versioning_policy
+  - channels
+  - packs
+properties:
+  id:
+    type: string
+  title:
+    type: string
+  type:
+    const: registry
+  status:
+    enum:
+      - draft
+      - review
+      - accepted
+      - stable
+      - deprecated
+      - archived
+  owners:
+    type: array
+    items:
+      type: string
+  created:
+    type: string
+  updated:
+    type: string
+  authority:
+    enum:
+      - source
+      - supporting
+      - derived
+      - example
+  version:
+    type: number
+  versioning_policy:
+    type: object
+  channels:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      required:
+        - name
+        - description
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+  packs:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      required:
+        - id
+        - title
+        - current_version
+        - channel
+        - manifest
+        - changelog
+        - owner
+        - compatible_repo_types
+        - provided_artifacts
+        - protected_boundaries
+        - releases
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        current_version:
+          type: string
+          pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        channel:
+          type: string
+        manifest:
+          type: string
+        changelog:
+          type: string
+        owner:
+          type: string
+        compatible_repo_types:
+          type: array
+          items:
+            type: string
+        provided_artifacts:
+          type: array
+          items:
+            type: string
+        protected_boundaries:
+          type: array
+          items:
+            type: string
+        releases:
+          type: array
+          minItems: 1

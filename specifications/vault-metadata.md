@@ -83,6 +83,7 @@ Document taxonomy type.
   - `registry`
   - `lesson`
   - `export-pack`
+  - `schema`
   - `template`
   - `glossary`
   - `pattern`
