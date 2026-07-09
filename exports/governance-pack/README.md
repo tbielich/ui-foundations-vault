@@ -36,7 +36,7 @@ It is intended for reviewed consumption by runtime, documentation, package, and 
 
 ## Version
 
-Current version: `0.1.0`
+Current version: `0.6.0`
 
 Channel: `draft`
 
