@@ -97,6 +97,12 @@ Illustrative material and reusable document shapes.
 
 Responsibility: make the standard easier to apply without creating new authority.
 
+### Level 8: Registries and Export Packs
+
+Machine-readable repository contracts and curated cross-repo packs.
+
+Responsibility: declare how other repositories may consume vault knowledge without turning the vault into runtime automation.
+
 ## Normative Model
 
 The vault does not use extra metadata to mark normative content. Normative behavior is derived from document type, lifecycle, and precedence.
@@ -136,6 +142,9 @@ Use these locations for governed content:
 - `agents/`: tool-independent agent capabilities and operating knowledge
 - `glossary/`: canonical terms
 - `templates/`: reusable document shapes
+- `knowledge/`: cross-repo findings and lessons before promotion
+- `registry/`: machine-readable repository, artifact, and sync contracts
+- `exports/`: curated packs for reviewed consumption by other repositories
 - `docs/`: orientation, architecture, and navigation
 
 Specifications belong in `specifications/`. The `docs/` directory should not contain canonical specifications.

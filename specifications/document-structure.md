@@ -177,3 +177,40 @@ Recommended sections:
 
 Indexes are navigational and informative. They should not contain unique normative guidance.
 
+## Registry
+
+Recommended sections or fields:
+
+- Purpose
+- Version
+- Controlled values
+- Entries
+- Review expectations
+
+Registries are machine-readable declarations. They should avoid hidden behavior and should not execute synchronization.
+
+## Lesson
+
+Recommended sections:
+
+- Source
+- Local Fact
+- Generalized Lesson
+- Affected Areas
+- Evidence
+- Proposed Action
+- Open Questions
+
+Lessons capture reusable learning from concrete work. They are evidence for future governance, specifications, workflows, prompts, or export packs.
+
+## Export Pack
+
+Recommended sections:
+
+- Purpose
+- Contents
+- Consumption Rules
+- Boundaries
+- Related
+
+Export packs package reviewed guidance for other repositories. They are derived artifacts and should not override their source documents.

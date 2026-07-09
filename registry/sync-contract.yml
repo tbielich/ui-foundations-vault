@@ -1,0 +1,115 @@
+---
+id: registry.sync-contract
+title: Cross-Repo Sync Contract
+type: registry
+status: draft
+owners:
+  - ui-foundations
+created: 2026-07-09
+updated: 2026-07-09
+authority: source
+summary: Defines allowed exports, protected local files, overwrite restrictions, and review requirements for cross-repo knowledge sync.
+
+version: 0.1
+
+principles:
+  - The vault is the canonical source for reusable knowledge and governance.
+  - Runtime repositories remain canonical for their implementation, build, tests, and local configuration.
+  - No automatic synchronization is allowed without this contract and a reviewed consuming-repo change.
+  - Sync output must be reviewable as plain text before merge.
+
+exportable_from_vault:
+  - artifact_type: agent-guidance
+    allowed_sources:
+      - AGENTS.md
+      - agents/
+      - prompts/
+      - exports/agent-pack/
+    allowed_targets:
+      - AGENTS.md additions
+      - docs/agent-guidance.md
+      - prompts/
+    review_required: true
+
+  - artifact_type: governance-rule
+    allowed_sources:
+      - governance/
+      - specifications/
+      - exports/governance-pack/
+    allowed_targets:
+      - docs/governance/
+      - docs/ui-foundations/
+    review_required: true
+
+  - artifact_type: runtime-expectation
+    allowed_sources:
+      - ui-foundations/
+      - operational/
+      - patterns/
+      - exports/runtime-pack/
+    allowed_targets:
+      - docs/runtime-expectations.md
+      - docs/architecture/
+      - package documentation
+    review_required: true
+
+  - artifact_type: lesson
+    allowed_sources:
+      - knowledge/lessons/
+      - docs/reflection-loop.md
+    allowed_targets:
+      - docs/lessons/
+      - issue or PR references
+    review_required: true
+
+never_auto_overwrite:
+  - package.json
+  - package-lock.json
+  - pnpm-lock.yaml
+  - yarn.lock
+  - src/
+  - lib/
+  - app/
+  - tests/
+  - test/
+  - dist/
+  - build/
+  - .env
+  - .env.*
+  - .github/workflows/
+  - repository-owned AGENTS.md sections outside explicit vault-managed markers
+
+repo_local_only:
+  - runtime implementation code
+  - build configuration
+  - package dependency declarations
+  - CI execution workflows
+  - deployment configuration
+  - secrets and environment configuration
+  - product-specific copy
+  - repo-specific issue triage state
+
+manual_review_required_for:
+  - changes to governance meaning
+  - changes to package boundaries
+  - changes to accessibility baseline
+  - changes that affect runtime validation expectations
+  - changes that add or remove consumed export packs
+  - any generated patch touching AGENTS.md
+  - promotion of repeated lessons into governance rules
+
+allowed_sync_modes:
+  - name: manual_copy
+    description: A human or agent copies selected text from an export pack into a consuming repository and opens a reviewed change.
+  - name: reviewed_patch
+    description: A generated patch is proposed, inspected, and merged only after normal repository review.
+  - name: documentation_reference
+    description: A consuming repository links to vault guidance instead of copying it.
+
+disallowed_sync_modes:
+  - name: silent_overwrite
+    description: Replacing local files without review is forbidden.
+  - name: runtime_mutation
+    description: Changing implementation files from vault sync is forbidden.
+  - name: lockfile_or_dependency_sync
+    description: Dependency and lockfile updates must be owned by runtime repositories.

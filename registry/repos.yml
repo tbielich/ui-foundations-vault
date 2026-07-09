@@ -1,0 +1,143 @@
+---
+id: registry.repos
+title: Repository Registry
+type: registry
+status: draft
+owners:
+  - ui-foundations
+created: 2026-07-09
+updated: 2026-07-09
+authority: source
+summary: Declares UI Foundations ecosystem repositories and their cross-repo knowledge consumption model.
+
+version: 0.1
+default_owner: ui-foundations
+
+repo_types:
+  - vault
+  - runtime
+  - docs
+  - package
+  - experiment
+
+sync_directions:
+  - source_only
+  - consume_only
+  - bidirectional_reviewed
+  - none
+
+repositories:
+  - name: ui-foundations-vault
+    type: vault
+    owner: ui-foundations
+    consumed_packs: []
+    sync_direction: source_only
+    allowed_artifacts:
+      - governance-rule
+      - specification
+      - workflow
+      - prompt
+      - agent-guidance
+      - lesson
+      - registry
+      - export-pack
+    update_policy:
+      cadence: as_needed
+      requires_review: true
+      source_of_truth: true
+      notes: Vault changes must preserve precedence, lifecycle, and metadata expectations.
+
+  - name: ui-foundations
+    type: runtime
+    owner: ui-foundations
+    consumed_packs:
+      - agent-pack
+      - governance-pack
+      - runtime-pack
+    sync_direction: bidirectional_reviewed
+    allowed_artifacts:
+      - agent-guidance
+      - governance-rule
+      - runtime-expectation
+      - validation-expectation
+      - lesson
+    update_policy:
+      cadence: per_major_issue_or_pr
+      requires_review: true
+      source_of_truth: false
+      notes: Runtime implementation remains repo-local; reusable findings should return to the vault as lessons or governance candidates.
+
+  - name: ui-foundations-intelligence
+    type: runtime
+    owner: ui-foundations
+    consumed_packs:
+      - agent-pack
+      - governance-pack
+    sync_direction: bidirectional_reviewed
+    allowed_artifacts:
+      - agent-guidance
+      - prompt
+      - workflow
+      - governance-rule
+      - lesson
+    update_policy:
+      cadence: per_capability_change
+      requires_review: true
+      source_of_truth: false
+      notes: Agent behavior can consume vault guidance but tool orchestration and execution logic remain local.
+
+  - name: ui-foundations-studio
+    type: runtime
+    owner: ui-foundations
+    consumed_packs:
+      - agent-pack
+      - governance-pack
+      - runtime-pack
+    sync_direction: bidirectional_reviewed
+    allowed_artifacts:
+      - agent-guidance
+      - governance-rule
+      - runtime-expectation
+      - accessibility-baseline
+      - lesson
+    update_policy:
+      cadence: per_user_facing_workflow_change
+      requires_review: true
+      source_of_truth: false
+      notes: Product and interface implementation decisions remain local unless generalized into vault knowledge.
+
+  - name: ui-foundations-docs
+    type: docs
+    owner: ui-foundations
+    consumed_packs:
+      - governance-pack
+      - agent-pack
+    sync_direction: consume_only
+    allowed_artifacts:
+      - governance-rule
+      - specification-summary
+      - prompt
+      - lesson
+    update_policy:
+      cadence: per_documentation_release
+      requires_review: true
+      source_of_truth: false
+      notes: Documentation may present vault guidance but should not redefine canonical rules.
+
+  - name: ui-foundations-experiments
+    type: experiment
+    owner: ui-foundations
+    consumed_packs:
+      - agent-pack
+      - runtime-pack
+    sync_direction: bidirectional_reviewed
+    allowed_artifacts:
+      - agent-guidance
+      - runtime-expectation
+      - experiment-finding
+      - lesson
+    update_policy:
+      cadence: per_experiment_closeout
+      requires_review: true
+      source_of_truth: false
+      notes: Experiments may generate evidence, but durable rules require vault review before promotion.
