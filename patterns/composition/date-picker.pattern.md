@@ -6,7 +6,7 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-08
-updated: 2026-07-08
+updated: 2026-07-09
 authority: derived
 summary: Agent-readable composition pattern contract for date pickers.
 related:
@@ -99,6 +99,44 @@ The input segments inherit native text input behavior. The trigger inherits nati
 | Focus entry point | Required | Trigger activation or `Alt + Arrow Down` opens the calendar and moves focus according to component decision. |
 | Focus return point | Required | Closing the popup returns focus to the trigger or invoking segment unless a component spec defines another return point. |
 | Value ownership boundary | Required | Date Picker emits normalized value through API; product code owns business interpretation. |
+
+## Implementation Naming Contract
+
+### CSS Class Contract
+
+- The public date picker component class must use the `uif-` prefix.
+- Variants use chained classes.
+- Authored states use `is-*` chained classes only when the state is not better represented by native attributes, ARIA, or pseudo-classes.
+- Native states use pseudo-classes where possible.
+- Do not use BEM modifier syntax, BEM element syntax, or unscoped public component classes.
+
+### Token Contract
+
+- Date picker token slots use `--uif-date-picker-*` or inherited dependent scopes such as `--uif-input-*`, `--uif-button-*`, and `--uif-calendar-*`.
+- Experimental unresolved date picker tokens use `--uif-proof-*` or `--uif-assumption-*`.
+- Do not use unscoped public tokens such as `--date-picker-*`, `--input-*`, or `--button-*`.
+
+### Data Attribute Contract
+
+| Attribute | Classification | Contract |
+|---|---|---|
+| `data-uif-component="date-picker"` | Optional | May identify the composed pattern for metadata, testing, or agent-readable inspection; it must not replace the public `.uif-*` date picker class. |
+| `data-open="true"` | Optional mirror | May mirror popup state; `aria-expanded` remains required on the trigger when expansion is exposed. |
+| `data-orientation="horizontal|vertical"` | Conditional | Use only if orientation affects layout or interaction. |
+
+Data attributes are secondary metadata or state hooks. They must not replace public classes, tokens, focus management, popup semantics, calendar accessibility, trigger relationships, labels, invalid-state semantics, or dependent base-pattern contracts.
+
+### Native / ARIA Precedence
+
+- Use native input and button semantics from dependent base patterns.
+- Use `aria-expanded` on the trigger when expansion is exposed.
+- Use `aria-controls` when the trigger controls a popup element.
+- Data attributes may mirror open or orientation state but must not be the only semantic source.
+
+### Agent Freedom Boundary
+
+- CSS naming, token scoping, native semantics, focus semantics, and accessibility semantics are not agent freedom.
+- New date picker class names, token names, or data attributes must be marked as proposed or recorded in `Open Questions`.
 
 ## Required Semantics
 
@@ -309,6 +347,8 @@ Human-facing docs must explain composition, input segments, calendar trigger, ke
 ## Agent Output
 
 Agents can derive composition acceptance criteria, cross-part tests, accessibility review checks, token audits, and documentation deltas from this pattern. Agents must not add runtime implementation code to this vault.
+
+Review this pattern against `patterns/checklists/pattern-spec-review-checklist.md` before deriving implementation output.
 
 ## Open Questions
 

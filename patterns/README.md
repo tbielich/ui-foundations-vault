@@ -6,7 +6,7 @@ status: stable
 owners:
   - ui-foundations
 created: 2026-07-07
-updated: 2026-07-07
+updated: 2026-07-09
 authority: supporting
 summary: Entry point for agent-readable UI pattern specifications.
 ---
@@ -56,6 +56,12 @@ When guidance conflicts, apply this order:
 4. Component specs implement the pattern.
 5. Visual design variants must not break semantics.
 
+## Implementation Naming Governance
+
+`Implementation Naming Contract` is the canonical pattern-level section for CSS class naming, token scoping, data-attribute usage, native and ARIA precedence, and agent freedom boundaries.
+
+Pattern specs use `.uif-*` classes as the public styling scope and `--uif-*` CSS custom properties as the token scope. Data attributes remain secondary metadata or state hooks and must not replace native HTML semantics, required ARIA semantics, public component classes, or token conventions. The schema defines the full reusable contract.
+
 ## Using Templates
 
 Agents must start new pattern specs from the closest template:
@@ -66,7 +72,9 @@ Agents must start new pattern specs from the closest template:
 
 Agents must preserve the section order from `schemas/pattern.schema.md` unless a section is explicitly not applicable. If a pattern spec is incomplete, the agent must add an `Open Questions` section instead of inventing missing rules.
 
-Operational pattern specs must define structure, ownership, minimum component API, state semantics, token slot matrix, positive tests, negative tests, documentation requirements, anti-patterns, and open questions. Any behavior described with conditional language must be classified as required, optional, out of scope, or an open question.
+Operational pattern specs must define structure, implementation naming, ownership, minimum component API, state semantics, token slot matrix, positive tests, negative tests, documentation requirements, anti-patterns, and open questions. Any behavior described with conditional language must be classified as required, optional, out of scope, or an open question.
+
+Before deriving implementation output from a pattern spec, review it against `patterns/checklists/pattern-spec-review-checklist.md`.
 
 ## Relationships
 
@@ -85,4 +93,5 @@ Pattern specs relate to other UI Foundations concerns as follows:
 - `product/`: domain-specific pattern specs.
 - `templates/`: reusable authoring templates.
 - `schemas/`: markdown authoring schema for pattern specs.
+- `checklists/`: lightweight review checklists for pattern specs.
 - `maps/`: lookup maps connecting pilot patterns to components, tokens, and standards.

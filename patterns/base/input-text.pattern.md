@@ -6,7 +6,7 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-08
-updated: 2026-07-08
+updated: 2026-07-09
 authority: derived
 summary: Agent-readable base pattern contract for text inputs.
 related:
@@ -75,6 +75,43 @@ Native HTML `input` behavior is the base. Required: labels use `<label>`, `aria-
 | DOM order | Required | Label precedes or programmatically names the input; helper/error text follows the input in reading order when rendered. |
 | Forbidden structures | Required | Do not replace native input editing behavior with generic elements. |
 
+## Implementation Naming Contract
+
+### CSS Class Contract
+
+- The public input component class must use the `uif-` prefix.
+- Variants use chained classes.
+- Authored states use `is-*` chained classes only when the state is not better represented by native attributes or pseudo-classes.
+- Native states use pseudo-classes where possible.
+- Do not use BEM modifier syntax, BEM element syntax, or unscoped public component classes.
+
+### Token Contract
+
+- Input token slots use `--uif-input-*` or a more specific approved `--uif-[component]-*` scope.
+- Experimental unresolved input tokens use `--uif-proof-*` or `--uif-assumption-*`.
+- Do not use unscoped public tokens such as `--input-*`.
+
+### Data Attribute Contract
+
+| Attribute | Classification | Contract |
+|---|---|---|
+| `data-uif-component="input-text"` | Optional | May identify the component for metadata, testing, or agent-readable inspection; it must not replace the public `.uif-*` input class. |
+| `data-invalid="true"` | Optional mirror | May mirror visual or component invalid state, but it must not replace `aria-invalid="true"` when invalid state is exposed. |
+
+Data attributes are secondary metadata or state hooks. They must not replace public classes, tokens, labels, descriptions, visible error text, `aria-describedby`, or `aria-errormessage` relationships.
+
+### Native / ARIA Precedence
+
+- Use native `disabled`, `required`, `readonly`, `type`, and `name` where applicable.
+- Use `aria-invalid="true"` when invalid state is exposed.
+- Use `aria-describedby` or `aria-errormessage` for visible helper or error relationships.
+- Data attributes may mirror invalid state but must not be the only semantic source.
+
+### Agent Freedom Boundary
+
+- CSS naming, token scoping, native input semantics, and accessibility semantics are not agent freedom.
+- New input class names, token names, or data attributes must be marked as proposed or recorded in `Open Questions`.
+
 ## Required Semantics
 
 - Use a native `<input>` element for single-line text entry.
@@ -141,7 +178,7 @@ The base input exposes validation state and accessibility relationships. Renderi
 
 | Part | Property | State / Variant | Required semantic token slot | Notes |
 |---|---|---|---|---|
-| Input container | Background | Default / hover / focus / disabled / read-only | Input container background slot by state | Exact token can map to existing `--input-container-background-*`. |
+| Input container | Background | Default / hover / focus / disabled / read-only | Input container background slot by state | Exact token name must use the `--uif-input-*` scope when public. |
 | Input container | Border color | Default / hover / active / focus / invalid / disabled | Input border color slot by state | Invalid must not rely on color alone. |
 | Input container | Border width | Default / active | Input border size slot | Required for active recipe. |
 | Input primitive | Text color | Default / hover / active / disabled | Input text color slot by state | Must preserve contrast. |
@@ -295,6 +332,8 @@ Human-facing docs must explain input types, labels, placeholder guidance, states
 ## Agent Output
 
 Agents can derive component acceptance criteria, form review checks, validation test plans, token audits, and documentation deltas from this pattern. Agents must not add runtime implementation code to this vault.
+
+Review this pattern against `patterns/checklists/pattern-spec-review-checklist.md` before deriving implementation output.
 
 ## Open Questions
 

@@ -6,7 +6,7 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-08
-updated: 2026-07-08
+updated: 2026-07-09
 authority: source
 summary: Defines the markdown authoring schema for agent-readable pattern specifications.
 related:
@@ -34,6 +34,30 @@ Any behavior described with permission language, recommendation language, condit
 - Open question
 
 Agents must not implement open questions as if they were requirements.
+
+## Implementation Naming Contract
+
+Pattern specs that can derive implementation output must include an `Implementation Naming Contract`. This is the canonical section for pattern-level CSS class naming, token scoping, data attributes, native and ARIA precedence, and naming freedom boundaries.
+
+### CSS Class Contract
+
+Define the public component class scope. Public component classes must use the `uif-` prefix. UIF uses class name chains, not BEM. Variants are chained classes. Authored states use `is-*` chained classes. Native states use pseudo-classes where possible. Do not use BEM modifier syntax, BEM element syntax, or unscoped public component classes.
+
+### Token Contract
+
+Define the CSS custom property scope. UIF-owned public CSS custom properties must use the `--uif-` prefix. Component token slots must use `--uif-[component]-*`. Experimental unresolved tokens must use `--uif-proof-*` or `--uif-assumption-*`. Do not use unscoped public tokens such as `--button-*`.
+
+### Data Attribute Contract
+
+Define any UIF-specific data attributes the pattern allows. Data attributes are secondary metadata or state hooks. They must not replace public component classes, tokens, native semantics, or ARIA. Pattern specs must document any UIF-specific data attributes they allow.
+
+### Native / ARIA Precedence
+
+Define semantic precedence. Native attributes win where available. ARIA is used for accessibility semantics. Data attributes may mirror component state but must not be the only semantic source.
+
+### Agent Freedom Boundary
+
+Define naming decisions that are not agent freedom. CSS naming, token scoping, native semantics, and accessibility semantics are not agent freedom. Agents may only introduce naming or data-attribute proposals when explicitly marked as proposed or recorded as an open question.
 
 ## Required Sections
 
@@ -90,6 +114,18 @@ For base patterns, include required native element, required child parts, option
 For composition patterns, include required dependent base patterns, required parts, DOM ownership boundaries, popup or layer ownership when relevant, focus entry and return points, and the value ownership boundary.
 
 Agents can derive HTML structure, DOM acceptance criteria, and structural anti-pattern checks from this section. Do not use this section to invent private framework implementation details.
+
+### `## Implementation Naming Contract`
+
+Required for any pattern spec that can derive implementation output. Use these subsections in this order:
+
+- `### CSS Class Contract`
+- `### Token Contract`
+- `### Data Attribute Contract`
+- `### Native / ARIA Precedence`
+- `### Agent Freedom Boundary`
+
+Agents can derive naming, token, and data-attribute acceptance criteria only from this section, from native platform behavior, or from approved dependent pattern contracts. Do not introduce CSS naming, token naming, native semantics, accessibility semantics, or UIF-specific data attributes as agent freedom.
 
 ### `## Ownership Contract`
 
