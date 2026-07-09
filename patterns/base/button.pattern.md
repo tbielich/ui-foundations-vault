@@ -6,7 +6,7 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-08
-updated: 2026-07-08
+updated: 2026-07-09
 authority: derived
 summary: Agent-readable base pattern contract for buttons.
 related:
@@ -75,6 +75,67 @@ Native HTML `button` behavior is the base. WAI-ARIA is not needed for ordinary b
 | ButtonGroup structure | Out of scope | Do not derive ButtonGroup HTML from this base spec. |
 | Forbidden structures | Required | Do not use `div role="button"` or another generic element unless a documented technical exception exists. |
 
+## Implementation Naming Contract
+
+### CSS Class Contract
+
+- `.uif-button` is the primary public component class.
+- Variants use chained classes such as `.uif-button.solid`, `.uif-button.outline`, and `.uif-button.ghost`.
+- Authored states use `is-*` chained classes only when the state is not better represented by native attributes or pseudo-classes.
+- Native states use pseudo-classes where possible.
+- Do not use BEM modifier syntax, BEM element syntax, or unscoped public component classes.
+
+### Token Contract
+
+- Button token slots use `--uif-button-*`.
+- Experimental unresolved button tokens use `--uif-proof-*` or `--uif-assumption-*`.
+- Do not use unscoped public tokens such as `--button-*`.
+
+### Data Attribute Contract
+
+| Attribute | Classification | Contract |
+|---|---|---|
+| `data-uif-component="button"` | Optional | May identify the component for metadata, testing, or agent-readable inspection; it must not replace `.uif-button`. |
+| `data-loading="true"` | Optional | May mirror loading state when loading is supported. Preserve the accessible name and suppress repeated activation. |
+
+Data attributes are secondary metadata or state hooks. They must not replace public classes, tokens, native button semantics, accessible names, or required ARIA.
+
+### Native / ARIA Precedence
+
+- Use native `<button>` and native `disabled` where applicable.
+- Use `type="button"` unless submit or reset behavior is intended.
+- Use `aria-busy` only when the chosen loading semantics require busy state communication.
+- Data attributes may mirror loading state but must not be the only semantic source.
+
+### Agent Freedom Boundary
+
+- CSS naming, token scoping, native button semantics, and accessibility semantics are not agent freedom.
+- New button class names, token names, or data attributes must be marked as proposed or recorded in `Open Questions`.
+
+```html
+<button
+  class="uif-button solid"
+  type="button"
+  data-uif-component="button"
+>
+  <span class="uif-button-label">Continue</span>
+</button>
+```
+
+```html
+<button
+  class="uif-button solid"
+  type="button"
+  data-uif-component="button"
+  data-loading="true"
+  aria-busy="true"
+  disabled
+>
+  <span class="uif-button-spinner" aria-hidden="true"></span>
+  <span class="uif-button-label">Save changes</span>
+</button>
+```
+
 ## Required Semantics
 
 - Use `<button>` for actions.
@@ -123,7 +184,7 @@ Native HTML `button` behavior is the base. WAI-ARIA is not needed for ordinary b
 
 | Part | Property | State / Variant | Required semantic token slot | Notes |
 |---|---|---|---|---|
-| Button root | Background | Default / variant | Button container background slot by variant | Exact token name can map to existing `--button-*-container-background-*`. |
+| Button root | Background | Default / variant | Button container background slot by variant | Exact token name must use the `--uif-button-*` scope when public. |
 | Button root | Background overlay | Hover / active | Button overlay slot by interaction state | Required for hover and active recipes. |
 | Button root | Text color | Default / hover / active / focus | Button text color slot by variant and state | Must preserve contrast. |
 | Button root | Border color | Default / hover / active / focus | Button border color slot by variant and state | Required even for low-emphasis variants. |
@@ -252,6 +313,8 @@ Human-facing docs must explain variants, disabled state, label content standards
 ## Agent Output
 
 Agents can derive component acceptance criteria, review findings, test plans, token audits, and documentation deltas from this pattern. Agents must not add runtime implementation code to this vault.
+
+Review this pattern against `patterns/checklists/pattern-spec-review-checklist.md` before deriving implementation output.
 
 ## Open Questions
 

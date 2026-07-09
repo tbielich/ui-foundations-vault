@@ -6,7 +6,7 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-08
-updated: 2026-07-08
+updated: 2026-07-09
 authority: source
 summary: Template for composed UI pattern specifications.
 related:
@@ -74,6 +74,39 @@ Identify standards for each dependent base pattern and any WAI-ARIA pattern used
 | DOM ownership boundaries | Required | Define which part owns each DOM subtree. |
 | Popup / layer ownership | Required when relevant | Define role, label, trigger relationship, focus entry, and close return. |
 | Value ownership boundary | Required | Define where canonical value lives and how dependent parts synchronize. |
+
+## Implementation Naming Contract
+
+### CSS Class Contract
+
+- Public component classes use the `uif-` prefix.
+- Use class name chains for variants and `is-*` authored states.
+- Use native pseudo-classes for native states where possible.
+- Do not use BEM syntax or unscoped public component classes.
+
+### Token Contract
+
+- UIF-owned public CSS custom properties use the `--uif-` prefix.
+- Component token slots use `--uif-[component]-*`.
+- Experimental unresolved tokens use `--uif-proof-*` or `--uif-assumption-*`.
+- Do not use unscoped public tokens such as `--button-*`.
+
+### Data Attribute Contract
+
+- Document any allowed UIF-specific data attributes and inherited dependent-pattern attributes.
+- Data attributes are secondary metadata or state hooks.
+- Data attributes must not replace public classes, tokens, native semantics, ARIA, focus management, or ownership contracts.
+
+### Native / ARIA Precedence
+
+- Native attributes win where available.
+- ARIA is used for accessibility semantics and relationships.
+- Data attributes may mirror component state but must not be the only semantic source.
+
+### Agent Freedom Boundary
+
+- CSS naming, token scoping, native semantics, and accessibility semantics are not agent freedom.
+- New naming or data-attribute ideas must be marked as proposed or recorded in `Open Questions`.
 
 ## Required Semantics
 

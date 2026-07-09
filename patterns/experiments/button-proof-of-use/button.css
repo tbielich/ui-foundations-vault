@@ -1,42 +1,42 @@
 :root {
   color-scheme: light dark;
 
-  --assumption-button-font-family: system-ui, sans-serif;
-  --assumption-button-font-size: 1rem;
-  --assumption-button-font-weight: 600;
-  --assumption-button-min-height: 2.75rem;
-  --assumption-button-padding-block: 0.625rem;
-  --assumption-button-padding-inline: 1rem;
-  --assumption-button-icon-only-size: 2.75rem;
-  --assumption-button-gap: 0.5rem;
-  --assumption-button-radius: 0.375rem;
-  --assumption-button-border-width: 0.125rem;
-  --assumption-button-focus-ring-width: 0.1875rem;
-  --assumption-button-focus-ring-offset: 0.125rem;
-  --assumption-button-spinner-size: 1rem;
-  --assumption-button-spinner-border-width: 0.125rem;
+  --uif-assumption-button-font-family: system-ui, sans-serif;
+  --uif-assumption-button-font-size: 1rem;
+  --uif-assumption-button-font-weight: 600;
+  --uif-assumption-button-min-height: 2.75rem;
+  --uif-assumption-button-padding-block: 0.625rem;
+  --uif-assumption-button-padding-inline: 1rem;
+  --uif-assumption-button-icon-only-size: 2.75rem;
+  --uif-assumption-button-gap: 0.5rem;
+  --uif-assumption-button-radius: 0.375rem;
+  --uif-assumption-button-border-width: 0.125rem;
+  --uif-assumption-button-focus-ring-width: 0.1875rem;
+  --uif-assumption-button-focus-ring-offset: 0.125rem;
+  --uif-assumption-button-spinner-size: 1rem;
+  --uif-assumption-button-spinner-border-width: 0.125rem;
 
-  --assumption-button-solid-container: AccentColor;
-  --assumption-button-solid-text: Canvas;
-  --assumption-button-solid-border: AccentColor;
-  --assumption-button-outline-container: Canvas;
-  --assumption-button-outline-text: ButtonText;
-  --assumption-button-outline-border: ButtonText;
-  --assumption-button-ghost-container: transparent;
-  --assumption-button-ghost-text: ButtonText;
-  --assumption-button-ghost-border: transparent;
-  --assumption-button-disabled-container: ButtonFace;
-  --assumption-button-disabled-text: GrayText;
-  --assumption-button-disabled-border: GrayText;
-  --assumption-button-focus-ring: Highlight;
-  --assumption-button-interaction-overlay: color-mix(in srgb, currentColor 8%, transparent);
+  --uif-assumption-button-solid-container: AccentColor;
+  --uif-assumption-button-solid-text: Canvas;
+  --uif-assumption-button-solid-border: AccentColor;
+  --uif-assumption-button-outline-container: Canvas;
+  --uif-assumption-button-outline-text: ButtonText;
+  --uif-assumption-button-outline-border: ButtonText;
+  --uif-assumption-button-ghost-container: transparent;
+  --uif-assumption-button-ghost-text: ButtonText;
+  --uif-assumption-button-ghost-border: transparent;
+  --uif-assumption-button-disabled-container: ButtonFace;
+  --uif-assumption-button-disabled-text: GrayText;
+  --uif-assumption-button-disabled-border: GrayText;
+  --uif-assumption-button-focus-ring: Highlight;
+  --uif-assumption-button-interaction-overlay: color-mix(in srgb, currentColor 8%, transparent);
 }
 
 body {
   margin: 0;
   background: Canvas;
   color: CanvasText;
-  font-family: var(--assumption-button-font-family);
+  font-family: var(--uif-assumption-button-font-family);
 }
 
 .page {
@@ -56,98 +56,101 @@ body {
   align-items: center;
 }
 
-.button {
+.uif-button {
   display: inline-flex;
-  min-height: var(--assumption-button-min-height);
+  min-height: var(--uif-assumption-button-min-height);
   align-items: center;
   justify-content: center;
-  gap: var(--assumption-button-gap);
-  padding-block: var(--assumption-button-padding-block);
-  padding-inline: var(--assumption-button-padding-inline);
-  border: var(--assumption-button-border-width) solid;
-  border-radius: var(--assumption-button-radius);
+  gap: var(--uif-assumption-button-gap);
+  padding-block: var(--uif-assumption-button-padding-block);
+  padding-inline: var(--uif-assumption-button-padding-inline);
+  border: var(--uif-assumption-button-border-width) solid;
+  border-radius: var(--uif-assumption-button-radius);
   font: inherit;
-  font-size: var(--assumption-button-font-size);
-  font-weight: var(--assumption-button-font-weight);
+  font-size: var(--uif-assumption-button-font-size);
+  font-weight: var(--uif-assumption-button-font-weight);
   line-height: 1.2;
   text-align: center;
   cursor: pointer;
-  background: var(--assumption-button-solid-container);
-  color: var(--assumption-button-solid-text);
-  border-color: var(--assumption-button-solid-border);
 }
 
-.button.outline {
-  background: var(--assumption-button-outline-container);
-  color: var(--assumption-button-outline-text);
-  border-color: var(--assumption-button-outline-border);
+.uif-button.solid {
+  background: var(--uif-assumption-button-solid-container);
+  color: var(--uif-assumption-button-solid-text);
+  border-color: var(--uif-assumption-button-solid-border);
 }
 
-.button.ghost {
-  background: var(--assumption-button-ghost-container);
-  color: var(--assumption-button-ghost-text);
-  border-color: var(--assumption-button-ghost-border);
+.uif-button.outline {
+  background: var(--uif-assumption-button-outline-container);
+  color: var(--uif-assumption-button-outline-text);
+  border-color: var(--uif-assumption-button-outline-border);
 }
 
-.button:hover,
-.button.is-hover {
-  box-shadow: inset 0 0 0 100vmax var(--assumption-button-interaction-overlay);
+.uif-button.ghost {
+  background: var(--uif-assumption-button-ghost-container);
+  color: var(--uif-assumption-button-ghost-text);
+  border-color: var(--uif-assumption-button-ghost-border);
 }
 
-.button:active,
-.button.is-active {
+.uif-button:hover,
+.uif-button.is-hover {
+  box-shadow: inset 0 0 0 100vmax var(--uif-assumption-button-interaction-overlay);
+}
+
+.uif-button:active,
+.uif-button.is-active {
   transform: translateY(0.0625rem);
 }
 
-.button:focus-visible,
-.button.is-focus-visible {
-  outline: var(--assumption-button-focus-ring-width) solid var(--assumption-button-focus-ring);
-  outline-offset: var(--assumption-button-focus-ring-offset);
+.uif-button:focus-visible,
+.uif-button.is-focus-visible {
+  outline: var(--uif-assumption-button-focus-ring-width) solid var(--uif-assumption-button-focus-ring);
+  outline-offset: var(--uif-assumption-button-focus-ring-offset);
 }
 
-.button:disabled,
-.button.is-disabled {
-  background: var(--assumption-button-disabled-container);
-  color: var(--assumption-button-disabled-text);
-  border-color: var(--assumption-button-disabled-border);
+.uif-button:disabled,
+.uif-button.is-disabled {
+  background: var(--uif-assumption-button-disabled-container);
+  color: var(--uif-assumption-button-disabled-text);
+  border-color: var(--uif-assumption-button-disabled-border);
   cursor: not-allowed;
 }
 
-.button.icon-only {
-  inline-size: var(--assumption-button-icon-only-size);
-  min-inline-size: var(--assumption-button-icon-only-size);
+.uif-button.icon-only {
+  inline-size: var(--uif-assumption-button-icon-only-size);
+  min-inline-size: var(--uif-assumption-button-icon-only-size);
   padding: 0;
 }
 
-.icon {
+.uif-button-icon {
   font-size: 1.25em;
   line-height: 1;
 }
 
-.spinner {
-  inline-size: var(--assumption-button-spinner-size);
-  block-size: var(--assumption-button-spinner-size);
-  border: var(--assumption-button-spinner-border-width) solid currentColor;
+.uif-button-spinner {
+  inline-size: var(--uif-assumption-button-spinner-size);
+  block-size: var(--uif-assumption-button-spinner-size);
+  border: var(--uif-assumption-button-spinner-border-width) solid currentColor;
   border-block-start-color: transparent;
   border-radius: 50%;
 }
 
-.label-content {
+.uif-button-label {
   display: inline-flex;
   align-items: center;
 }
 
-.label-content-text {
+.uif-button-label-text {
   line-height: inherit;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .spinner {
-    animation: assumption-button-spin 0.8s linear infinite;
+  .uif-button-spinner {
+    animation: uif-assumption-button-spin 0.8s linear infinite;
   }
 }
 
-@keyframes assumption-button-spin {
+@keyframes uif-assumption-button-spin {
   to {
     transform: rotate(1turn);
   }

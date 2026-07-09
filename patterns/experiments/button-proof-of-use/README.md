@@ -6,7 +6,7 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-08
-updated: 2026-07-08
+updated: 2026-07-09
 authority: derived
 summary: Small implementation draft derived from the agent-readable Button Pattern.
 related:
@@ -18,7 +18,18 @@ related:
 
 This experiment tests whether `patterns/base/button.pattern.md` gives enough agent-readable guidance to produce a minimal implementation draft. It is not a production component, package, or final token proposal.
 
-The first proof used BEM-like modifier and element names. Those names were replaced because UI Foundations uses class name chains such as `.button.outline`, `.button.ghost`, `.button.icon-only`, and `.button.is-disabled`.
+The first proof used BEM-like modifier and element names. Those names were replaced because UI Foundations uses class name chains. A later rerun updated the experiment again after the Button Pattern introduced the scoped `.uif-button` naming contract.
+
+## Result
+
+Accepted as a successful proof-of-use. This experiment shows the Button Pattern can guide a minimal implementation draft, but it is not production-ready.
+
+Open before production:
+
+- Loading semantics.
+- `aria-busy` placement.
+- Final token names.
+- Variant class prefixing.
 
 ## Files
 
@@ -37,21 +48,22 @@ The first proof used BEM-like modifier and element names. Those names were repla
 - Focus-visible styling is required and represented through a token placeholder.
 - Variants can be expressed without changing semantics.
 - UIF class name chains can represent variants and authored states without changing native button semantics.
+- The current pattern's `.uif-button` public component class and optional `data-uif-component="button"` metadata can be applied without replacing native semantics.
 
 ## Assumptions
 
-- Placeholder CSS custom properties use the prefix `--assumption-button-*` to avoid presenting them as approved token names.
+- Placeholder CSS custom properties use the prefix `--uif-assumption-button-*` to avoid presenting them as approved final token names.
 - System color fallbacks such as `ButtonFace`, `ButtonText`, and `AccentColor` are used only to keep the static draft inspectable without hardcoding brand colors.
 - The loading example uses both `disabled` and `aria-busy="true"` to show repeated-activation suppression without JavaScript.
 - The loading indicator is decorative because the visible label remains the accessible name.
 - The icon glyphs are inline text placeholders for proof-of-use only; production usage would rely on an approved icon primitive.
-- The loading example uses `.is-loading` as an experimental state class because the requested UIF state examples did not name a loading-state class.
+- The loading example uses `.is-loading` and `data-loading="true"` as experimental state hooks because loading semantics remain open in the pattern.
 
 ## Unclear In The Pattern Spec
 
 - Whether loading should apply native `disabled` or keep the button focusable while suppressing repeated activation.
 - Whether `aria-busy` belongs on the button or on a surrounding async region.
-- Exact semantic token names for variant backgrounds, text, borders, focus ring, icon size, loading size, and motion.
+- Exact public `--uif-button-*` token names for variant backgrounds, text, borders, focus ring, icon size, loading size, and motion.
 - Canonical size scale and whether this pattern should define named sizes.
 - Whether icon-only buttons should require visible tooltips in this system.
 
@@ -65,7 +77,7 @@ The first proof used BEM-like modifier and element names. Those names were repla
 
 ## Pattern And Template Recommendation
 
-Future pattern specs should include an `Implementation Naming Contract` stating that CSS naming is not agent freedom. Agents must follow UIF class name chains, token naming conventions, native semantics, and accessibility rules.
+Future pattern specs should include the canonical `Implementation Naming Contract` from `patterns/schemas/pattern.schema.md`. Agents must follow UIF class name chains, token naming conventions, documented data-attribute contracts, native semantics, and accessibility rules.
 
 ## Readiness To Scale
 
