@@ -103,6 +103,12 @@ Machine-readable repository contracts and curated cross-repo packs.
 
 Responsibility: declare how other repositories may consume vault knowledge without turning the vault into runtime automation.
 
+### Level 9: Advisory Schemas
+
+Validation aids for registry and pack structure.
+
+Responsibility: make machine-readable files easier to review without making validation authoritative over governance.
+
 ## Normative Model
 
 The vault does not use extra metadata to mark normative content. Normative behavior is derived from document type, lifecycle, and precedence.
@@ -145,6 +151,7 @@ Use these locations for governed content:
 - `knowledge/`: cross-repo findings and lessons before promotion
 - `registry/`: machine-readable repository, artifact, and sync contracts
 - `exports/`: curated packs for reviewed consumption by other repositories
+- `schemas/`: advisory schemas for registry and export-pack validation
 - `docs/`: orientation, architecture, and navigation
 
 Specifications belong in `specifications/`. The `docs/` directory should not contain canonical specifications.

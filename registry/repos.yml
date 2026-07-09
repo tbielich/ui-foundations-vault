@@ -54,6 +54,8 @@ repositories:
       - agent-pack
       - governance-pack
       - runtime-pack
+    consumed_pack_versions:
+      governance-pack: ">=0.1.0 <1.0.0"
     sync_direction: bidirectional_reviewed
     allowed_artifacts:
       - agent-guidance
@@ -73,6 +75,8 @@ repositories:
     consumed_packs:
       - agent-pack
       - governance-pack
+    consumed_pack_versions:
+      governance-pack: ">=0.1.0 <1.0.0"
     sync_direction: bidirectional_reviewed
     allowed_artifacts:
       - agent-guidance
@@ -93,6 +97,8 @@ repositories:
       - agent-pack
       - governance-pack
       - runtime-pack
+    consumed_pack_versions:
+      governance-pack: ">=0.1.0 <1.0.0"
     sync_direction: bidirectional_reviewed
     allowed_artifacts:
       - agent-guidance
@@ -112,6 +118,8 @@ repositories:
     consumed_packs:
       - governance-pack
       - agent-pack
+    consumed_pack_versions:
+      governance-pack: ">=0.1.0 <1.0.0"
     sync_direction: consume_only
     allowed_artifacts:
       - governance-rule

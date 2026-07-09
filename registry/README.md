@@ -14,6 +14,7 @@ related:
     - registry.repos
     - registry.sync-contract
     - registry.artifact-types
+    - registry.governance-packs
 ---
 
 # Registry
@@ -29,3 +30,4 @@ It does not execute synchronization. It describes what may be consumed, by which
 - `repos.yml`: repository types, consumed packs, sync direction, owners, allowed artifacts, and update policies.
 - `sync-contract.yml`: allowed exports, protected local files, local-only files, and manual review requirements.
 - `artifact-types.yml`: controlled artifact types used by the registry and sync contract.
+- `governance-packs.yml`: publishable governance pack versions, channels, manifests, and consumer expectations.

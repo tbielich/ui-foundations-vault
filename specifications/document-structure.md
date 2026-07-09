@@ -214,3 +214,15 @@ Recommended sections:
 - Related
 
 Export packs package reviewed guidance for other repositories. They are derived artifacts and should not override their source documents.
+
+## Schema
+
+Recommended sections or fields:
+
+- Purpose
+- Target file or artifact
+- Required fields
+- Optional fields
+- Validation limits
+
+Schemas are advisory. They help humans and agents detect structural problems, but they do not override governance, specifications, or review.

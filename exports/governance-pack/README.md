@@ -27,7 +27,17 @@ It is intended for reviewed consumption by runtime, documentation, package, and 
 
 ## Contents
 
+- `pack.yml`
+- `CHANGELOG.md`
 - `naming-rules.md`
 - `token-governance.md`
 - `component-governance.md`
 - `accessibility-baseline.md`
+
+## Version
+
+Current version: `0.1.0`
+
+Channel: `draft`
+
+The manifest in `pack.yml` defines publishable pack metadata. The changelog records version history. Runtime repositories may consume this pack only through reviewed local changes.
