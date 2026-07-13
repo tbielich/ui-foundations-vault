@@ -6,7 +6,7 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-08
-updated: 2026-07-09
+updated: 2026-07-13
 authority: derived
 summary: Small implementation draft derived from the agent-readable Button Pattern.
 related:
@@ -18,7 +18,7 @@ related:
 
 This experiment tests whether `patterns/base/button.pattern.md` gives enough agent-readable guidance to produce a minimal implementation draft. It is not a production component, package, or final token proposal.
 
-The first proof used BEM-like modifier and element names. Those names were replaced because UI Foundations uses class name chains. A later rerun updated the experiment again after the Button Pattern introduced the scoped `.uif-button` naming contract.
+The first proof used BEM-like modifier and element names. Those names were replaced because UI Foundations uses class name chains. This revision aligns the proof-of-use with the final explicit UIF naming contract: scoped `.uif-button` class chains, UIF-style part classes, and `--uif-proof-button-*` experimental token placeholders.
 
 ## Result
 
@@ -34,7 +34,7 @@ Open before production:
 ## Files
 
 - `button.html`: static examples for default, disabled, icon-only, and loading buttons.
-- `button.css`: minimal styles using semantic token placeholders.
+- `button.css`: minimal styles using scoped `--uif-proof-button-*` experimental token placeholders.
 - `button.a11y-checklist.md`: proof-of-use accessibility review checklist.
 
 ## Derived Successfully
@@ -52,7 +52,7 @@ Open before production:
 
 ## Assumptions
 
-- Placeholder CSS custom properties use the prefix `--uif-assumption-button-*` to avoid presenting them as approved final token names.
+- Placeholder CSS custom properties use the prefix `--uif-proof-button-*` so the experiment stays scoped while making the UIF naming contract explicit.
 - System color fallbacks such as `ButtonFace`, `ButtonText`, and `AccentColor` are used only to keep the static draft inspectable without hardcoding brand colors.
 - The loading example uses both `disabled` and `aria-busy="true"` to show repeated-activation suppression without JavaScript.
 - The loading indicator is decorative because the visible label remains the accessible name.
@@ -77,7 +77,7 @@ Open before production:
 
 ## Pattern And Template Recommendation
 
-Future pattern specs should include the canonical `Implementation Naming Contract` from `patterns/schemas/pattern.schema.md`. Agents must follow UIF class name chains, token naming conventions, documented data-attribute contracts, native semantics, and accessibility rules.
+Future pattern specs should include the canonical `Implementation Naming Contract` from `patterns/schemas/pattern.schema.md`. This experiment confirmed that UIF naming conventions must be explicit so agents follow the scoped class chains, part classes, token naming, documented data-attribute contracts, native semantics, and accessibility rules.
 
 ## Readiness To Scale
 

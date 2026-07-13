@@ -6,7 +6,7 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-08
-updated: 2026-07-09
+updated: 2026-07-13
 authority: derived
 summary: Accessibility checks derived from the Button Pattern proof-of-use draft.
 related:
@@ -70,5 +70,5 @@ related:
 - [ ] No final token names are invented where the pattern only defines token slots.
 - [ ] No BEM-style modifier or element classes are used instead of UIF class name chains.
 - [ ] Public button classes use the scoped `.uif-button` contract, not unscoped component classes.
-- [ ] Experimental token placeholders use the `--uif-assumption-*` or `--uif-proof-*` scope.
+- [ ] Experimental token placeholders use the `--uif-proof-button-*` scope or another documented `--uif-proof-*` / `--uif-assumption-*` UIF experiment scope.
 - [ ] No ButtonGroup behavior is derived from this base button proof.
