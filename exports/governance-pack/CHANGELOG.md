@@ -17,6 +17,35 @@ related:
 
 # Governance Pack Changelog
 
+## 0.8.0 - UIF Public API Namespace
+
+Status: review
+
+### Added
+
+- Added the canonical `uif` alias for public Nunjucks macro invocations.
+- Added the canonical `uif-` prefix for public autonomous Custom Element tag
+  names.
+- Added the source ADR defining the scope and unresolved adjacent surfaces.
+
+### Changed
+
+- Expanded the machine-readable naming contract and schema for the two newly
+  governed public API surfaces.
+- Moved the governance pack to review for consuming-repository evaluation.
+
+### Boundaries
+
+- Does not rename macro module paths, named exports, JavaScript identifiers,
+  module filenames, or package subpaths.
+- Does not define compatibility aliases, dual registration, deprecation
+  periods, or migration sequencing.
+
+### Validation
+
+- The local validator checks the canonical macro alias, invocation pattern, and
+  Custom Element tag prefix.
+
 ## 0.7.0 - Machine-readable Naming Contract
 
 Status: draft

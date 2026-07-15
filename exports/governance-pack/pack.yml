@@ -2,20 +2,20 @@
 id: export-pack.governance.manifest
 title: Governance Pack Manifest
 type: export-pack
-status: draft
+status: review
 owners:
   - ui-foundations
 created: 2026-07-09
-updated: 2026-07-09
+updated: 2026-07-15
 authority: derived
 summary: Machine-readable manifest for the publishable UI Foundations governance pack.
 
 pack:
   id: governance-pack
   title: Governance Pack
-  version: 0.7.0
-  channel: draft
-  release_date: 2026-07-09
+  version: 0.8.0
+  channel: review
+  release_date: 2026-07-15
   owner: ui-foundations
   registry: registry/governance-packs.yml
   changelog: exports/governance-pack/CHANGELOG.md
@@ -42,10 +42,11 @@ artifacts:
     title: Naming Contract
     type: naming-contract
     path: exports/governance-pack/contracts/naming-contract.json
-    status: draft
+    status: review
     review_required: true
     schema: schemas/naming-contract.schema.yml
     source_references:
+      - adr.uif-public-api-namespace
       - specification.pattern.schema
       - template.pattern.base
       - template.pattern.composition
@@ -57,11 +58,12 @@ artifacts:
     title: Naming Rules
     type: naming-rule
     path: exports/governance-pack/naming-rules.md
-    status: draft
+    status: review
     review_required: true
     source_references:
       - reference.terminology
       - registry.sync-contract
+      - adr.uif-public-api-namespace
 
   - id: governance-pack.token-governance
     title: Token Governance

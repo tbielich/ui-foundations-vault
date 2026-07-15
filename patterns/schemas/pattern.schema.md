@@ -37,7 +37,7 @@ Agents must not implement open questions as if they were requirements.
 
 ## Implementation Naming Contract
 
-Pattern specs that can derive implementation output must include an `Implementation Naming Contract`. This is the canonical section for pattern-level CSS class naming, token scoping, data attributes, native and ARIA precedence, and naming freedom boundaries.
+Pattern specs that can derive implementation output must include an `Implementation Naming Contract`. This is the canonical section for pattern-level CSS class naming, token scoping, public macro invocations, Custom Element tag naming, data attributes, native and ARIA precedence, and naming freedom boundaries.
 
 ### CSS Class Contract
 
@@ -46,6 +46,14 @@ Define the public component class scope. Public component classes must use the `
 ### Token Contract
 
 Define the CSS custom property scope. UIF-owned public CSS custom properties must use the `--uif-` prefix. Component token slots must use `--uif-[component]-*`. Experimental unresolved tokens must use `--uif-proof-*` or `--uif-assumption-*`. Do not use unscoped public tokens such as `--button-*`.
+
+### Public Template API Contract
+
+When a pattern has a public Nunjucks macro, public examples and generated snippets must import the macro module with the consumer-selected alias `uif` and invoke it as `uif.*`. This rule does not rename the macro module path or its named macro exports.
+
+### Custom Element Contract
+
+When a pattern has a public autonomous Custom Element, its tag name must use the `uif-` prefix and the form `<uif-[component]>`. This rule governs tag names, registration strings, and `HTMLElementTagNameMap` keys. It does not decide JavaScript identifiers, module filenames, package subpaths, compatibility, or migration behavior.
 
 ### Data Attribute Contract
 
@@ -121,11 +129,13 @@ Required for any pattern spec that can derive implementation output. Use these s
 
 - `### CSS Class Contract`
 - `### Token Contract`
+- `### Public Template API Contract`
+- `### Custom Element Contract`
 - `### Data Attribute Contract`
 - `### Native / ARIA Precedence`
 - `### Agent Freedom Boundary`
 
-Agents can derive naming, token, and data-attribute acceptance criteria only from this section, from native platform behavior, or from approved dependent pattern contracts. Do not introduce CSS naming, token naming, native semantics, accessibility semantics, or UIF-specific data attributes as agent freedom.
+Agents can derive naming, token, public template API, Custom Element tag, and data-attribute acceptance criteria only from this section, from native platform behavior, or from approved dependent pattern contracts. Do not introduce public API naming, native semantics, accessibility semantics, or UIF-specific data attributes as agent freedom.
 
 ### `## Ownership Contract`
 

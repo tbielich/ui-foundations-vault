@@ -2,11 +2,11 @@
 id: registry.governance-packs
 title: Governance Pack Registry
 type: registry
-status: draft
+status: review
 owners:
   - ui-foundations
 created: 2026-07-09
-updated: 2026-07-09
+updated: 2026-07-15
 authority: source
 summary: Declares publishable governance packs, versions, channels, and consuming repository expectations.
 
@@ -31,8 +31,8 @@ channels:
 packs:
   - id: governance-pack
     title: Governance Pack
-    current_version: 0.7.0
-    channel: draft
+    current_version: 0.8.0
+    channel: review
     manifest: exports/governance-pack/pack.yml
     changelog: exports/governance-pack/CHANGELOG.md
     owner: ui-foundations
@@ -53,6 +53,12 @@ packs:
       - no CI or deployment changes
       - no automatic synchronization
     releases:
+      - version: 0.8.0
+        channel: review
+        date: 2026-07-15
+        git_ref: pending-review
+        manifest: exports/governance-pack/pack.yml
+        notes: Canonical uif namespace rules for public Nunjucks macro invocations and Custom Element tag names.
       - version: 0.7.0
         channel: draft
         date: 2026-07-09
