@@ -91,6 +91,17 @@ Identify standards for each dependent base pattern and any WAI-ARIA pattern used
 - Experimental unresolved tokens use `--uif-proof-*` or `--uif-assumption-*`.
 - Do not use unscoped public tokens such as `--button-*`.
 
+### Public Template API Contract
+
+- When this pattern has a public Nunjucks macro, examples and generated snippets import it with the consumer-selected alias `uif` and invoke it as `uif.*`.
+- This rule does not rename the macro module path or named macro exports.
+
+### Custom Element Contract
+
+- When this pattern has a public autonomous Custom Element, its tag name uses the `uif-` prefix and the form `<uif-[component]>`.
+- This rule governs tag names, registration strings, and `HTMLElementTagNameMap` keys.
+- JavaScript identifiers, module filenames, package subpaths, compatibility, and migration behavior require separate decisions.
+
 ### Data Attribute Contract
 
 - Document any allowed UIF-specific data attributes and inherited dependent-pattern attributes.
@@ -105,7 +116,7 @@ Identify standards for each dependent base pattern and any WAI-ARIA pattern used
 
 ### Agent Freedom Boundary
 
-- CSS naming, token scoping, native semantics, and accessibility semantics are not agent freedom.
+- CSS naming, token scoping, public macro aliases, Custom Element tag naming, native semantics, and accessibility semantics are not agent freedom.
 - New naming or data-attribute ideas must be marked as proposed or recorded in `Open Questions`.
 
 ## Required Semantics

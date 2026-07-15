@@ -96,6 +96,8 @@ properties:
     required:
       - css_class_prefix
       - css_custom_property_prefix
+      - nunjucks_macro_namespace
+      - custom_element_tag_prefix
       - proof_token_prefix
       - assumption_token_prefix
       - pattern_id_prefixes
@@ -109,6 +111,24 @@ properties:
         type: object
         required:
           - prefix
+      nunjucks_macro_namespace:
+        type: object
+        required:
+          - alias
+          - invocation_pattern
+          - scope
+          - required
+          - consumer_selected_alias
+          - does_not_govern
+      custom_element_tag_prefix:
+        type: object
+        required:
+          - prefix
+          - tag_pattern
+          - scope
+          - required
+          - governs
+          - does_not_govern
       proof_token_prefix:
         type: object
         required:

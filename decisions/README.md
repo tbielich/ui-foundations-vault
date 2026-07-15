@@ -16,3 +16,8 @@ summary: Entry point for architecture decision records and durable decisions.
 Architecture decision records and other durable choices.
 
 Use `templates/adr-template.md` for new ADRs.
+
+## Records
+
+- `uif-public-api-namespace.md` — canonical public macro invocation and Custom
+  Element tag namespaces (review)
