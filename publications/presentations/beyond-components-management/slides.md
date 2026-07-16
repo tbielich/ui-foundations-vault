@@ -23,7 +23,10 @@ related:
 
 # 1. Beyond Components
 
-> Design systems must evolve from reusable interface assets into governed sources of design knowledge.
+> Design systems are changing.
+>
+> They are no longer only about reusable components.
+> They also need reusable design knowledge.
 
 **Subtitle:** Why Design Systems Must Become Knowledge Platforms for Humans and AI
 
@@ -35,13 +38,11 @@ related:
 
 <!-- slide: 2 -->
 
-## 2. Executive Summary
+## 2. Three key ideas
 
-> The strategic opportunity is to make design knowledge reusable, governable, and accessible across human and machine workflows.
-
-- Components remain essential, but they do not contain the full decision context.
-- AI increases the operational cost of fragmented or implicit guidance.
-- A knowledge platform creates scale through authority, relationships, and evidence.
+- Components are still important.
+- AI needs more than components.
+- Design knowledge can become reusable.
 
 **Suggested visual:** [Three executive takeaways](assets/diagrams/02-executive-summary.mmd)
 
@@ -53,11 +54,9 @@ related:
 
 ## 3. Why This Matters Now
 
-> Design knowledge must travel across more consumers, tools, and delivery paths than the current architecture was designed to support.
-
-- AI introduces autonomous and semi-autonomous consumers.
-- Automation turns local rules into repeatable organizational behavior.
-- Multi-tool ecosystems increase translation, drift, and ownership risk.
+- AI is becoming part of product development.
+- More tools need the same design knowledge.
+- Keeping everything consistent becomes harder.
 
 **Evidence:** [Anthropic context engineering](../../whitepapers/beyond-components/references.md#ref-anthropic-context) · [Figma Code Connect](../../whitepapers/beyond-components/references.md#ref-figma-code-connect)
 
@@ -71,11 +70,7 @@ related:
 
 ## 4. Design Systems Have Evolved
 
-> Each generation standardized a larger unit of design value.
-
-- Design guidelines made preferred decisions visible.
-- Component libraries made implementation reusable.
-- Knowledge platforms make design intent and constraints reusable.
+> Guidelines<br>↓<br>Components<br>↓<br>Knowledge
 
 **Suggested visual:** [Design-system evolution](assets/diagrams/04-evolution.mmd)
 
@@ -85,13 +80,11 @@ related:
 
 <!-- slide: 5 -->
 
-## 5. What Today’s Design Systems Solve Well
+## 5. Today’s strengths
 
-> The current model creates real leverage and should be extended, not replaced.
-
-- Consistency across products and journeys
-- Reuse of tested interface implementation
-- Collaboration through shared language and assets
+- Consistent experiences
+- Reusable components
+- Better collaboration
 
 **Evidence:** [GitHub Primer evolution](../../whitepapers/beyond-components/references.md#ref-github-accessibility-journey) · [Nielsen Norman Group](../../whitepapers/beyond-components/references.md#ref-nng-consistency)
 
@@ -103,14 +96,12 @@ related:
 
 <!-- slide: 6 -->
 
-## 6. Where Today’s Architecture Reaches Its Limits
+## 6. Today’s challenges
 
-> Reusable assets scale faster than the knowledge required to apply them correctly.
-
-- Knowledge is fragmented across files, code, documentation, and conversations.
-- Governance is often implicit or detached from the artifact.
-- Tool-specific representations create dependency and drift.
-- Machine consumers cannot reliably infer authority or context.
+- Knowledge is spread across many places.
+- Rules are not always clear.
+- Tools do not share the same context.
+- AI cannot reliably guess missing information.
 
 **Evidence:** [GitHub accessibility annotations](../../whitepapers/beyond-components/references.md#ref-github-annotations) · [Adobe Spectrum tokens](../../whitepapers/beyond-components/references.md#ref-spectrum-tokens)
 
@@ -122,13 +113,11 @@ related:
 
 <!-- slide: 7 -->
 
-## 7. AI Changes the Operating Context
+## 7. AI changes how we build products
 
-> Humans are no longer the only consumers of design-system guidance.
-
-- AI requires bounded, structured, and authoritative context.
-- Longer prompts cannot compensate for contradictory knowledge.
-- Validation and provenance become part of design-system quality.
+- Humans are no longer the only consumers.
+- AI also needs design knowledge.
+- Clear rules become more important.
 
 **Evidence:** [Anthropic effective agents](../../whitepapers/beyond-components/references.md#ref-anthropic-agents) · [GitHub agent instructions](../../whitepapers/beyond-components/references.md#ref-github-agents-md)
 
@@ -140,14 +129,11 @@ related:
 
 <!-- slide: 8 -->
 
-## 8. Knowledge Becomes the Primary Asset
+## 8. Components are not enough
 
-> Components operationalize design knowledge; they are not the outer boundary of what the system must govern.
+> Knowledge<br>↓<br>Specifications<br>↓<br>Patterns<br>↓<br>Components<br>↓<br>Products
 
-- Knowledge establishes intent and authority.
-- Specifications define expected behavior and constraints.
-- Patterns make recurring decisions reusable.
-- Components implement those decisions in products.
+**Key message:** Components are the result. Knowledge comes first.
 
 **Suggested visual:** [Knowledge-to-product chain](assets/diagrams/08-knowledge-chain.mmd)
 
@@ -157,13 +143,11 @@ related:
 
 <!-- slide: 9 -->
 
-## 9. Open Standards Create Shared Boundaries
+## 9. The industry is moving
 
-> Standards improve portability when their authority and maturity remain explicit.
-
-- DTCG standardizes the exchange of design-token data.
-- W3C standards anchor accessible behavior and semantics.
-- Google DESIGN.md signals emerging experimentation beyond tokens—not settled consensus.
+- **Established standard — WCAG:** WCAG defines accessibility requirements.
+- **Standardized exchange format — DTCG:** DTCG standardizes design-token data.
+- **Emerging experiment — DESIGN.md:** DESIGN.md explores AI-ready design guidance.
 
 **Evidence:** [DTCG 2025.10](../../whitepapers/beyond-components/references.md#ref-dtcg-format) · [WCAG 2.2](../../whitepapers/beyond-components/references.md#ref-wcag22) · [Google DESIGN.md](../../whitepapers/beyond-components/references.md#ref-google-design-md)
 
@@ -179,10 +163,10 @@ related:
 
 > UI Foundations is a reference implementation of the architectural principles introduced in this presentation.
 
-- Canonical knowledge remains separate from implementation and presentation tools.
-- Human and machine consumers use the same governed sources.
-- Evidence can improve shared knowledge through review.
-- Other architectures can implement the same principles.
+- One possible implementation
+- Open
+- Standards-based
+- Built for human and AI use
 
 **Suggested visual:** [UI Foundations responsibility model](assets/diagrams/10-ui-foundations.mmd)
 
@@ -192,14 +176,12 @@ related:
 
 <!-- slide: 11 -->
 
-## 11. Why Open Source
+## 11. Why open?
 
-> Openness makes architectural assumptions inspectable and reduces strategic coupling.
-
-- Transparent governance and evolution
-- Independent validation and contribution
-- Portable formats and replaceable tools
-- Shared foundational work without exposing private product knowledge
+- Learn together
+- Share ideas
+- Avoid vendor lock-in
+- Build on open standards
 
 **Suggested visual:** [Open reference model](assets/diagrams/11-open-source.mmd)
 
@@ -209,15 +191,17 @@ related:
 
 <!-- slide: 12 -->
 
-## 12. Why This Matters for TUI
+## 12. What could this mean for TUI?
 
-> Governed design knowledge can increase strategic flexibility across products, markets, and delivery models.
+> These are hypotheses to test, not promised outcomes.
 
-- Reusable knowledge across teams and journeys
-- Stronger AI readiness and verification
-- Explicit governance and decision ownership
-- Greater scalability with less repeated interpretation
-- Lower long-term switching and coordination cost
+- Reusable knowledge across teams
+- Better support for AI workflows
+- Clearer ownership and governance
+- Less repeated interpretation
+- More flexibility across tools
+
+**Pilot measures:** discovery time, repeated deviations, review findings, and correction cost.
 
 **Suggested visual:** [Strategic value for TUI](assets/diagrams/12-tui-value.mmd)
 
@@ -231,9 +215,7 @@ related:
 
 > The architecture should earn its expansion through evidence.
 
-- **Near term:** establish ownership, lifecycle, authority, and a bounded pilot.
-- **Medium term:** connect knowledge to assets, standards, and assurance.
-- **Long term:** scale governed retrieval across human and AI workflows.
+> Learn<br>↓<br>Validate<br>↓<br>Scale
 
 **Suggested visual:** [Three-horizon roadmap](assets/diagrams/13-roadmap.mmd)
 
@@ -243,13 +225,11 @@ related:
 
 <!-- slide: 14 -->
 
-## 14. Discussion
+## 14. Questions
 
-> Leadership validation should precede platform expansion.
-
-- Is this direction strategically relevant?
-- Which assumptions need challenging?
-- Where should we pilot this?
+- Is this direction relevant for TUI?
+- Which assumptions should we challenge?
+- Where could we test this?
 - What would success look like?
 
 **Suggested visual:** [Leadership decision frame](assets/diagrams/14-discussion.mmd)
@@ -266,8 +246,8 @@ related:
 
 **Speaker notes:** [Slide 15](speaker-notes.md#slide-15-closing)
 
-> The first generation of design systems standardized interfaces.
+> The first generation standardized interfaces.
 >
-> The second standardized implementation.
+> The second standardized components.
 >
-> The next generation will standardize design knowledge.
+> The next generation may standardize design knowledge.
