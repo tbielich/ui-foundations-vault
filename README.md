@@ -6,7 +6,7 @@ status: stable
 owners:
   - ui-foundations
 created: 2026-07-07
-updated: 2026-07-07
+updated: 2026-07-16
 authority: supporting
 summary: Entry point for the UI Foundations knowledge standard.
 related:
@@ -16,6 +16,7 @@ related:
     - governance.lifecycle
     - specification.document-structure
     - specification.vault-metadata
+    - index.publications
 ---
 
 # UI Foundations Vault
@@ -53,6 +54,7 @@ It is not:
 - `glossary/`: shared terms and definitions
 - `templates/`: reusable markdown templates
 - `knowledge/`: cross-repo lessons and reusable findings before promotion
+- `publications/`: informative long-form knowledge artifacts and publication indexes
 - `registry/`: machine-readable repository, artifact, and sync contracts
 - `exports/`: reviewed packs for cross-repo knowledge consumption
 - `schemas/`: advisory schemas for registry and export-pack validation

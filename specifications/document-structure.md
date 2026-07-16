@@ -6,7 +6,7 @@ status: stable
 owners:
   - ui-foundations
 created: 2026-07-07
-updated: 2026-07-07
+updated: 2026-07-16
 authority: source
 summary: Defines canonical layouts for vault document types.
 related:
@@ -176,6 +176,18 @@ Recommended sections:
 - Related
 
 Indexes are navigational and informative. They should not contain unique normative guidance.
+
+## Publication
+
+Recommended sections:
+
+- Purpose or thesis
+- Context
+- Main body
+- References
+- Related documents
+
+Publications are informative long-form knowledge artifacts. They may synthesize or explain vault knowledge, but they must reference rather than redefine normative governance, principles, ADRs, and specifications.
 
 ## Registry
 
