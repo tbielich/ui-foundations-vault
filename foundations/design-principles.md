@@ -2,11 +2,11 @@
 id: principle.foundation.design-principles
 title: Design Principles
 type: principle
-status: review
+status: accepted
 owners:
   - ui-foundations
 created: 2026-07-07
-updated: 2026-07-07
+updated: 2026-07-16
 authority: source
 summary: Defines timeless principles for clear, usable, and intentional interface design.
 related:
@@ -14,6 +14,8 @@ related:
     - principle.foundation.gestalt-principles
     - principle.foundation.usability-heuristics
     - principle.foundation.visual-hierarchy
+    - principle.foundation.accessibility-principles
+    - principle.foundation.design-intelligence
 ---
 
 # Design Principles
@@ -46,3 +48,5 @@ Prefer principles that clarify tradeoffs over rules that prescribe a single form
 - `principle.foundation.gestalt-principles`
 - `principle.foundation.usability-heuristics`
 - `principle.foundation.visual-hierarchy`
+- `principle.foundation.accessibility-principles`
+- `principle.foundation.design-intelligence`
