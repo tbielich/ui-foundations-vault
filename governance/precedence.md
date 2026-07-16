@@ -6,7 +6,7 @@ status: stable
 owners:
   - ui-foundations
 created: 2026-07-07
-updated: 2026-07-07
+updated: 2026-07-16
 authority: source
 summary: Defines the canonical order for resolving conflicts between vault documents.
 ---
@@ -104,6 +104,7 @@ Document types are normative by default as follows:
 - Prompts: informative
 - Templates: informative
 - Glossary: normative for terminology when accepted or stable
+- Publications: informative
 - Examples: informative
 - Indexes: informative
 

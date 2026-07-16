@@ -6,7 +6,7 @@ status: review
 owners:
   - ui-foundations
 created: 2026-07-07
-updated: 2026-07-07
+updated: 2026-07-16
 authority: source
 summary: Defines the canonical document type taxonomy used in the vault.
 related:
@@ -38,9 +38,9 @@ This document is a lookup table for document types. It mirrors the approved meta
 - `glossary`: canonical vocabulary or term definition.
 - `pattern`: reusable approach that is less normative than a specification.
 - `index`: navigation or entry-point document.
+- `publication`: informative long-form knowledge intended for human and agent readers; it does not override normative vault documents.
 
 ## Related Documents
 
 - `specification.vault-metadata`
 - `specification.document-structure`
-

@@ -6,7 +6,7 @@ status: stable
 owners:
   - ui-foundations
 created: 2026-07-07
-updated: 2026-07-07
+updated: 2026-07-16
 authority: source
 summary: Defines minimal frontmatter metadata for markdown documents in the vault.
 related:
@@ -88,6 +88,7 @@ Document taxonomy type.
   - `glossary`
   - `pattern`
   - `index`
+  - `publication`
 
 ### `status`
 
