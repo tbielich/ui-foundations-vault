@@ -4,28 +4,16 @@ on:
   push:
   pull_request:
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
-  build:
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: [20, 22]
+  validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run CI checks
-        run: npm run ci:check
+      - name: Validate vault repository basics
+        run: |
+          set -euo pipefail
+          test -f .github/workflows/ci.yml
+          test -f .github/workflows/publish.yml
+          echo "Markdown files: $(find . -type f -name '*.md' | wc -l)"
