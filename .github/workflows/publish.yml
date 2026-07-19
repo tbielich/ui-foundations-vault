@@ -1,0 +1,14 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+
+jobs:
+  not-applicable:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Skip publish for this repository
+        run: echo "This repository is not an npm package. No publish step is required."

@@ -1,0 +1,19 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate vault repository basics
+        run: |
+          set -euo pipefail
+          test -f .github/workflows/ci.yml
+          test -f .github/workflows/publish.yml
+          echo "Markdown files: $(find . -type f -name '*.md' | wc -l)"
