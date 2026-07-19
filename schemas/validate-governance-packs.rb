@@ -7,9 +7,13 @@ require "json"
 
 ROOT = File.expand_path("..", __dir__)
 
+def repo_path(path)
+  File.join(ROOT, path)
+end
+
 def load_yaml(path)
   YAML.safe_load(
-    File.read(File.join(ROOT, path)),
+    File.read(repo_path(path)),
     permitted_classes: [Date],
     aliases: true
   )
@@ -20,19 +24,25 @@ def assert(condition, message)
 end
 
 def load_json(path)
-  JSON.parse(File.read(File.join(ROOT, path)))
+  JSON.parse(File.read(repo_path(path)))
+end
+
+def assert_required_keys(value, keys, context)
+  assert(value.is_a?(Hash), "#{context}: expected object")
+  keys.each do |key|
+    assert(value.key?(key), "#{context}: missing #{key}")
+  end
 end
 
 def validate_naming_contract(path, manifest)
   contract = load_json(path)
+  assert(contract.is_a?(Hash), "#{path}: contract must be an object")
 
-  %w[
+  assert_required_keys(contract, %w[
     contract_id title type status authority owner schema_version contract_version
     governance_pack_version channel release_date updated normativity source_metadata
     rules non_normative_examples
-  ].each do |key|
-    assert(contract.key?(key), "#{path}: missing #{key}")
-  end
+  ], path)
 
   assert(contract["type"] == "naming-contract", "#{path}: type must be naming-contract")
   assert(contract["governance_pack_version"] == manifest.dig("pack", "version"), "#{path}: governance_pack_version must match manifest")
@@ -41,6 +51,7 @@ def validate_naming_contract(path, manifest)
   assert(contract.dig("normativity", "examples_label") == "non-normative example", "#{path}: examples label must be non-normative example")
 
   rules = contract["rules"]
+  assert(rules.is_a?(Hash), "#{path}: rules must be an object")
   assert(rules.dig("css_class_prefix", "prefix") == "uif-", "#{path}: class prefix must be uif-")
   assert(rules.dig("css_custom_property_prefix", "prefix") == "--uif-", "#{path}: CSS custom property prefix must be --uif-")
   assert(rules.dig("nunjucks_macro_namespace", "alias") == "uif", "#{path}: Nunjucks macro alias must be uif")
@@ -55,27 +66,29 @@ def validate_naming_contract(path, manifest)
 
   sources = contract.dig("source_metadata", "canonical_sources")
   assert(sources.is_a?(Array) && sources.any?, "#{path}: source metadata must include canonical sources")
-  contract["non_normative_examples"].each do |example|
+  examples = contract["non_normative_examples"]
+  assert(examples.is_a?(Array) && examples.any?, "#{path}: non_normative_examples must be a non-empty list")
+  examples.each do |example|
+    assert(example.is_a?(Hash), "#{path}: each non-normative example must be an object")
     assert(example["label"] == "non-normative example", "#{path}: example #{example["kind"] || "(unknown)"} must be marked non-normative")
   end
 end
 
 registry_path = "registry/governance-packs.yml"
 registry = load_yaml(registry_path)
+assert(registry.is_a?(Hash), "#{registry_path}: registry must be an object")
 
 assert(registry["type"] == "registry", "#{registry_path}: type must be registry")
-assert(registry["packs"].is_a?(Array), "#{registry_path}: packs must be a list")
+assert(registry["packs"].is_a?(Array) && registry["packs"].any?, "#{registry_path}: packs must be a non-empty list")
 
 registry["packs"].each do |pack|
-  %w[id title current_version channel manifest changelog owner].each do |key|
-    assert(pack[key], "#{registry_path}: pack #{pack["id"] || "(unknown)"} missing #{key}")
-  end
+  assert_required_keys(pack, %w[id title current_version channel manifest changelog owner], "#{registry_path}: pack #{pack["id"] || "(unknown)"}")
 
   manifest_path = pack["manifest"]
   changelog_path = pack["changelog"]
 
-  assert(File.file?(File.join(ROOT, manifest_path)), "#{registry_path}: missing manifest #{manifest_path}")
-  assert(File.file?(File.join(ROOT, changelog_path)), "#{registry_path}: missing changelog #{changelog_path}")
+  assert(File.file?(repo_path(manifest_path)), "#{registry_path}: missing manifest #{manifest_path}")
+  assert(File.file?(repo_path(changelog_path)), "#{registry_path}: missing changelog #{changelog_path}")
 
   manifest = load_yaml(manifest_path)
   assert(manifest["type"] == "export-pack", "#{manifest_path}: type must be export-pack")
@@ -84,15 +97,13 @@ registry["packs"].each do |pack|
   assert(manifest["artifacts"].is_a?(Array), "#{manifest_path}: artifacts must be a list")
 
   manifest["artifacts"].each do |artifact|
-    %w[id title type path status review_required].each do |key|
-      assert(artifact.key?(key), "#{manifest_path}: artifact #{artifact["id"] || "(unknown)"} missing #{key}")
-    end
-    assert(File.file?(File.join(ROOT, artifact["path"])), "#{manifest_path}: missing artifact #{artifact["path"]}")
+    assert_required_keys(artifact, %w[id title type path status review_required], "#{manifest_path}: artifact #{artifact["id"] || "(unknown)"}")
+    assert(File.file?(repo_path(artifact["path"])), "#{manifest_path}: missing artifact #{artifact["path"]}")
     assert(artifact["review_required"] == true, "#{manifest_path}: artifact #{artifact["id"]} must require review")
 
     if artifact["type"] == "naming-contract"
       assert(artifact["schema"], "#{manifest_path}: artifact #{artifact["id"]} missing schema")
-      assert(File.file?(File.join(ROOT, artifact["schema"])), "#{manifest_path}: missing artifact schema #{artifact["schema"]}")
+      assert(File.file?(repo_path(artifact["schema"])), "#{manifest_path}: missing artifact schema #{artifact["schema"]}")
       validate_naming_contract(artifact["path"], manifest)
     end
   end
