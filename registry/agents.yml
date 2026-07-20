@@ -1,0 +1,81 @@
+---
+id: registry.agents
+title: Agent Registry
+type: registry
+status: draft
+owners:
+  - ui-foundations
+created: 2026-07-20
+updated: 2026-07-20
+authority: source
+summary: Machine-readable declarations of agent roles, capabilities, and ecosystem projection targets.
+
+version: 0.1
+---
+
+# Agent Registry
+
+## Purpose
+
+This registry declares the agent roles and capabilities defined in the vault and their relationships to canonical source documents, workflows, and downstream ecosystem projection targets.
+
+It does not execute agent behavior. It does not define runtime orchestration.
+
+version: 0.1
+
+roles:
+  - id: agent-capability.role.design-review-agent
+    title: Design Review Agent
+    path: agents/roles/design-review-agent.md
+    status: review
+    capabilities:
+      - agent-capability.design-evaluation
+      - agent-capability.verification
+    references:
+      - workflow.component-review
+      - workflow.operational.component-review
+    ecosystem_projections:
+      - target: github-copilot
+        path: exports/agent-pack/projections/github-copilot-design-review.md
+        status: draft
+
+  - id: agent-capability.role.accessibility-review-agent
+    title: Accessibility Review Agent
+    path: agents/roles/accessibility-review-agent.md
+    status: review
+    capabilities:
+      - agent-capability.accessibility-evaluation
+      - agent-capability.verification
+    references:
+      - workflow.operational.accessibility-review
+    ecosystem_projections: []
+
+capabilities:
+  - id: agent-capability.design-evaluation
+    title: Design Evaluation
+    path: agents/capabilities/design-evaluation.md
+    status: review
+    canonical_source: specification.capability.design-evaluation
+
+  - id: agent-capability.accessibility-evaluation
+    title: Accessibility Evaluation
+    path: agents/capabilities/accessibility-evaluation.md
+    status: review
+    canonical_source: specification.capability.accessibility-evaluation
+
+  - id: agent-capability.verification
+    title: Verification
+    path: agents/capabilities/verification.md
+    status: review
+    canonical_source: specification.capability.verification
+
+projection_rules:
+  - Every ecosystem projection must identify its canonical source documents.
+  - Projections must declare the target ecosystem.
+  - Projections must remain derived and must not introduce new domain rules.
+  - Projections must not override source documents.
+  - Changes to source documents must be reviewed before projections are updated.
+
+review_expectations:
+  - Manual review is required before a role or capability moves from draft/review to accepted.
+  - Registry changes that affect projection targets require governance owner review.
