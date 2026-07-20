@@ -34,6 +34,7 @@ It is derived from vault governance, prompts, workflows, and agent operating kno
 - `projections/perplexity-research.md`: platform-specific derived operating guidance for Perplexity as a research and validation consumer.
 - `review-rules.md`: review stance for agents inspecting UI Foundations changes.
 - `reusable-prompts.md`: prompt starters for common cross-repo work.
+- `projections/`: derived ecosystem-specific projection examples sourced from `registry/agents.yml`.
 
 ## Consumption Rules
 

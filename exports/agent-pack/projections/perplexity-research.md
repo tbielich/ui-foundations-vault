@@ -85,7 +85,7 @@ Use this order when forming a response:
 4. Primary research and engineering sources
 5. High-quality secondary analysis
 6. Community sources only when primary evidence is unavailable
-
+Always distinguish internal UI Foundations conventions from external standards.
 Always distinguish internal UI Foundations conventions from external standards.
 
 Use external research only as supporting evidence.
@@ -212,7 +212,6 @@ Perplexity output should end with a concise recommendation that stays within the
 When a Vault follow-up is suggested, state whether the follow-up belongs in governance, a specification, a workflow, a prompt, an export pack, or a lesson.
 
 Avoid repeating the same conclusion in multiple sections.
-
 ## Constraints
 
 - Keep this projection derived and reversible.
