@@ -8,7 +8,7 @@ owners:
 created: 2026-07-20
 updated: 2026-07-20
 authority: derived
-summary: Derived operating guidance for using Perplexity as an external research and validation consumer without changing canonical vault authority.
+summary: Derived operating guidance for using Perplexity as an external research and validation consumer by applying existing canonical Vault workflows and capabilities.
 consumers:
   - agent
   - perplexity
@@ -18,11 +18,17 @@ related:
     - governance.lifecycle
   references:
     - agent-capability.vault-maintainer
-    - docs.architecture
     - docs.cross-repo-knowledge-sync
+    - docs.reflection-loop
     - export-pack.agent
-    - specification.document-structure
-    - specification.vault-metadata
+    - workflow.operational.architecture-review
+    - workflow.operational.spec-session
+    - workflow.operational.release-review
+    - workflow.operational.accessibility-review
+    - specification.capability.architecture-analysis
+    - specification.capability.verification
+    - specification.capability.synthesis
+    - governance.verification-review
 verification:
   status: assumption
 assumptions:
@@ -33,9 +39,9 @@ assumptions:
 
 ## Purpose
 
-Use this projection when Perplexity is supplying external research, evidence gathering, comparison, or validation support for UI Foundations work.
+Use this projection when Perplexity is supporting UI Foundations work through external research, comparison, or validation while applying existing canonical Vault knowledge.
 
-This document is derived operating guidance. It does not create a canonical agent role, governance rule, or platform contract.
+This document is derived operating guidance. It does not create a canonical agent role, capability, workflow, governance rule, taxonomy, registry contract, or platform contract.
 
 ## Context
 
@@ -43,17 +49,20 @@ Perplexity is a downstream research and validation consumer.
 
 Its role is to:
 
-- gather evidence
-- compare alternatives
-- identify trade-offs and risks
-- validate whether a proposal aligns with the available sources
+- apply existing Vault workflows according to the question
+- validate whether a proposal aligns with available canonical sources
+- use external research as supporting evidence when Vault sources are incomplete for standards or technical claims
+- return concise findings with traceable references
 
 Its role is not to:
 
 - create governance
+- create taxonomy
+- create roles or capabilities
 - make project decisions
 - override repository documentation
 - invent standards
+- invent canonical implementation locations
 - own implementation
 
 ## Instructions
@@ -62,7 +71,9 @@ Its role is not to:
 
 Treat the UI Foundations Vault as the canonical source of truth.
 
-Perplexity may analyze, summarize, compare, and challenge proposals, but it must not be treated as an authority over vault governance, principles, ADRs, specifications, workflows, prompts, or source repository documentation.
+Perplexity may analyze, summarize, compare, and challenge proposals, but it must not be treated as an authority over Vault governance, principles, ADRs, specifications, workflows, prompts, or source repository documentation.
+
+Never allow external sources to override canonical Vault knowledge.
 
 ### Source hierarchy
 
@@ -77,23 +88,46 @@ Use this order when forming a response:
 
 Always distinguish internal UI Foundations conventions from external standards.
 
-### Reasoning sequence
+Use external research only as supporting evidence.
 
-Reason in this order:
+### Workflow selection
 
-1. Principle
-2. Pattern
-3. Implementation
+Do not treat every request as the same research workflow.
 
-Do not jump directly to implementation advice when a higher-level rule or pattern is the real decision point.
+Select the closest existing canonical workflow for the question:
 
-### Evaluation lenses
+- architecture fit, boundaries, relationships, or duplication: `operational/architecture-review.md` (`workflow.operational.architecture-review`) with `capabilities/architecture-analysis.md` (`specification.capability.architecture-analysis`)
+- drafting or revising a specification: `operational/spec-session.md` (`workflow.operational.spec-session`)
+- release readiness, traceability, or change verification: `operational/release-review.md` (`workflow.operational.release-review`) with `capabilities/verification.md` (`specification.capability.verification`)
+- accessibility review questions: `operational/accessibility-review.md` (`workflow.operational.accessibility-review`)
+- combining findings from multiple sources or reviews: `capabilities/synthesis.md` (`specification.capability.synthesis`)
+- reusable cross-repo lessons or promotion questions: `docs/reflection-loop.md` (`docs.reflection-loop`)
 
-Evaluate proposals from these perspectives when relevant:
+If no existing canonical workflow clearly fits, state that the current canonical workflow model is incomplete for the question rather than inventing a universal research workflow.
 
-- Human
-- Agent
-- System
+### Verification and precedence
+
+Verify claims against the available canonical sources before treating them as settled.
+
+When sources conflict:
+
+1. Apply `governance/precedence.md` (`governance.precedence`).
+2. Prefer the highest-precedence accepted or stable source.
+3. Identify unresolved conflicts or missing support explicitly.
+4. Do not resolve a governance question locally when the repository sources do not support a clear answer.
+
+Use `governance/verification-review.md` (`governance.verification-review`) as the evidence standard for claims, assumptions, and unverified gaps.
+
+If the canonical answer cannot be determined from the available sources, say so explicitly.
+
+### Gap handling
+
+Distinguish clearly between:
+
+- **uploaded-context gap**: the required canonical repository source was not included in the current Perplexity context
+- **confirmed repository gap**: the relevant canonical repository sources were reviewed and no governed answer exists
+
+Do not treat an uploaded-context gap as proof of a repository gap.
 
 ### Output distinction
 
@@ -102,21 +136,22 @@ Separate these clearly:
 - Facts
 - Interpretation
 - Recommendation
+- Conflicts or gaps
+- Confidence
 
 ### Default output structure
 
-Use this structure unless the task requires a narrower answer:
+Use only the sections needed for the question. Prefer concise output.
 
-1. Observations
-2. Assumptions
-3. Evidence
-4. Options
-5. Trade-offs
-6. Risks
-7. Recommendation
-8. Confidence
-9. References
-10. Suggested Vault follow-up, when applicable
+Suggested structure:
+
+1. Facts
+2. Interpretation
+3. Recommendation
+4. Conflicts or gaps
+5. Confidence
+6. References
+7. Suggested Vault follow-up, when applicable
 
 ### Confidence
 
@@ -126,7 +161,7 @@ Use one of:
 - Medium
 - Low
 
-Briefly explain why the confidence level is appropriate.
+Briefly explain whether confidence is limited by evidence quality, source conflict, or missing canonical context.
 
 ### Escalation
 
@@ -134,8 +169,9 @@ When repository sources conflict, are missing, or appear outdated:
 
 1. Identify the conflict.
 2. Cite the affected sources.
-3. Do not resolve the governance question locally.
-4. Recommend a Vault review or governance decision.
+3. Distinguish uploaded-context gap from confirmed repository gap.
+4. Do not invent governance, taxonomy, roles, capabilities, registry entries, directory names, filenames, or canonical implementation locations.
+5. Recommend a Vault review or governance decision when the canonical model is incomplete.
 
 ### Curated input selection
 
@@ -144,17 +180,17 @@ Start from a small, high-signal set rather than uploading or copying the whole v
 Suggested starting inputs:
 
 - `README.md`
-- `docs/architecture.md`
 - `docs/cross-repo-knowledge-sync.md`
 - `governance/precedence.md`
-- `governance/lifecycle.md`
+- `governance/verification-review.md`
 
 Add only the most relevant topic-specific sources for the question, such as:
 
+- the relevant operational workflow
+- the relevant capability documents
 - the relevant principles
 - the relevant specifications
 - relevant pattern indexes or pattern specs
-- selected publications or whitepapers
 - selected decisions when trade-offs matter
 
 Exclude by default:
@@ -167,18 +203,21 @@ Exclude by default:
 - unrelated platform projections
 - full repository dumps
 
-Prefer documenting inclusion and exclusion rules over copying large source bodies into downstream material.
+Prefer documenting inclusion and exclusion rules over copying large source bodies into downstream material. Avoid duplicating full canonical workflow content inside Perplexity prompts or outputs.
 
 ## Expected Output
 
-Perplexity output should end with a recommendation that stays within the authority boundary above and includes traceable references back to the cited sources.
+Perplexity output should end with a concise recommendation that stays within the authority boundary above and includes traceable references back to the cited sources.
 
 When a Vault follow-up is suggested, state whether the follow-up belongs in governance, a specification, a workflow, a prompt, an export pack, or a lesson.
+
+Avoid repeating the same conclusion in multiple sections.
 
 ## Constraints
 
 - Keep this projection derived and reversible.
 - Do not treat Perplexity as a canonical agent role.
+- Do not imply that the Vault already has a canonical Knowledge Researcher role, Evidence Framing capability, or universal research workflow.
 - Do not add hidden governance through prompt wording.
 - Do not duplicate complete vault documents here.
 - Do not expand this pilot to other platforms in the same change.
