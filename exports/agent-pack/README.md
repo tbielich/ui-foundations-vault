@@ -6,7 +6,7 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-09
-updated: 2026-07-09
+updated: 2026-07-20
 authority: derived
 summary: Curated agent guidance for reviewed consumption by UI Foundations ecosystem repositories.
 related:
@@ -30,6 +30,7 @@ It is derived from vault governance, prompts, workflows, and agent operating kno
 
 - `agents-additions.md`: suggested additions for consuming-repository agent guidance.
 - `assistant-behavior-rules.md`: reusable behavior rules for agents working near UI Foundations systems.
+- `projections/perplexity-research.md`: platform-specific derived operating guidance for Perplexity as a research and validation consumer.
 - `review-rules.md`: review stance for agents inspecting UI Foundations changes.
 - `reusable-prompts.md`: prompt starters for common cross-repo work.
 
@@ -39,3 +40,4 @@ It is derived from vault governance, prompts, workflows, and agent operating kno
 - Keep local repository constraints authoritative for local implementation details.
 - Do not overwrite repository-owned `AGENTS.md` sections without manual review.
 - Treat prompts as operational guidance, not governance.
+- Treat platform-specific projections as derived consumer guidance, not as canonical agent roles or governance.
