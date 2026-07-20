@@ -6,7 +6,7 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-09
-updated: 2026-07-09
+updated: 2026-07-20
 authority: supporting
 summary: Navigation for machine-readable cross-repo registry files.
 related:
@@ -15,6 +15,7 @@ related:
     - registry.sync-contract
     - registry.artifact-types
     - registry.governance-packs
+    - registry.agents
 ---
 
 # Registry
@@ -31,3 +32,4 @@ It does not execute synchronization. It describes what may be consumed, by which
 - `sync-contract.yml`: allowed exports, protected local files, local-only files, and manual review requirements.
 - `artifact-types.yml`: controlled artifact types used by the registry and sync contract.
 - `governance-packs.yml`: publishable governance pack versions, channels, manifests, and consumer expectations.
+- `agents.yml`: agent role and capability declarations, source document references, and ecosystem projection targets.

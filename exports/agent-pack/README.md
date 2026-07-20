@@ -6,7 +6,7 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-09
-updated: 2026-07-09
+updated: 2026-07-20
 authority: derived
 summary: Curated agent guidance for reviewed consumption by UI Foundations ecosystem repositories.
 related:
@@ -32,6 +32,7 @@ It is derived from vault governance, prompts, workflows, and agent operating kno
 - `assistant-behavior-rules.md`: reusable behavior rules for agents working near UI Foundations systems.
 - `review-rules.md`: review stance for agents inspecting UI Foundations changes.
 - `reusable-prompts.md`: prompt starters for common cross-repo work.
+- `projections/`: derived ecosystem-specific projection examples sourced from `registry/agents.yml`.
 
 ## Consumption Rules
 
