@@ -1,41 +1,49 @@
 ---
-id: pattern.base.input-text
-title: Text Input Pattern
+id: pattern.base.input
+title: Input Pattern
 type: pattern
 status: draft
 owners:
   - ui-foundations
 created: 2026-07-08
-updated: 2026-07-09
+updated: 2026-07-21
 authority: derived
-summary: Agent-readable base pattern contract for text inputs.
+summary: Agent-readable base pattern contract for single-line inputs.
 related:
   derived_from:
-    - /Users/Thomas.Bielich@tui.com/GitHub/ui-foundations/docs/patterns/input.md
-    - /Users/Thomas.Bielich@tui.com/GitHub/ui-foundations/site/patterns/input.md
+    - /Users/Thomas.Bielich@tui.com/GitHub/uif/ui-foundations-runtime/docs/patterns/input.md
+    - /Users/Thomas.Bielich@tui.com/GitHub/uif/ui-foundations-runtime/site/patterns/input.md
   references:
     - specification.pattern.schema
 ---
 
-# Text Input Pattern
+# Input Pattern
 
 ## Metadata
 
-- id: `pattern.base.input-text`
+- id: `pattern.base.input`
 - type: base
 - status: draft
-- source: `/Users/Thomas.Bielich@tui.com/GitHub/ui-foundations/docs/patterns/input.md`; supporting canonical page `/Users/Thomas.Bielich@tui.com/GitHub/ui-foundations/site/patterns/input.md`
+- source: `/Users/Thomas.Bielich@tui.com/GitHub/uif/ui-foundations-runtime/docs/patterns/input.md`; supporting canonical page `/Users/Thomas.Bielich@tui.com/GitHub/uif/ui-foundations-runtime/site/patterns/input.md`
 - related standards: Native HTML `input`; WCAG labels, focus appearance, error identification, text contrast, non-text contrast, and use of color requirements
 - related components: `Input`, form field
 - related tokens: `input`, focus, validation, spacing, color, border, radius
 
 ## Intent
 
-Provide a native text-entry control that users can label, focus, edit, validate, and understand across input types and states.
+Provide a native single-line input control that users can label, focus, edit, validate, and understand across supported input variants.
 
 ## Problem
 
-Forms need text entry that preserves native editing behavior, programmatic labels, validation semantics, and accessible error relationships while allowing UI Foundations theming.
+Forms need single-line entry controls that preserve native behavior, programmatic labels, validation semantics, and accessible error relationships while allowing UI Foundations theming.
+
+## Principle
+
+All supported input types inherit the same base interaction contract.
+
+Differences between input types are constrained to value semantics, native validation behavior, native formatting expectations, and input-keyboard affordances.
+
+Accessibility, focus behavior, state handling, labeling, helper-text relationships, and error relationships remain shared responsibilities across input types.
 
 ## Use When
 
@@ -49,6 +57,16 @@ Forms need text entry that preserves native editing behavior, programmatic label
 - Do not use `type="text"` when a more specific native input type supports the data.
 - Do not use this base pattern for multiline entry; use a textarea pattern when needed.
 
+## Explicitly Out of Scope
+
+- Date Picker composition
+- Time Picker composition
+- Calendar interaction surfaces outside native input behavior
+- Popover or dialog container behavior
+- Rich text editing
+- Combobox behavior
+- Select behavior
+
 ## Standard Basis
 
 Native HTML `input` behavior is the base. Required: labels use `<label>`, `aria-label`, or `aria-labelledby`. Required: error state uses `aria-invalid` and associated error text with `aria-describedby` when visible error text exists.
@@ -56,7 +74,7 @@ Native HTML `input` behavior is the base. Required: labels use `<label>`, `aria-
 ## Anatomy
 
 - Container: field area with border, background, padding, and focus styling.
-- Input primitive: native text-entry element with value or placeholder.
+- Input primitive: native single-line entry element with value or placeholder.
 - Label: visible label or programmatic label.
 - Optional trailing control: clear, increment/decrement, visibility toggle, or date picker affordance based on type.
 - Optional helper or error text.
@@ -66,7 +84,7 @@ Native HTML `input` behavior is the base. Required: labels use `<label>`, `aria-
 | Item | Classification | Contract |
 |---|---|---|
 | Native element | Required | Use native `<input>` for supported single-line text-like types. |
-| Supported types | Required | `text`, `email`, `password`, `number`, `tel`, `url`, `search`, `date`, and `time` are source-backed variants. |
+| Supported types | Required | `text`, `email`, `password`, `number`, `tel`, `url`, `search`, `date`, and `time` are supported input types. |
 | Label relationship | Required | Use `<label for>`, `aria-label`, or `aria-labelledby`; placeholder-only labels are forbidden. |
 | Description relationship | Optional | Link helper text with `aria-describedby` through `descriptionId`. |
 | Error relationship | Required when visible error exists | Link visible error text with `aria-describedby` or `aria-errormessage` through `errorId`; use `aria-invalid="true"`. |
@@ -95,7 +113,7 @@ Native HTML `input` behavior is the base. Required: labels use `<label>`, `aria-
 
 | Attribute | Classification | Contract |
 |---|---|---|
-| `data-uif-component="input-text"` | Optional | May identify the component for metadata, testing, or agent-readable inspection; it must not replace the public `.uif-*` input class. |
+| `data-uif-component="input"` | Optional | May identify the component for metadata, testing, or agent-readable inspection; it must not replace the public `.uif-*` input class. |
 | `data-invalid="true"` | Optional mirror | May mirror visual or component invalid state, but it must not replace `aria-invalid="true"` when invalid state is exposed. |
 
 Data attributes are secondary metadata or state hooks. They must not replace public classes, tokens, labels, descriptions, visible error text, `aria-describedby`, or `aria-errormessage` relationships.
@@ -138,7 +156,7 @@ The base input exposes validation state and accessibility relationships. Renderi
 ## Behaviour
 
 - Inputs expand to fill the available inline size of their container.
-- Text input supports native typing, deletion, selection, and cursor behavior.
+- Input types support native typing and single-line editing semantics, with type-specific native differences where applicable.
 - Disabled inputs cannot be edited and are removed from the tab order by native behavior.
 - Focus changes border color and adds a focus ring.
 - Clear, number stepper, password visibility, and date picker controls are optional type-specific trailing controls.
@@ -211,19 +229,21 @@ The base input exposes validation state and accessibility relationships. Renderi
 | Read-only | Native `readonly` | Focusable where native behavior allows; value not editable | Required when read-only. |
 | Invalid | `aria-invalid="true"`; visible error linked when present | User can edit unless also disabled/read-only | Required when invalid. |
 
-## Variants
+## Supported Input Types
 
-- `text`
-- `email`
-- `password`
-- `number`
-- `tel`
-- `url`
-- `search`
-- `date`
-- `time`
+| Variant | Difference from common model |
+|---|---|
+| `text` | Baseline freeform single-line entry. |
+| `email` | Uses native email-oriented validation and virtual keyboard hints where supported. |
+| `password` | Conceals entered characters; may compose with reveal control. |
+| `number` | Uses native numeric entry semantics and platform-specific stepping affordances where available. |
+| `tel` | Optimizes for telephone entry semantics and keyboard hints. |
+| `url` | Uses URL-oriented validation and keyboard hints where supported. |
+| `search` | Uses search-oriented semantics and may compose with clear/submit affordances. |
+| `date` | Uses native date-entry semantics only; custom date-picker behavior is composition scope. |
+| `time` | Uses native time-entry semantics only; custom time-picker behavior is composition scope. |
 
-Variants can change native input behavior or trailing controls, but they must preserve labeling, focus, validation, and disabled semantics.
+All input types preserve labeling, focus, validation, required/optional handling, disabled/read-only distinctions, and error relationships.
 
 ## Responsive / Density Behaviour
 
@@ -235,11 +255,21 @@ Inputs fill the available inline size. Placeholder and value text must remain re
 - Form field or label pattern
 - Button pattern for trailing controls
 
+## Related Patterns
+
+- [Label Pattern](./label.pattern.md)
+- [Form Pattern](./form.pattern.md)
+- [Checkbox Pattern](./checkbox.pattern.md)
+- [Radio Pattern](./radio.pattern.md)
+- [Select Pattern](./select.pattern.md)
+- [Calendar Pattern](./calendar.pattern.md)
+- [Tooltip Pattern](./tooltip.pattern.md)
+
 ## Minimum Component API
 
 | API | Classification | Default | Contract |
 |---|---|---|---|
-| `type` | Required | `text` | Supports source-backed text-like input types. |
+| `type` | Required | `text` | Supports the common input types defined in this pattern. |
 | `name` | Optional | None | Passed to native input. |
 | `value` | Optional controlled | None | Controlled value when provided. |
 | `defaultValue` | Optional uncontrolled | None | Initial value for uncontrolled usage. |

@@ -16,8 +16,9 @@ related:
     - /Users/Thomas.Bielich@tui.com/GitHub/ui-foundations/site/patterns/calendar.md
   references:
     - specification.pattern.schema
-    - pattern.base.input-text
+    - pattern.base.input
     - pattern.base.button
+    - pattern.base.calendar
 ---
 
 # Date Picker Pattern
@@ -74,14 +75,14 @@ The input segments inherit native text input behavior. The trigger inherits nati
 | Concern | Owner | Notes |
 |---|---|---|
 | Text field value | Date Picker component | Synchronizes typed segments and selected calendar date. |
-| Date parsing | Open question | Locale and format rules are not yet canonical. Agents must not invent parsing rules. |
-| Date formatting | Open question | Locale and display format are not yet canonical. Agents must not invent formatting rules. |
+| Date parsing | Date Picker component | Parses typed and pasted values according to configured locale and format rules. |
+| Date formatting | Date Picker component | Formats field and calendar-facing date text according to configured locale and format rules. |
 | Popup open state | Date Picker component | Controlled by `open` when provided; otherwise owned internally through `defaultOpen`. |
 | Focus management | Date Picker component | Owns focus transfer on open, close, selection, and Escape. |
-| Calendar grid keyboard behaviour | Calendar dependency | Date Picker depends on Calendar grid contract; full Calendar pattern is not yet in this vault. |
+| Calendar grid keyboard behaviour | Calendar pattern dependency | Date Picker implements `pattern.base.calendar` behaviors for grid navigation, selection, focus movement, disabled dates, localization, and accessibility. |
 | Date constraints | Product or consuming component until specified | `min`, `max`, and `disabledDates` are API inputs; business rules remain external. |
 | Validation state | Date Picker API plus form-field composition | Exposes `invalid`, `descriptionId`, and `errorId`; message rendering is external unless component spec says otherwise. |
-| Range selection | Out of scope | Range mode must not be implemented from this spec until a range model is defined. |
+| Range selection | Date Picker component via Calendar pattern | Range mode uses Calendar range semantics (start, middle, end) with synchronized field value handling. |
 
 ## Structure Contract
 
@@ -95,7 +96,7 @@ The input segments inherit native text input behavior. The trigger inherits nati
 | Calendar grid dependency | Required for custom calendar | Calendar owns grid structure, roving tabindex, day-cell semantics, and month navigation behavior. |
 | Month navigation controls | Required for custom calendar | Native buttons or controls with accessible names. |
 | Helper / error text | Optional; required relationship when visible error exists | Linked through `descriptionId` and `errorId`. |
-| Range affordances | Out of scope | Do not derive range start, middle, end, preview, or clearing behavior until range model is defined. |
+| Range affordances | Required when `mode=range` | Use Calendar range semantics for start, middle, end, and preview states with deterministic clear/reset behavior. |
 | Focus entry point | Required | Trigger activation or `Alt + Arrow Down` opens the calendar and moves focus according to component decision. |
 | Focus return point | Required | Closing the popup returns focus to the trigger or invoking segment unless a component spec defines another return point. |
 | Value ownership boundary | Required | Date Picker emits normalized value through API; product code owns business interpretation. |
@@ -195,7 +196,7 @@ Data attributes are secondary metadata or state hooks. They must not replace pub
 - Calendar header and weekday typography/spacing slots.
 - Calendar cell size, radius, text, background, hover, active, disabled, today, range, and focus slots.
 - Popup surface, border, radius, shadow/elevation, spacing, and layering slots.
-- Range preview slots are out of scope until range behavior is defined.
+- Range preview slots are required when range mode is enabled.
 
 ## Token Slot Matrix
 
@@ -211,7 +212,7 @@ Data attributes are secondary metadata or state hooks. They must not replace pub
 | Current date | Border / text emphasis | Today | Calendar current date slots | Owned by Calendar dependency. |
 | Unavailable date | Text / background / cursor | Disabled / unavailable | Calendar unavailable date slots | Must not rely on color alone. |
 | Focus ring | Outline / shadow / offset | Field, trigger, cell | Date picker focus slots inherited from dependencies | Must meet contrast. |
-| Range preview | Background / border | Range preview | Out of scope | Do not generate until range model is defined. |
+| Range preview | Background / border | Range preview | Calendar range preview slots | Required when `mode=range`. |
 
 ## States
 
@@ -222,7 +223,9 @@ Data attributes are secondary metadata or state hooks. They must not replace pub
 - Outside month
 - Invalid
 - Disabled
-- Range start / middle / end: out of scope until range model is defined
+- Range start
+- Range middle
+- Range end
 
 ## State Semantics
 
@@ -235,12 +238,12 @@ Data attributes are secondary metadata or state hooks. They must not replace pub
 | Outside month | Programmatic and visual distinction when shown | Selection allowed only if Calendar dependency permits | Optional display state. |
 | Invalid | `aria-invalid="true"`; visible error linked when present | User can edit unless disabled/read-only | Required when invalid. |
 | Disabled | Field and trigger disabled according to native semantics | Cannot open or edit | Required when disabled. |
-| Range states | None in this spec | No range interaction derived | Out of scope. |
+| Range states | Start, middle, and end semantics from Calendar pattern | Selection and preview behavior remain synchronized with field value | Required when `mode=range`. |
 
 ## Variants
 
 - Single date
-- Date range: out of scope until a range selection model is defined
+- Date range
 - Container
 - No container
 - Native date input affordance where supported
@@ -255,7 +258,7 @@ The input fills available inline space. Calendar day cells must keep usable targ
 
 - Text input pattern
 - Button pattern
-- Calendar pattern or component; calendar-grid behavior remains dependency-owned until a Calendar vault spec exists
+- Calendar pattern (`pattern.base.calendar`)
 - Form field or label pattern
 - Icon primitive for the calendar icon
 
@@ -265,7 +268,7 @@ The input fills available inline space. Calendar day cells must keep usable targ
 |---|---|---|---|
 | `value` | Optional controlled | None | Single-date controlled value; exact serialized format is open question. |
 | `defaultValue` | Optional uncontrolled | None | Initial single-date value; exact serialized format is open question. |
-| `mode` | Required | `single` | `single` supported; `range` out of scope. |
+| `mode` | Required | `single` | Supports `single` and `range`. |
 | `locale` | Required API input | Product or app default | Used for parsing/formatting once canonical rules are defined. |
 | `dateFormat` | Required API input | Open question | Must be defined by component spec before implementation. |
 | `min` | Optional | None | Constraint input; business meaning external. |
@@ -285,12 +288,12 @@ The input fills available inline space. Calendar day cells must keep usable targ
 | Decision Area | Freedom Level | Allowed Choices | Requires Human Review |
 |---|---|---|---|
 | Dependent base semantics | none | Preserve Text Input and Button pattern contracts. | Yes, for any exception. |
-| Calendar grid behavior | limited | Delegate grid structure, roving tabindex, day semantics, and month navigation to the Calendar dependency. | Yes, until a Calendar vault spec exists. |
+| Calendar grid behavior | limited | Implement and preserve the Calendar base pattern contract. | Yes, for deviations from `pattern.base.calendar`. |
 | Popup strategy | none | Do not choose dialog, popover, or inline as canonical from this spec. | Yes, required before implementation. |
 | Focus management | guided | Any deterministic approach that defines open focus entry, selection focus, Escape close, and close return. | Yes, if user flow differs from the contract. |
 | Locale parsing and formatting | none | Do not invent parsing, formatting, or emitted value shape. | Yes, required before implementation. |
 | Single-date value synchronization | guided | Any architecture that keeps typed field and selected day synchronized. | No, if API contract and accessibility relationships hold. |
-| Range behavior | none | Range mode, range preview, and range value shape are out of scope. | Yes, required before enabling range. |
+| Range behavior | guided | Implement range mode using Calendar range semantics and synchronized field values. | Yes, for alternate range models. |
 | Constraint handling | limited | Accept `min`, `max`, and `disabledDates` inputs; product/business interpretation remains external. | Yes, for new business rules. |
 | Visual implementation | guided | Any framework/runtime approach using input, button, popup, and calendar token slots. | No, unless token slots or ownership are missing. |
 
@@ -302,8 +305,8 @@ The input fills available inline space. Calendar day cells must keep usable targ
 - Keep focus behavior deterministic when opening, navigating, selecting, and dismissing.
 - Use calendar grid semantics and roving focus for the custom calendar.
 - Use semantic input, button, and calendar token slots.
-- Do not add date parsing, formatting, or range rules to this vault unless sourced.
-- Range mode is out of scope until a concrete range selection model is defined.
+- Apply locale-aware parsing and formatting rules consistently across field and calendar representations.
+- Support both single and range selection modes using Calendar pattern semantics.
 - Popup strategy is an open question; agents must not infer dialog versus popover versus inline as a requirement.
 - Focus return on close is required.
 - Unavailable dates cannot be selected.
@@ -329,7 +332,7 @@ The input fills available inline space. Calendar day cells must keep usable targ
 - Unavailable date can be selected fails.
 - Focus not returned on close fails.
 - Invalid value without error relationship fails when visible error exists.
-- Range mode implementation from this spec fails because range is out of scope.
+- Range mode without explicit start/middle/end semantics and synchronized value handling fails.
 
 ## Documentation Requirements
 
@@ -358,4 +361,4 @@ Review this pattern against `patterns/checklists/pattern-spec-review-checklist.m
 - Open question: Which popup strategy is canonical: dialog, popover, or inline calendar?
 - Open question: What popup placement and collision behavior is expected on small screens?
 - Open question: What is the exact `aria-haspopup` value for the trigger once popup strategy is selected?
-- Resolved: Range mode is out of scope until a range selection model is defined.
+- Resolved: Date Picker supports both single and range modes through the Calendar base pattern contract.

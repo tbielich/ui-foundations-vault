@@ -6,45 +6,55 @@ status: stable
 owners:
   - ui-foundations
 created: 2026-07-07
-updated: 2026-07-09
+updated: 2026-07-21
 authority: supporting
 summary: Entry point for agent-readable UI pattern specifications.
 ---
 
 # Patterns
 
-This directory contains agent-readable UI pattern specifications for UI Foundations. These specs translate standards, existing UI Foundations documentation, and platform behavior into stable implementation guidance that agents can use when producing component specs, tests, documentation updates, or review feedback.
+This directory contains the canonical UI Foundations pattern library. Pattern specs translate standards, design intent, and platform behavior into reusable contracts that components implement.
+
+## Canonical Principle
+
+Patterns describe reusable interaction and semantic concepts.
+
+Components implement one or more patterns.
+
+## Canonical Hierarchy
+
+- **Base patterns**: smallest reusable interaction and semantic building blocks.
+- **Composition patterns**: reusable interaction solutions composed from multiple base patterns.
+- **Experience patterns**: reusable workflow or page-level structures composed from multiple compositions and components.
+
+For classification decisions, use the canonical checklist in `reference/pattern-taxonomy.md` (`Pattern Classification Checklist` section).
 
 ## Source Boundaries
 
-The main UI Foundations repository contains human-facing pattern documentation:
+The UI Foundations runtime repository contains human-facing and implementation-facing pattern documentation:
 
-- `/Users/Thomas.Bielich@tui.com/GitHub/ui-foundations/docs/patterns`
-- Supporting generated/site documentation can live under `/Users/Thomas.Bielich@tui.com/GitHub/ui-foundations/site`
+- `/Users/Thomas.Bielich@tui.com/GitHub/uif/ui-foundations-runtime/docs/patterns`
+- Supporting generated/site documentation can live under `/Users/Thomas.Bielich@tui.com/GitHub/uif/ui-foundations-runtime/site`
 
 The vault contains agent-readable pattern specifications:
 
-- `/Users/Thomas.Bielich@tui.com/GitHub/ui-foundations-vault/patterns`
+- `/Users/Thomas.Bielich@tui.com/GitHub/uif/ui-foundations-vault/patterns`
 
 Vault pattern specs must not duplicate product documentation 1:1. Human-facing docs explain usage for designers and consumers. Vault specs define the reusable contract agents need to preserve semantics, accessibility, token expectations, implementation boundaries, and test obligations.
 
-## Source-of-Truth Model
+## Pattern Library Model
 
 ```txt
-External Standards
+Principles
 ↓
-UIF Base Pattern
+Patterns
 ↓
-UIF Component Spec
+Components
 ↓
-Runtime Implementation
-↓
-Tests
-↓
-Documentation
+Implementations
 ```
 
-External standards and native platform behavior provide the highest-level basis. UIF base patterns concretize those rules for UI Foundations. Component specs implement patterns. Runtime code, tests, and documentation must remain traceable to the component spec and pattern contract.
+Principles define durable intent. Patterns define reusable contracts. Components implement those contracts. Implementations realize components in runtime systems.
 
 ## Conflict Resolution
 
@@ -81,8 +91,9 @@ Before deriving implementation output from a pattern spec, review it against `pa
 Pattern specs relate to other UI Foundations concerns as follows:
 
 - Standards: provide native, WAI-ARIA, and WCAG requirements that cannot be weakened by local design choices.
-- Components: implement one or more pattern specs and can add API details that remain consistent with the pattern.
-- Tokens: provide semantic slots for visual expression without changing semantics or behavior.
+- Components: implement one or more pattern specs and can add API details that remain consistent with pattern contracts.
+- Tokens: provide semantic slots for visual expression of patterns and components without changing semantics or behavior.
+- Runtime: exposes components that realize pattern contracts in code.
 - Tests: verify keyboard behavior, accessibility, states, token use, and component contract compliance.
 - Documentation: explains consumer-facing usage without becoming the source for lower-level semantic rules.
 
