@@ -16,6 +16,7 @@ related:
     - registry.artifact-types
     - registry.governance-packs
     - registry.agents
+    - registry.vault-audits
 ---
 
 # Registry
@@ -33,3 +34,4 @@ It does not execute synchronization. It describes what may be consumed, by which
 - `artifact-types.yml`: controlled artifact types used by the registry and sync contract.
 - `governance-packs.yml`: publishable governance pack versions, channels, manifests, and consumer expectations.
 - `agents.yml`: agent role and capability declarations, source document references, and ecosystem projection targets.
+- `vault-audits.yml`: repeatable vault audits, canonical rule sources, and simple audit composition groups.

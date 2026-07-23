@@ -1,0 +1,130 @@
+---
+id: registry.vault-audits
+title: Vault Audit Registry
+type: registry
+status: draft
+owners:
+  - ui-foundations
+created: 2026-07-23
+updated: 2026-07-23
+authority: source
+summary: Declares repeatable vault audits, their canonical sources, and their composable execution groups.
+
+version: 0.1
+
+result_contract:
+  schema: schemas/vault-audit-result.schema.yml
+  format: finding-list
+  machine_readable: true
+  human_readable: true
+
+audits:
+  - id: vault-frontmatter-audit
+    version: 0.1
+    title: Vault Frontmatter Audit
+    workflow: operational/vault-frontmatter-audit.md
+    deterministic_command: ruby schemas/validate-vault-audits.rb --audit frontmatter
+    mode: deterministic
+    canonical_sources:
+      - specification.vault-metadata
+      - specification.document-structure
+      - governance.lifecycle
+      - governance.precedence
+      - reference.document-types
+      - reference.relationship-types
+
+  - id: vault-link-audit
+    version: 0.1
+    title: Vault Link Audit
+    workflow: operational/vault-link-audit.md
+    deterministic_command: ruby schemas/validate-vault-audits.rb --audit links
+    mode: deterministic
+    canonical_sources:
+      - agent-capability.vault-maintainer
+      - specification.vault-metadata
+      - reference.relationship-types
+
+  - id: vault-taxonomy-audit
+    version: 0.1
+    title: Vault Taxonomy Audit
+    workflow: operational/vault-taxonomy-audit.md
+    deterministic_command: ruby schemas/validate-vault-audits.rb --audit taxonomy
+    mode: deterministic-plus-interpretive
+    canonical_sources:
+      - reference.pattern-taxonomy
+      - specification.pattern.schema
+      - specification.classification-model
+      - specification.vault-metadata
+
+compositions:
+  - id: vault-quick-audit
+    version: 0.1
+    title: Vault Quick Audit
+    command: ruby schemas/validate-vault-audits.rb --audit all
+    audits:
+      - vault-frontmatter-audit
+      - vault-link-audit
+      - vault-taxonomy-audit
+    default_scope:
+      - "**/*.md"
+    safety:
+      read_only_by_default: true
+      fixes_require_explicit_instruction: true
+      no_autonomous_merge: true
+---
+
+# Vault Audit Registry
+
+## Purpose
+
+This registry declares the first repeatable vault audits and the smallest composition needed to run them together.
+
+It does not redefine canonical vault rules. Each audit references the governance, specification, reference, and pattern sources that own the rule meaning.
+
+## Execution Boundary
+
+Audit execution is read-only by default. Findings may recommend changes, but fixes require a separate explicit instruction or command.
+
+## Deterministic CLI Execution
+
+Run one audit:
+
+```sh
+ruby schemas/validate-vault-audits.rb --audit frontmatter
+ruby schemas/validate-vault-audits.rb --audit links
+ruby schemas/validate-vault-audits.rb --audit taxonomy
+```
+
+Run the composed quick audit:
+
+```sh
+ruby schemas/validate-vault-audits.rb --audit all
+```
+
+Emit machine-readable findings:
+
+```sh
+ruby schemas/validate-vault-audits.rb --audit all --format json
+```
+
+The deterministic runner validates every finding against `schema.vault-audit-result` before emitting text or JSON.
+
+## Goose Usage
+
+For local Qwen/Goose work, run deterministic audit commands first, then ask Goose to interpret only `warn` findings or ambiguous remediation using the relevant workflow:
+
+```text
+Use vault-taxonomy-audit and knowledge-precedence to interpret these taxonomy warnings. Treat uncertain findings as warnings, not failures.
+```
+
+Use local Qwen for summarizing findings, classifying low-risk documents, or preparing small proposed diffs. Use a stronger provider for broad reclassification, authority conflicts, or changes that affect governance meaning.
+
+## Codex CLI Usage
+
+Use Codex for bounded review or implementation follow-up after deterministic evidence exists:
+
+```sh
+codex "Review the JSON output from ruby schemas/validate-vault-audits.rb --audit all --format json and propose the smallest safe fixes. Do not edit without explicit instruction."
+```
+
+Codex follow-up must keep audit mode read-only unless the prompt explicitly requests a separate fix pass.

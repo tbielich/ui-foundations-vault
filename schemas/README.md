@@ -13,6 +13,7 @@ related:
   references:
     - registry.governance-packs
     - export-pack.governance.manifest
+    - registry.vault-audits
 ---
 
 # Schemas
@@ -28,3 +29,5 @@ They are advisory validation aids. They do not execute synchronization, mutate r
 - `governance-pack.schema.yml`: expected structure for a governance pack manifest.
 - `governance-pack-registry.schema.yml`: expected structure for `registry/governance-packs.yml`.
 - `naming-contract.schema.yml`: expected structure for the Governance Pack machine-readable naming contract.
+- `vault-audit-result.schema.yml`: shared output contract for repeatable vault audit findings.
+- `validate-vault-audits.rb`: read-only deterministic audit runner for frontmatter, links, taxonomy evidence, and quick audit composition.
