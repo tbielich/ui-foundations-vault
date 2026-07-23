@@ -1,3 +1,23 @@
+---
+id: prompt.perplexity.research-projection
+title: Perplexity Research Projection
+type: prompt
+status: stable
+owners:
+  - ui-foundations
+created: 2026-07-21
+updated: 2026-07-21
+authority: derived
+summary: Derived operating guidance for using Perplexity as a downstream research and validation consumer.
+consumers:
+  - agent
+  - perplexity
+related:
+  governed_by:
+    - governance.precedence
+    - governance.lifecycle
+---
+
 <!--
 Type: Projection
 Status: Stable
