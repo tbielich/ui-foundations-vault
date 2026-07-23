@@ -1,0 +1,76 @@
+---
+id: schema.vault-audit-result
+title: Vault Audit Result Contract
+type: schema
+status: draft
+owners:
+  - ui-foundations
+created: 2026-07-23
+updated: 2026-07-23
+authority: source
+summary: Defines the shared output contract for repeatable vault audit findings.
+related:
+  governed_by:
+    - governance.precedence
+    - governance.lifecycle
+  references:
+    - registry.vault-audits
+    - specification.vault-metadata
+---
+
+# Vault Audit Result Contract
+
+## Purpose
+
+This schema defines the common finding shape emitted by vault audits.
+
+The contract is tool-independent. Validators, Goose sessions, Codex runs, and future audit consumers may emit the same fields as JSON, Markdown tables, or another reviewable plain-text representation.
+
+The current deterministic audit runner enforces this contract before emitting output from `schemas/validate-vault-audits.rb`.
+
+## Result Shape
+
+An audit result is a list of findings.
+
+Each finding contains:
+
+| Field | Required | Meaning |
+|---|---:|---|
+| `audit_id` | yes | Stable audit identifier from `registry/vault-audits.yml`. |
+| `audit_version` | yes | Audit definition version. |
+| `executed_at` | yes | ISO 8601 UTC timestamp for the run. Deterministic tests may omit only when the run explicitly documents `executed_at_omitted: true`. |
+| `scope` | yes | File, directory, glob, or logical scope inspected. |
+| `status` | yes | `pass`, `warn`, `fail`, or `error`. |
+| `rule_id` | yes | Stable rule identifier scoped to the audit. |
+| `file_path` | yes | Repository-relative file path, or `.` for repository-level findings. |
+| `evidence` | yes | Short observed fact supporting the finding. |
+| `remediation` | yes | Suggested next action, or `None required.` |
+| `classification` | yes | `deterministic`, `interpretive`, or `deterministic-evidence`. |
+| `certainty` | recommended | `confirmed` or `uncertain`. Uncertain findings must not be presented as failures. |
+
+## Status Semantics
+
+- `pass`: The rule was checked and no issue was found.
+- `warn`: The finding may require review, but does not prove a violation.
+- `fail`: A deterministic rule failed.
+- `error`: The audit could not complete for the stated scope.
+
+## Classification Semantics
+
+- `deterministic`: The finding comes from a mechanical rule.
+- `deterministic-evidence`: Automation collected evidence for later AI or human interpretation.
+- `interpretive`: The finding depends on judgment and must preserve uncertainty.
+
+## Safety Rules
+
+- Audits are read-only by default.
+- Fixes require a separate explicit command or instruction.
+- Findings do not authorize direct changes to `main`.
+- Findings do not authorize autonomous merging.
+- Uncertain findings must use `status: warn` and `certainty: uncertain`.
+
+## Contract Failure Behavior
+
+Contract violations are internal audit runner failures, not audit findings.
+
+When result contract validation fails, the runner prints a concise diagnostic to stderr, exits non-zero, and does not emit partially valid JSON.
