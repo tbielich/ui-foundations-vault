@@ -6,15 +6,22 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-08
-updated: 2026-07-09
+updated: 2026-07-24
 authority: derived
 summary: Agent-readable base pattern contract for buttons.
 related:
-  derived_from:
-    - /Users/Thomas.Bielich@tui.com/GitHub/ui-foundations/docs/patterns/button.md
-    - /Users/Thomas.Bielich@tui.com/GitHub/ui-foundations/site/patterns/button.md
   references:
     - specification.pattern.schema
+provenance:
+  sources:
+    - type: repository
+      role: derived-from
+      repository: ui-foundations
+      path: docs/patterns/button.md
+    - type: repository
+      role: supporting-source
+      repository: ui-foundations
+      path: site/patterns/button.md
 ---
 
 # Button Pattern
