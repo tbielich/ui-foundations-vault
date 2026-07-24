@@ -69,7 +69,7 @@ ruby schemas/validate-vault-audits.rb --audit frontmatter
 - Document ids are unique.
 - Relationship keys and targets are valid.
 - `related` contains only canonical relationship keys and governed vault document ids.
-- `provenance.sources`, when present, uses supported source types and roles.
+- `provenance.sources`, when present, is non-empty and uses supported source types and roles.
 - Provenance source objects include the required fields for their type.
 - Provenance vault document ids exist.
 - Provenance repository names exist in `registry.repos`.

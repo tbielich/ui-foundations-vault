@@ -250,7 +250,7 @@ Provenance records where a document originated, was imported from, was generated
 
 Use `related` for relationships between governed vault documents. Use `provenance` for source lineage.
 
-`provenance.sources` is a list of source objects. Every source object must include:
+`provenance.sources` is a non-empty list of source objects. Every source object must include:
 
 - `type`
 - `role`
@@ -530,7 +530,7 @@ Required validation:
 - `created` and `updated` use `YYYY-MM-DD`.
 - `updated` is not earlier than `created`.
 - Relationship targets refer to existing document ids.
-- `provenance.sources`, when present, uses supported source types and roles.
+- `provenance.sources`, when present, is non-empty and uses supported source types and roles.
 - Provenance source references use the required fields for their type.
 - Provenance repository names refer to known repositories.
 - Provenance repository paths are relative and do not traverse outside the repository.

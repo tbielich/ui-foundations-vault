@@ -65,7 +65,8 @@ ALLOWED_PROVENANCE_ROLES = %w[
 options = {
   audit: "all",
   format: "text",
-  self_test_contract: false
+  self_test_contract: false,
+  self_test_frontmatter: false
 }
 
 OptionParser.new do |parser|
@@ -73,6 +74,7 @@ OptionParser.new do |parser|
   parser.on("--audit AUDIT", "Audit to run") { |value| options[:audit] = value }
   parser.on("--format FORMAT", "Output format: text or json") { |value| options[:format] = value }
   parser.on("--self-test-contract", "Run audit result contract self-tests") { options[:self_test_contract] = true }
+  parser.on("--self-test-frontmatter", "Run focused frontmatter rule self-tests") { options[:self_test_frontmatter] = true }
 end.parse!
 
 unless (%w[all] + AUDITS.keys).include?(options[:audit])
@@ -254,6 +256,18 @@ def contract_self_test_fixture
   }
 end
 
+def run_frontmatter_self_tests
+  $executed_at = "2026-07-24T00:00:00Z"
+  findings = []
+  validate_provenance_shape(findings, "test.md", { "sources" => [] })
+
+  unless findings.any? { |item| item[:rule_id] == "frontmatter.provenance.sources" && item[:status] == "fail" }
+    raise "empty provenance.sources unexpectedly passed frontmatter validation"
+  end
+
+  puts "Frontmatter rule self-test passed."
+end
+
 def run_contract_self_tests
   fixture = contract_self_test_fixture
   valid_errors = audit_result_contract_errors(fixture[:valid])
@@ -330,7 +344,12 @@ def validate_provenance_shape(findings, path, provenance)
 
   sources = provenance["sources"]
   unless sources.is_a?(Array)
-    findings << finding("frontmatter", "fail", "frontmatter.provenance.sources", path, "provenance.sources is not an array", "Use a list of typed provenance source objects.")
+    findings << finding("frontmatter", "fail", "frontmatter.provenance.sources", path, "provenance.sources is not an array", "Use a non-empty list of typed provenance source objects.")
+    return
+  end
+
+  if sources.empty?
+    findings << finding("frontmatter", "fail", "frontmatter.provenance.sources", path, "provenance.sources is empty", "Add at least one typed provenance source object or omit provenance.")
     return
   end
 
@@ -617,6 +636,11 @@ end
 
 if options[:self_test_contract]
   run_contract_self_tests
+  exit 0
+end
+
+if options[:self_test_frontmatter]
+  run_frontmatter_self_tests
   exit 0
 end
 
