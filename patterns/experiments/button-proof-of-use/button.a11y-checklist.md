@@ -6,12 +6,14 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-08
-updated: 2026-07-13
+updated: 2026-07-24
 authority: derived
 summary: Accessibility checks derived from the Button Pattern proof-of-use draft.
-related:
-  derived_from:
-    - pattern.base.button
+provenance:
+  sources:
+    - type: vault-document
+      role: derived-from
+      id: pattern.base.button
 ---
 
 # Button Proof of Use Accessibility Checklist

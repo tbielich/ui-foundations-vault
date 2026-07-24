@@ -6,19 +6,29 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-08
-updated: 2026-07-09
+updated: 2026-07-24
 authority: derived
 summary: Agent-readable composition pattern contract for date pickers.
 related:
-  derived_from:
-    - /Users/Thomas.Bielich@tui.com/GitHub/ui-foundations/docs/patterns/input.md
-    - /Users/Thomas.Bielich@tui.com/GitHub/ui-foundations/site/components/date-picker.md
-    - /Users/Thomas.Bielich@tui.com/GitHub/ui-foundations/site/patterns/calendar.md
   references:
     - specification.pattern.schema
     - pattern.base.input
     - pattern.base.button
     - pattern.base.calendar
+provenance:
+  sources:
+    - type: repository
+      role: derived-from
+      repository: ui-foundations
+      path: docs/patterns/input.md
+    - type: repository
+      role: supporting-source
+      repository: ui-foundations
+      path: site/components/date-picker.md
+    - type: repository
+      role: supporting-source
+      repository: ui-foundations
+      path: site/patterns/calendar.md
 ---
 
 # Date Picker Pattern
