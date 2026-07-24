@@ -6,6 +6,7 @@ require "yaml"
 require "date"
 require "json"
 require "time"
+require "uri"
 require "optparse"
 require "set"
 
@@ -54,11 +55,18 @@ ALLOWED_RELATIONSHIPS = %w[
 ALLOWED_VERIFICATION_STATUS = %w[
   unverified assumption partially-verified verified
 ].freeze
+ALLOWED_PROVENANCE_TYPES = %w[
+  vault-document repository external-url issue export-artifact
+].freeze
+ALLOWED_PROVENANCE_ROLES = %w[
+  derived-from imported-from generated-from source supporting-source
+].freeze
 
 options = {
   audit: "all",
   format: "text",
-  self_test_contract: false
+  self_test_contract: false,
+  self_test_frontmatter: false
 }
 
 OptionParser.new do |parser|
@@ -66,6 +74,7 @@ OptionParser.new do |parser|
   parser.on("--audit AUDIT", "Audit to run") { |value| options[:audit] = value }
   parser.on("--format FORMAT", "Output format: text or json") { |value| options[:format] = value }
   parser.on("--self-test-contract", "Run audit result contract self-tests") { options[:self_test_contract] = true }
+  parser.on("--self-test-frontmatter", "Run focused frontmatter rule self-tests") { options[:self_test_frontmatter] = true }
 end.parse!
 
 unless (%w[all] + AUDITS.keys).include?(options[:audit])
@@ -247,6 +256,18 @@ def contract_self_test_fixture
   }
 end
 
+def run_frontmatter_self_tests
+  $executed_at = "2026-07-24T00:00:00Z"
+  findings = []
+  validate_provenance_shape(findings, "test.md", { "sources" => [] })
+
+  unless findings.any? { |item| item[:rule_id] == "frontmatter.provenance.sources" && item[:status] == "fail" }
+    raise "empty provenance.sources unexpectedly passed frontmatter validation"
+  end
+
+  puts "Frontmatter rule self-test passed."
+end
+
 def run_contract_self_tests
   fixture = contract_self_test_fixture
   valid_errors = audit_result_contract_errors(fixture[:valid])
@@ -272,6 +293,125 @@ def date_value(value)
   value.is_a?(Date) ? value : Date.iso8601(value)
 rescue ArgumentError
   nil
+end
+
+def repository_names
+  @repository_names ||= begin
+    data, error = parse_frontmatter("registry/repos.yml")
+    if error || !data.is_a?(Hash) || !data["repositories"].is_a?(Array)
+      Set.new
+    else
+      data["repositories"].filter_map { |repo| repo["name"] if repo.is_a?(Hash) && scalar_string?(repo["name"]) }.to_set
+    end
+  end
+end
+
+def relative_repository_path?(value)
+  return false unless scalar_string?(value)
+  return false if value.start_with?("/")
+  return false if value.include?("\0")
+  return false if value.split("/").include?("..")
+
+  true
+end
+
+def valid_url?(value)
+  return false unless scalar_string?(value)
+
+  uri = URI.parse(value)
+  %w[http https].include?(uri.scheme) && scalar_string?(uri.host)
+rescue URI::InvalidURIError
+  false
+end
+
+def positive_integer?(value)
+  value.is_a?(Integer) && value.positive?
+end
+
+def add_required_provenance_field_findings(findings, path, source, fields)
+  fields.each do |field|
+    next if source.key?(field) && scalar_string?(source[field])
+
+    findings << finding("frontmatter", "fail", "frontmatter.provenance.source.#{field}", path, "provenance source is missing #{field}", "Add #{field} for this provenance source type.")
+  end
+end
+
+def validate_provenance_shape(findings, path, provenance)
+  unless provenance.is_a?(Hash)
+    findings << finding("frontmatter", "fail", "frontmatter.provenance.object", path, "provenance is not an object", "Use provenance.sources with typed source objects.")
+    return
+  end
+
+  sources = provenance["sources"]
+  unless sources.is_a?(Array)
+    findings << finding("frontmatter", "fail", "frontmatter.provenance.sources", path, "provenance.sources is not an array", "Use a non-empty list of typed provenance source objects.")
+    return
+  end
+
+  if sources.empty?
+    findings << finding("frontmatter", "fail", "frontmatter.provenance.sources", path, "provenance.sources is empty", "Add at least one typed provenance source object or omit provenance.")
+    return
+  end
+
+  sources.each_with_index do |source, index|
+    unless source.is_a?(Hash)
+      findings << finding("frontmatter", "fail", "frontmatter.provenance.source.object", path, "provenance source #{index} is not an object", "Use a typed provenance source object.")
+      next
+    end
+
+    type = source["type"]
+    role = source["role"]
+    unless ALLOWED_PROVENANCE_TYPES.include?(type)
+      findings << finding("frontmatter", "fail", "frontmatter.provenance.source.type", path, "provenance source type #{type.inspect} is not allowed", "Use a supported provenance source type from specification.vault-metadata.")
+    end
+    unless ALLOWED_PROVENANCE_ROLES.include?(role)
+      findings << finding("frontmatter", "fail", "frontmatter.provenance.source.role", path, "provenance source role #{role.inspect} is not allowed", "Use a supported provenance role from specification.vault-metadata.")
+    end
+
+    case type
+    when "vault-document"
+      add_required_provenance_field_findings(findings, path, source, %w[id])
+    when "repository"
+      add_required_provenance_field_findings(findings, path, source, %w[repository path])
+      if source.key?("repository") && scalar_string?(source["repository"]) && !repository_names.include?(source["repository"])
+        findings << finding("frontmatter", "fail", "frontmatter.provenance.source.repository", path, "repository #{source["repository"].inspect} is not registered", "Use a repository name from registry.repos.")
+      end
+      if source.key?("path") && !relative_repository_path?(source["path"])
+        findings << finding("frontmatter", "fail", "frontmatter.provenance.source.path", path, "repository path #{source["path"].inspect} is not relative or traverses outside the repository", "Use a relative repository path without path traversal.")
+      end
+    when "external-url"
+      add_required_provenance_field_findings(findings, path, source, %w[url])
+      if source.key?("url") && !valid_url?(source["url"])
+        findings << finding("frontmatter", "fail", "frontmatter.provenance.source.url", path, "url #{source["url"].inspect} is not valid", "Use a valid http or https URL.")
+      end
+    when "issue"
+      add_required_provenance_field_findings(findings, path, source, %w[repository])
+      unless source.key?("number") && positive_integer?(source["number"])
+        findings << finding("frontmatter", "fail", "frontmatter.provenance.source.number", path, "issue number #{source["number"].inspect} is not positive", "Use a positive integer issue number.")
+      end
+      if source.key?("repository") && scalar_string?(source["repository"]) && !repository_names.include?(source["repository"])
+        findings << finding("frontmatter", "fail", "frontmatter.provenance.source.repository", path, "repository #{source["repository"].inspect} is not registered", "Use a repository name from registry.repos.")
+      end
+    when "export-artifact"
+      add_required_provenance_field_findings(findings, path, source, %w[artifact_id])
+    end
+  end
+end
+
+def validate_provenance_document_targets(findings, metadata, known_ids)
+  metadata.each do |path, data|
+    sources = data.dig("provenance", "sources")
+    next unless sources.is_a?(Array)
+
+    sources.each do |source|
+      next unless source.is_a?(Hash)
+      next unless source["type"] == "vault-document"
+      next unless scalar_string?(source["id"])
+      next if known_ids.include?(source["id"])
+
+      findings << finding("frontmatter", "fail", "frontmatter.provenance.source.id", path, "provenance vault document id #{source["id"].inspect} does not match a document id", "Reference an existing governed vault document id.")
+    end
+  end
 end
 
 def frontmatter_audit(files)
@@ -352,6 +492,8 @@ def frontmatter_audit(files)
       findings << finding("frontmatter", "warn", "frontmatter.assumptions", path, "verification.status is assumption but assumptions is missing", "Add assumptions or revise verification.status.")
     end
 
+    validate_provenance_shape(findings, path, data["provenance"]) if data.key?("provenance")
+
     next unless data["related"]
 
     unless data["related"].is_a?(Hash)
@@ -377,6 +519,8 @@ def frontmatter_audit(files)
   end
 
   known_ids = ids.keys.to_set
+  validate_provenance_document_targets(findings, metadata, known_ids)
+
   metadata.each do |path, data|
     next unless data["related"].is_a?(Hash)
     data["related"].each do |_relationship, targets|
@@ -492,6 +636,11 @@ end
 
 if options[:self_test_contract]
   run_contract_self_tests
+  exit 0
+end
+
+if options[:self_test_frontmatter]
+  run_frontmatter_self_tests
   exit 0
 end
 

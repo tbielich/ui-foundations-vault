@@ -6,7 +6,7 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-23
-updated: 2026-07-23
+updated: 2026-07-24
 authority: supporting
 summary: Describes how to audit vault markdown frontmatter against canonical metadata and lifecycle rules.
 related:
@@ -18,6 +18,7 @@ related:
     - specification.document-structure
     - reference.document-types
     - reference.relationship-types
+    - registry.repos
     - registry.vault-audits
     - schema.vault-audit-result
 ---
@@ -28,6 +29,8 @@ related:
 
 Use this workflow to check whether governed markdown documents expose the metadata needed for discovery, lifecycle tracking, precedence, and relationship validation.
 
+This audit also validates the shape of optional provenance metadata. Provenance records origin and lineage; it does not change authority, precedence, lifecycle, or semantic document relationships.
+
 ## Inputs
 
 - Markdown files in the vault
@@ -36,6 +39,7 @@ Use this workflow to check whether governed markdown documents expose the metada
 - `governance.lifecycle`
 - `reference.document-types`
 - `reference.relationship-types`
+- `registry.repos`
 
 ## Steps
 
@@ -64,6 +68,14 @@ ruby schemas/validate-vault-audits.rb --audit frontmatter
 - `updated` is not earlier than `created`.
 - Document ids are unique.
 - Relationship keys and targets are valid.
+- `related` contains only canonical relationship keys and governed vault document ids.
+- `provenance.sources`, when present, is non-empty and uses supported source types and roles.
+- Provenance source objects include the required fields for their type.
+- Provenance vault document ids exist.
+- Provenance repository names exist in `registry.repos`.
+- Provenance repository paths are relative and do not traverse outside the repository.
+- Provenance issue numbers are positive.
+- Provenance URLs are valid.
 
 ## AI-Evaluated Checks
 
