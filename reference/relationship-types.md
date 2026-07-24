@@ -6,7 +6,7 @@ status: review
 owners:
   - ui-foundations
 created: 2026-07-07
-updated: 2026-07-07
+updated: 2026-07-24
 authority: source
 summary: Defines canonical relationship meanings used between vault documents.
 related:
@@ -24,6 +24,8 @@ What relationship types connect knowledge documents?
 ## Purpose
 
 This document is a lookup table for relationship meanings. It defines how documents refer to one another without adding governance process.
+
+Relationships connect governed vault documents by document id. They are not used for provenance. Repository paths, URLs, issues, runtime artifacts, export artifacts, and origin lineage belong in `provenance.sources` as defined by `specification.vault-metadata`.
 
 ## Types
 

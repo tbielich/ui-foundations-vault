@@ -6,7 +6,7 @@ status: stable
 owners:
   - ui-foundations
 created: 2026-07-07
-updated: 2026-07-16
+updated: 2026-07-24
 authority: source
 summary: Defines minimal frontmatter metadata for markdown documents in the vault.
 related:
@@ -213,6 +213,8 @@ Explicit relationships to other vault documents.
 - Keys: relationship types
 - Values: lists of document ids
 
+Relationships are the governed vault document graph. They must point only to governed vault document ids. Do not use `related` for repository paths, URLs, issues, runtime artifacts, export artifacts, or origin lineage.
+
 Allowed relationship keys:
 
 - `depends_on`
@@ -234,6 +236,97 @@ related:
     - principle.foundation.design-principles
   governs:
     - workflow.component-review
+```
+
+### `provenance`
+
+Origin and lineage metadata for a document.
+
+- Type: object
+- Optional keys:
+  - `sources`
+
+Provenance records where a document originated, was imported from, was generated from, or was derived from. It does not describe semantic relationships between vault documents. It has no effect on `authority`, precedence, lifecycle state, or verification status.
+
+Use `related` for relationships between governed vault documents. Use `provenance` for source lineage.
+
+`provenance.sources` is a list of source objects. Every source object must include:
+
+- `type`
+- `role`
+
+Allowed source `type` values:
+
+- `vault-document`
+- `repository`
+- `external-url`
+- `issue`
+- `export-artifact`
+
+Allowed source `role` values:
+
+- `derived-from`
+- `imported-from`
+- `generated-from`
+- `source`
+- `supporting-source`
+
+Required fields by source type:
+
+| Source type | Required fields |
+|---|---|
+| `vault-document` | `type`, `role`, `id` |
+| `repository` | `type`, `role`, `repository`, `path` |
+| `external-url` | `type`, `role`, `url` |
+| `issue` | `type`, `role`, `repository`, `number` |
+| `export-artifact` | `type`, `role`, `artifact_id` |
+
+Repository paths must be relative and must not traverse outside the repository. Repository names should use `registry.repos`. Issue numbers must be positive integers. URLs must use `http` or `https`.
+
+Do not use provenance to record verification evidence. Evidence belongs in `verification.evidence` and verification review outputs.
+
+Examples:
+
+```yaml
+provenance:
+  sources:
+    - type: vault-document
+      role: derived-from
+      id: pattern.base.button
+```
+
+```yaml
+provenance:
+  sources:
+    - type: repository
+      role: derived-from
+      repository: ui-foundations
+      path: docs/components/button.md
+```
+
+```yaml
+provenance:
+  sources:
+    - type: external-url
+      role: source
+      url: https://www.w3.org/WAI/ARIA/apg/patterns/button/
+```
+
+```yaml
+provenance:
+  sources:
+    - type: issue
+      role: source
+      repository: ui-foundations
+      number: 52
+```
+
+```yaml
+provenance:
+  sources:
+    - type: export-artifact
+      role: generated-from
+      artifact_id: governance-pack.naming-contract
 ```
 
 ### `verification`
@@ -390,6 +483,8 @@ Relationships are expressed through document ids, not file paths. This allows fi
 
 Use relationships only when they add value. A sparse accurate graph is better than a dense noisy graph.
 
+Relationships are not provenance. Repository paths, URLs, issues, runtime artifacts, export artifacts, and origin lineage belong in `provenance.sources`, not in `related`.
+
 Relationship semantics:
 
 - `depends_on`: this document needs another document to be understood or applied.
@@ -435,6 +530,13 @@ Required validation:
 - `created` and `updated` use `YYYY-MM-DD`.
 - `updated` is not earlier than `created`.
 - Relationship targets refer to existing document ids.
+- `provenance.sources`, when present, uses supported source types and roles.
+- Provenance source references use the required fields for their type.
+- Provenance repository names refer to known repositories.
+- Provenance repository paths are relative and do not traverse outside the repository.
+- Provenance vault document ids refer to existing document ids.
+- Provenance issue numbers are positive.
+- Provenance URLs are valid URLs.
 - Deprecated or archived documents include `related.superseded_by` when replacement guidance exists.
 - `verification.status`, when present, is one of the allowed values.
 - Tags use lowercase kebab-case.
@@ -457,7 +559,6 @@ Potential future extensions:
 
 - `schema_version` if automated validators need schema migration.
 - `canonical_url` if documents are published outside Git.
-- `source_refs` for external authoritative references.
 - `language` if multilingual documentation becomes necessary.
 - `security` if access tiers are introduced.
 - `machine_summary` if generated indexes need a constrained abstract.
