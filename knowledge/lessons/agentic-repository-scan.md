@@ -100,7 +100,7 @@ A later specification should define machine-readable gap categories only after a
 
 **Local facts**
 
-- `design-ai-orchestrator` validates inputs before model calls and validates every model result against a strict output schema.
+- `design-ai-orchestrator` validates inputs before model calls. In `src/openai/run-response.ts`, it extracts JSON from generated text and validates it afterward with Zod; it does not request schema-constrained decoding. Shape validation does not prove factual or governance correctness.
 - `agent-gateway-poc` maps a common task/result envelope to a provider-specific Cline protocol.
 - `ui-foundations-intelligence` defines separate request, workflow, capability, context, executor result, trace, verification, and synthesis contracts.
 
@@ -137,7 +137,7 @@ Specification candidate: **Agent Execution Contract**, covering task, result, tr
 **Local facts**
 
 - `a2a-ollama` demonstrates capability discovery through Agent Cards and exposes tool capabilities through a protocol bridge.
-- `agent-gateway-poc` selects adapters by requested capabilities.
+- `agent-gateway-poc` attempts capability matching, but falls back to the first registered adapter when no match exists. An explicitly selected adapter bypasses capability matching. This is not fail-closed capability resolution.
 - `ui-foundations-intelligence` deliberately moves capability identity and requirements into Vault knowledge while treating agents, models, and providers as runtime choices.
 
 **Generalized lesson**
@@ -171,7 +171,7 @@ Capability specification candidate defining identity, purpose, required inputs, 
 
 **Local facts**
 
-- `agent-gateway-poc` disables tools by default, defaults approval to deny, and answers approval requests through gateway policy.
+- `agent-gateway-poc` disables tools by default and defaults approval to deny. Its adapter-side approval bridge approves every request in `auto` mode without inspecting action arguments or allowed paths. It demonstrates separation from model reasoning, not a complete scope-enforcement policy.
 - `ui-foundations-intelligence` places allowed actions, forbidden actions, paths, validation requirements, timeouts, approvals, and cancellation requests in task constraints and execution traces.
 
 **Generalized lesson**
@@ -207,7 +207,7 @@ Governance candidate: **Execution Authority**, defining who may authorize action
 
 - `design-ai-orchestrator` gives each specialist only selected inputs and selected prior outputs. Its validator receives the combined result and authoritative implementation context.
 - `ui-foundations-intelligence` defines context packages with sources, fragments, constraints, freshness, applicability, and omissions.
-- The existing Selective Activation principle already establishes intent- and capability-driven context assembly.
+- The existing Selective Activation document proposes intent- and capability-driven context assembly. It remains a draft, not accepted authority.
 
 **Generalized lesson**
 
@@ -351,6 +351,29 @@ Durable memory should preserve confirmed facts, dated decisions, preferences, an
 
 Keep as a lesson until UIF has a concrete durable-memory consumer. Do not add personal-memory semantics to the Vault or Intelligence contracts prematurely.
 
+## Code Review Qualifications
+
+Review method: static inspection, not an executed integration test. Documentation describes intent; passive contract fields are not evidence of runtime enforcement.
+
+- Capability mismatch should produce an explicit rejection or a policy-permitted fallback that still meets requirements. The current Gateway fallback does neither check.
+- Approval policy must inspect the requested action and scope; an unconditional auto-approval switch is not bounded authorization.
+- `artifacts: []` and `changes: []` in the Cline adapter are hardcoded placeholders, not evidence that no files changed. A future contract must distinguish uncollected evidence from an observed empty result.
+- The adapter maps success from `run.ok` and a non-error finish reason. That does not verify the requested outcome or prove a clean workspace.
+- The orchestrator marks execution completed independently of `validator.approved`; it retains the review outcome but does not enforce acceptance as a release gate in the inspected workflow.
+- The validator context omits the product brief and retrieval snippets. Its source coverage must be checked before treating its review as comprehensive.
+- Current Vault CI checks repository basics and counts Markdown files; a green run does not validate metadata, source claims, or knowledge quality.
+
+Direct code evidence:
+
+- [Gateway selection](https://github.com/tbielich/agent-gateway-poc/blob/main/src/gateway.js), inspected blob `6934042bd60773e4a5fa2e95e6ea5d3765ebc1e3`.
+- [Cline adapter](https://github.com/tbielich/agent-gateway-poc/blob/main/src/adapters/cline.js), inspected blob `f812ad64dfa11a8d7c64c2f7df48fd30de95ad47`.
+- [Response parsing and validation](https://github.com/tbielich/design-ai-orchestrator/blob/main/src/openai/run-response.ts), inspected blob `6dd70ca0214e426b4c69f85d9fe73fa8f8615a5d`.
+- [Workflow completion](https://github.com/tbielich/design-ai-orchestrator/blob/main/src/orchestrator/run-workflow.ts).
+- [Validator context](https://github.com/tbielich/design-ai-orchestrator/blob/main/src/context/build-agent-context.ts).
+- [Vault CI](https://github.com/tbielich/ui-foundations-vault/blob/main/.github/workflows/ci.yml).
+
+The evidence-strength labels below describe support for investigating each concept, not implementation maturity or measured effectiveness. Runtime task/result/trace shapes remain owned by Intelligence; any Vault promotion should define tool-independent semantics and obligations rather than duplicate those schemas.
+
 ## Candidate Priority
 
 | Priority | Candidate | Target type | Evidence strength | Reason |
@@ -379,7 +402,7 @@ Keep as a lesson until UIF has a concrete durable-memory consumer. Do not add pe
 Create one small review PR per promotion candidate, in this order:
 
 1. Draft **Explicit Uncertainty over Fabrication** as a principle.
-2. Reconcile the existing Intelligence `AgentTask`, `AgentResult`, and `ExecutionTrace` shapes into a Vault-owned Agent Execution Contract proposal.
+2. Reconcile the existing Intelligence `AgentTask`, `AgentResult`, and `ExecutionTrace` shapes against a Vault proposal for execution semantics and obligations, while retaining runtime schemas in Intelligence.
 3. Draft **Execution Authority** governance only after identifying human approval roles and bounded automatic approval cases.
 4. Define the Capability document specification and validate it with one real UIF workflow.
 5. Add evaluation fixtures for missing knowledge, unsupported capability, denied approval, invalid output, and failed verification.
