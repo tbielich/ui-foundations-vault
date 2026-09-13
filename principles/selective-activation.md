@@ -2,7 +2,7 @@
 id: principle.selective-activation
 title: Selective Activation over Full Loading
 type: principle
-status: experimental
+status: draft
 owners:
   - ui-foundations
 created: 2026-09-13
