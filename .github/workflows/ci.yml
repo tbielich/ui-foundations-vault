@@ -17,3 +17,6 @@ jobs:
           test -f .github/workflows/ci.yml
           test -f .github/workflows/publish.yml
           echo "Markdown files: $(find . -type f -name '*.md' | wc -l)"
+
+      - name: Validate project projections
+        run: ruby scripts/generate-project-projections.rb --check

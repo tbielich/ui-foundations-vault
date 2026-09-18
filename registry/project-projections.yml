@@ -1,0 +1,35 @@
+---
+id: registry.project-projections
+title: Project Projection Registry
+type: registry
+status: review
+owners:
+  - ui-foundations
+created: 2026-09-18
+updated: 2026-09-18
+authority: source
+summary: Declares deterministic project projection materializations, consumer constraints, delivery semantics, and validation requirements.
+
+version: 0.1
+
+projections:
+  - id: chatgpt-project
+    consumer: chatgpt-project
+    source_document_id: export-pack.agent.projection.chatgpt-project
+    source_path: exports/agent-pack/projections/chatgpt-project.md
+    source_section: Projected instructions
+    source_fence_language: markdown
+    output_path: .generated/project-projections/chatgpt-project.instructions.md
+    delivery: snapshot
+    materialization: generated
+    sync_mode: manual_copy
+    limits:
+      max_characters: 8000
+    required_contains:
+      - UI Foundations Intelligence
+      - UIF-VLT
+      - Chat history and memory provide context, not execution state.
+      - UIF is a private PoC and must remain strictly separated from TUI's official **UILib / TUI Design System**.
+    refresh:
+      trigger: source-change
+      command: ruby scripts/generate-project-projections.rb

@@ -2,3 +2,4 @@
 Untitled.md
 *.base
 .DS_Store
+.generated/
