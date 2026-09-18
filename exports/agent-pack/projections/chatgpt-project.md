@@ -26,6 +26,7 @@ related:
     - specification.project-bootstrap
     - docs.architecture
     - registry.sync-contract
+    - registry.project-projections
     - export-pack.agent
 provenance:
   sources:
@@ -57,10 +58,16 @@ It is derived and non-canonical. It adapts existing UIF authority, scope, execut
 - Consumer: ChatGPT Project
 - Surface: Custom instructions
 - Sync mode: `manual_copy`
+- Materialization: deterministic generated snapshot
+- Projection registry: `registry/project-projections.yml`
+- Generated artifact: `.generated/project-projections/chatgpt-project.instructions.md`
+- Generator: `ruby scripts/generate-project-projections.rb`
 - Character budget: 8000
-- Projected block length: 7045 characters
+- Projected block length: validated by the generator
 
-The Project settings surface is treated as a consumer. Canonical changes must originate from governed Vault or repository sources and then be reviewed here before manual materialization.
+The Project settings surface is treated as a consumer. Canonical changes must originate from governed Vault or repository sources and then be reviewed here before materialization.
+
+The fenced projected block below remains the reviewed projection source for this first vertical slice. The generator extracts and validates it according to `registry.project-projections`, then writes a disposable snapshot artifact for manual copy into ChatGPT Project settings.
 
 ## Authority
 
