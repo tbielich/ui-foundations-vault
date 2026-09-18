@@ -33,6 +33,7 @@ related:
     - docs.architecture
     - docs.cross-repo-knowledge-sync
     - registry.sync-contract
+    - registry.project-projections
     - export-pack.agent
     - lesson.uilib-consumer-capability-projection
     - lesson.uilib-generated-projection-materialization
@@ -404,6 +405,6 @@ Initial adoption should be incremental:
 3. Add new consumer projections only when a real consumer exists.
 4. Prefer one thin projection per instruction surface.
 5. Review repeated projection content and promote reusable meaning back into canonical Vault sources.
-6. Add registry automation only after multiple projections demonstrate a stable machine-readable need.
+6. Use `registry.project-projections` for deterministic materialization once a consumer projection has explicit source, output, delivery, and validation constraints.
 
 This avoids introducing a new bootstrap framework before the projection model has enough real consumers to justify one.
