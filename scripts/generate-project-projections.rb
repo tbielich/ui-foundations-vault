@@ -11,7 +11,7 @@ ROOT = File.expand_path("..", __dir__)
 MANIFEST_PATH = File.join(ROOT, "registry/project-projections.yml")
 GENERATED_ROOT = File.join(ROOT, ".generated/project-projections")
 ALLOWED_DELIVERY = %w[snapshot live-reference].freeze
-ALLOWED_MATERIALIZATION = %w[generated].freeze
+ALLOWED_MATERIALIZATION = %w[generated reference].freeze
 
 def fail!(message)
   warn message
@@ -45,6 +45,14 @@ def repository_path(path, field, errors)
   end
 
   candidate.to_s
+end
+
+def document_id(content)
+  frontmatter = content.match(/\A---\s*\n(.*?)\n---\s*\n/m)
+  return nil unless frontmatter
+
+  data = YAML.safe_load(frontmatter[1], permitted_classes: [Date], aliases: false)
+  data.is_a?(Hash) ? data["id"] : nil
 end
 
 def fragment_index(pack, projection_id)
@@ -88,9 +96,8 @@ def compose_fragment_projection(entry, errors)
   raise errors.join("\n") unless errors.empty?
 
   pack = read_yaml(pack_path)
-  unless pack.is_a?(Hash)
-    raise "#{projection_id} fragment pack must be a YAML object"
-  end
+  raise "#{projection_id} fragment pack must be a YAML object" unless pack.is_a?(Hash)
+
   unless pack["id"] == entry["fragment_pack_id"]
     raise "#{projection_id}.fragment_pack_id #{entry["fragment_pack_id"].inspect} does not match pack id #{pack["id"].inspect}"
   end
@@ -100,30 +107,15 @@ def compose_fragment_projection(entry, errors)
   raise "#{projection_id} references missing fragments: #{missing.join(", ")}" unless missing.empty?
 
   separator = entry.key?("separator") ? entry["separator"] : "\n\n"
-  unless separator.is_a?(String)
-    raise "#{projection_id}.separator must be a string"
-  end
+  raise "#{projection_id}.separator must be a string" unless separator.is_a?(String)
 
   entry["fragment_ids"].map { |id| index.fetch(id).fetch("text") }.join(separator)
 end
 
-def validate_projection(entry)
+def validate_generated_projection(entry)
   errors = []
   projection_id = entry["id"]
-
-  required_string(projection_id, "projections[].id", errors)
-  required_string(entry["consumer"], "#{projection_id}.consumer", errors)
-  required_string(entry["sync_mode"], "#{projection_id}.sync_mode", errors)
-
   output_path = repository_path(entry["output_path"], "#{projection_id}.output_path", errors)
-
-  unless ALLOWED_DELIVERY.include?(entry["delivery"])
-    errors << "#{projection_id}.delivery must be one of #{ALLOWED_DELIVERY.join(", ")}"
-  end
-
-  unless ALLOWED_MATERIALIZATION.include?(entry["materialization"])
-    errors << "#{projection_id}.materialization must be generated"
-  end
 
   max_characters = entry.dig("limits", "max_characters")
   unless max_characters.is_a?(Integer) && max_characters.positive?
@@ -152,12 +144,93 @@ def validate_projection(entry)
 
   {
     id: projection_id,
+    materialization: "generated",
     output_path: output_path,
     artifact: artifact,
     characters: artifact.length,
     max_characters: max_characters,
     sha256: Digest::SHA256.hexdigest(artifact)
   }
+end
+
+def validate_reference_projection(entry)
+  errors = []
+  projection_id = entry["id"]
+
+  unless entry["delivery"] == "live-reference"
+    errors << "#{projection_id}.delivery must be live-reference for reference materialization"
+  end
+
+  contract_path = repository_path(
+    entry["contract_document_path"],
+    "#{projection_id}.contract_document_path",
+    errors
+  )
+  required_string(entry["contract_document_id"], "#{projection_id}.contract_document_id", errors)
+
+  reference = entry["reference"]
+  unless reference.is_a?(Hash)
+    errors << "#{projection_id}.reference must be an object"
+    reference = {}
+  end
+  required_string(reference["repository"], "#{projection_id}.reference.repository", errors)
+  required_string(reference["path"], "#{projection_id}.reference.path", errors)
+
+  if contract_path && !File.file?(contract_path)
+    errors << "#{projection_id}.contract_document_path does not exist: #{entry["contract_document_path"]}"
+  end
+
+  raise errors.join("\n") unless errors.empty?
+
+  content = File.read(contract_path)
+  actual_id = document_id(content)
+  unless actual_id == entry["contract_document_id"]
+    raise "#{projection_id}.contract_document_id #{entry["contract_document_id"].inspect} does not match source id #{actual_id.inspect}"
+  end
+
+  Array(entry["required_contains"]).each do |required|
+    required_string(required, "#{projection_id}.required_contains[]", errors)
+    next unless required.is_a?(String) && !required.empty?
+    errors << "#{projection_id} contract is missing required content: #{required.inspect}" unless content.include?(required)
+  end
+
+  raise errors.join("\n") unless errors.empty?
+
+  {
+    id: projection_id,
+    materialization: "reference",
+    reference_repository: reference["repository"],
+    reference_path: reference["path"],
+    contract_sha256: Digest::SHA256.hexdigest(content)
+  }
+end
+
+def validate_projection(entry)
+  errors = []
+  projection_id = entry["id"]
+
+  required_string(projection_id, "projections[].id", errors)
+  required_string(entry["consumer"], "#{projection_id}.consumer", errors)
+  required_string(entry["sync_mode"], "#{projection_id}.sync_mode", errors)
+
+  unless ALLOWED_DELIVERY.include?(entry["delivery"])
+    errors << "#{projection_id}.delivery must be one of #{ALLOWED_DELIVERY.join(", ")}"
+  end
+
+  unless ALLOWED_MATERIALIZATION.include?(entry["materialization"])
+    errors << "#{projection_id}.materialization must be one of #{ALLOWED_MATERIALIZATION.join(", ")}"
+  end
+
+  raise errors.join("\n") unless errors.empty?
+
+  case entry["materialization"]
+  when "generated"
+    validate_generated_projection(entry)
+  when "reference"
+    validate_reference_projection(entry)
+  else
+    raise "#{projection_id} has unsupported materialization #{entry["materialization"].inspect}"
+  end
 end
 
 def preflight(manifest)
@@ -172,24 +245,37 @@ def preflight(manifest)
   duplicates = ids.compact.group_by(&:itself).select { |_id, values| values.length > 1 }.keys
   raise "Duplicate projection ids: #{duplicates.join(", ")}" unless duplicates.empty?
 
-  outputs = projections.map { |entry| entry["output_path"] }
-  duplicate_outputs = outputs.compact.group_by(&:itself).select { |_path, values| values.length > 1 }.keys
+  generated_outputs = projections
+    .select { |entry| entry["materialization"] == "generated" }
+    .map { |entry| entry["output_path"] }
+  duplicate_outputs = generated_outputs.compact.group_by(&:itself).select { |_path, values| values.length > 1 }.keys
   raise "Duplicate projection output paths: #{duplicate_outputs.join(", ")}" unless duplicate_outputs.empty?
 
   projections.map { |entry| validate_projection(entry) }
 end
 
 def stale_generated_artifact?(plan)
+  return false unless plan[:materialization] == "generated"
   return false unless File.file?(plan[:output_path])
 
   File.read(plan[:output_path]) != "#{plan[:artifact]}\n"
 end
 
 def write_atomically(plan)
+  return unless plan[:materialization] == "generated"
+
   FileUtils.mkdir_p(File.dirname(plan[:output_path]))
   tmp = "#{plan[:output_path]}.tmp"
   File.write(tmp, "#{plan[:artifact]}\n")
   File.rename(tmp, plan[:output_path])
+end
+
+def print_pass(plan)
+  if plan[:materialization] == "generated"
+    puts "PASS #{plan[:id]}: #{plan[:characters]}/#{plan[:max_characters]} chars sha256=#{plan[:sha256]}"
+  else
+    puts "PASS #{plan[:id]}: live-reference #{plan[:reference_repository]}/#{plan[:reference_path]} contract_sha256=#{plan[:contract_sha256]}"
+  end
 end
 
 def main
@@ -208,17 +294,19 @@ def main
       exit 1
     end
 
-    plans.each do |plan|
-      puts "PASS #{plan[:id]}: #{plan[:characters]}/#{plan[:max_characters]} chars sha256=#{plan[:sha256]}"
-    end
+    plans.each { |plan| print_pass(plan) }
     return
   end
 
-  # Every projection has passed source resolution and validation before any output is replaced.
+  # Every projection has passed source resolution and validation before any generated output is replaced.
   plans.each { |plan| write_atomically(plan) }
 
   plans.each do |plan|
-    puts "Generated #{plan[:output_path].sub("#{ROOT}/", "")}: #{plan[:characters]} chars sha256=#{plan[:sha256]}"
+    if plan[:materialization] == "generated"
+      puts "Generated #{plan[:output_path].sub("#{ROOT}/", "")}: #{plan[:characters]} chars sha256=#{plan[:sha256]}"
+    else
+      puts "Validated live reference #{plan[:id]}: #{plan[:reference_repository]}/#{plan[:reference_path]}"
+    end
   end
 end
 
