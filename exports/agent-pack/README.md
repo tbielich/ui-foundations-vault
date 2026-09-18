@@ -32,7 +32,7 @@ It is derived from vault governance, prompts, workflows, and agent operating kno
 - `assistant-behavior-rules.md`: reusable behavior rules for agents working near UI Foundations systems.
 - `skills/perplexity/`: derived Perplexity Skill exports that wrap selected canonical Vault documents in disposable `SKILL.md` directories.
 - `projections/perplexity-research.md`: platform-specific derived operating guidance for Perplexity as a research and validation consumer.
-- `projections/chatgpt-project.md`: reviewed ChatGPT Project custom-instructions projection derived from the UIF Project Bootstrap specification.
+- `projections/chatgpt-project.md`: reviewed ChatGPT Project custom-instructions projection derived from the UIF Project Bootstrap specification and materialized through `registry/project-projections.yml`.
 - `projections/kiro-bootstrap.md`: Kiro-specific bootstrap strategy that prefers native `AGENTS.md` consumption and reserves `.kiro/steering/` for genuine provider-specific gaps.
 - `projections/ui-foundations-intelligence-agents.md`: reviewed Vault-managed shared guidance region for the root `AGENTS.md` in UIF-INT.
 - `review-rules.md`: review stance for agents inspecting UI Foundations changes.
@@ -47,3 +47,9 @@ It is derived from vault governance, prompts, workflows, and agent operating kno
 - When a projection defines explicit managed markers, only the content inside those markers belongs to the projection; content outside remains repository-owned.
 - Treat prompts as operational guidance, not governance.
 - Treat platform- and consumer-specific projections as derived guidance, not as canonical agent roles or governance.
+
+## Projection materialization
+
+Consumer projections may be deterministically materialized through `registry/project-projections.yml` and `scripts/generate-project-projections.rb`.
+
+Generated artifacts live under `.generated/project-projections/`, are disposable, and must not become a second source of truth. Use `ruby scripts/generate-project-projections.rb --check` for preflight validation without writing output.
