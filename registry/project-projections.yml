@@ -10,15 +10,29 @@ updated: 2026-09-18
 authority: source
 summary: Declares deterministic project projection materializations, consumer constraints, delivery semantics, and validation requirements.
 
-version: 0.1
+version: 0.2
 
 projections:
   - id: chatgpt-project
     consumer: chatgpt-project
-    source_document_id: export-pack.agent.projection.chatgpt-project
-    source_path: exports/agent-pack/projections/chatgpt-project.md
-    source_section: Projected instructions
-    source_fence_language: markdown
+    fragment_pack_id: export-pack.agent.fragments.project-bootstrap
+    fragment_pack_path: exports/agent-pack/fragments/project-bootstrap.yml
+    fragment_ids:
+      - identity
+      - section-1-scope-boundary
+      - section-2-ecosystem-model
+      - section-3-authority
+      - section-4-agentic-operating-model
+      - section-5-execution
+      - section-6-execution-modes
+      - section-7-evidence
+      - section-8-persist-state-not-conversation
+      - section-9-design-system-principles
+      - section-10-provider-neutrality
+      - section-11-library-memory-and-research
+      - section-12-decision-quality
+      - section-13-default-interaction
+    separator: "\n\n"
     output_path: .generated/project-projections/chatgpt-project.instructions.md
     delivery: snapshot
     materialization: generated
