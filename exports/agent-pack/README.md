@@ -53,4 +53,4 @@ It is derived from vault governance, prompts, workflows, and agent operating kno
 
 Consumer projections may be deterministically materialized through `registry/project-projections.yml` and `scripts/generate-project-projections.rb`. Reusable projection wording lives in derived fragment packs under `exports/agent-pack/fragments/` rather than in monolithic consumer documents.
 
-Generated artifacts live under `.generated/project-projections/`, are disposable, and must not become a second source of truth. Use `ruby scripts/generate-project-projections.rb --check` for preflight validation without writing output.
+Generated snapshot artifacts live under `.generated/project-projections/`, are disposable, and must not become a second source of truth. Live-reference consumers such as Kiro intentionally produce no generated bootstrap artifact. Use `ruby scripts/generate-project-projections.rb --check` for preflight validation without writing output.

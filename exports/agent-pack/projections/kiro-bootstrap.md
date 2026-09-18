@@ -25,6 +25,7 @@ related:
   references:
     - specification.project-bootstrap
     - registry.sync-contract
+    - registry.project-projections
     - export-pack.agent
     - export-pack.agent.projection.uif-int-agents
 provenance:
@@ -56,7 +57,11 @@ It is derived and non-canonical. It adapts the provider-neutral bootstrap contra
 ## Projection target
 
 - Consumer: Kiro IDE, CLI, Web, or equivalent Kiro workspace execution
+- Projection registry entry: `kiro-uif-int`
+- Delivery: `live-reference`
+- Materialization: `reference` — no generated bootstrap artifact
 - Primary repository instruction surface: `AGENTS.md`
+- Current live target: `tbielich/ui-foundations-intelligence/AGENTS.md`
 - Optional Kiro-specific surface: `.kiro/steering/*.md`
 - Sync mode: `documentation_reference` or `reviewed_patch` when a Kiro-specific file is actually required
 
@@ -148,7 +153,7 @@ Kiro native AGENTS.md consumption
 
 No additional Kiro bootstrap steering file is required for UIF-INT merely to repeat the shared bootstrap guidance.
 
-This is intentional.
+This is intentional. `registry.project-projections` records this consumer as a live reference and the projection compiler validates the Kiro contract without generating a duplicate `.kiro/steering/` artifact.
 
 A future `.kiro/steering/*.md` file should be introduced only when there is a demonstrated Kiro-specific concern that is not already represented by repository-owned or canonical sources.
 
@@ -211,6 +216,8 @@ Those concerns remain local to the appropriate repository, execution system, or 
 This projection is conformant when:
 
 - Kiro can consume applicable repository instructions without a duplicated bootstrap copy;
+- the registered `kiro-uif-int` materialization remains `reference` with `live-reference` delivery;
+- projection validation does not generate a Kiro bootstrap artifact;
 - Kiro-only steering contains only provider-specific adaptation;
 - repository-owned and Vault-owned concerns remain distinguishable;
 - no volatile execution state or credentials are embedded;

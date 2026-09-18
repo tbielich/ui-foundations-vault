@@ -10,7 +10,7 @@ updated: 2026-09-18
 authority: source
 summary: Declares deterministic project projection materializations, consumer constraints, delivery semantics, and validation requirements.
 
-version: 0.2
+version: 0.3
 
 projections:
   - id: chatgpt-project
@@ -47,3 +47,19 @@ projections:
     refresh:
       trigger: source-change
       command: ruby scripts/generate-project-projections.rb
+
+  - id: kiro-uif-int
+    consumer: kiro
+    delivery: live-reference
+    materialization: reference
+    sync_mode: documentation_reference
+    contract_document_id: export-pack.agent.projection.kiro-bootstrap
+    contract_document_path: exports/agent-pack/projections/kiro-bootstrap.md
+    reference:
+      repository: tbielich/ui-foundations-intelligence
+      path: AGENTS.md
+    required_contains:
+      - "Primary repository instruction surface: `AGENTS.md`"
+      - "Do not copy the same shared UIF guidance into `.kiro/steering/`."
+      - "No additional Kiro bootstrap steering file is required for UIF-INT merely to repeat the shared bootstrap guidance."
+      - "Use the shared repository contract directly; add provider steering only for provider differences."
