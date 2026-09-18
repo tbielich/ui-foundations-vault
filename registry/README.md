@@ -6,7 +6,7 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-09
-updated: 2026-07-20
+updated: 2026-09-18
 authority: supporting
 summary: Navigation for machine-readable cross-repo registry files.
 related:
@@ -17,6 +17,7 @@ related:
     - registry.governance-packs
     - registry.agents
     - registry.vault-audits
+    - registry.project-projections
 ---
 
 # Registry
@@ -35,3 +36,4 @@ It does not execute synchronization. It describes what may be consumed, by which
 - `governance-packs.yml`: publishable governance pack versions, channels, manifests, and consumer expectations.
 - `agents.yml`: agent role and capability declarations, source document references, and ecosystem projection targets.
 - `vault-audits.yml`: repeatable vault audits, canonical rule sources, and simple audit composition groups.
+- `project-projections.yml`: deterministic consumer projection plans, source bindings, delivery semantics, output paths, and validation constraints.
