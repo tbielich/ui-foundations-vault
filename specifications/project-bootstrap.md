@@ -34,6 +34,10 @@ related:
     - docs.cross-repo-knowledge-sync
     - registry.sync-contract
     - export-pack.agent
+    - lesson.uilib-consumer-capability-projection
+    - lesson.uilib-generated-projection-materialization
+    - lesson.uilib-projection-preflight
+    - lesson.uilib-projection-delivery-semantics
 verification:
   status: partially-verified
 assumptions:
@@ -195,6 +199,41 @@ Where the consumer performs implementation or verification, evidence requirement
 
 The bootstrap may remind the consumer that evidence is required, but it must not invent repository-specific validation rules.
 
+### 11. Consumer-native projection shape
+
+A bootstrap projection must adapt to the native capability model of its consumer.
+
+Provider neutrality requires stable source semantics and explicit adapter boundaries; it does not require identical artifact formats across heterogeneous consumers.
+
+When a consumer natively accepts references, skills, structured contracts, managed instruction regions, or another bounded artifact type, prefer that form over wrapping every consumer in the same generic projection format.
+
+### 12. Generated materialization when deterministic
+
+When projection output can be derived deterministically from canonical sources and explicit consumer constraints, prefer generated materialization over independently authored copies.
+
+The durable source should be the canonical knowledge, projection intent, and generation/validation rules. Generated consumer artifacts remain derived and replaceable even when they are cached, published, or reviewed.
+
+Hand-authored projections may remain as reference implementations until generation rules are proven. Their presence must not create a second source of truth.
+
+### 13. Preflight before destructive mutation
+
+A projection generator that replaces an existing materialization should resolve required inputs and run deterministic validation before destructive mutation.
+
+If preflight fails, the generator should preserve the last known valid materialization when the target storage model permits it.
+
+The requirement is atomic replacement semantics, not a specific filesystem implementation.
+
+### 14. Explicit delivery semantics
+
+A projection must identify whether its consumer receives:
+
+- a live reference or service that resolves current state at use time; or
+- a snapshot materialization that represents source state at build time.
+
+Snapshot materializations require an explicit refresh or rebuild path and must not imply current-state semantics.
+
+Volatile values that can be safely resolved from an authoritative runtime source should remain references where practical instead of being copied into durable projection artifacts.
+
 ## Bootstrap Contract
 
 Every bootstrap projection should make the following concepts recoverable, either directly or by reference.
@@ -272,7 +311,13 @@ Canonical UIF knowledge
 UIF Project Bootstrap Specification
         |
         v
-Consumer-specific projection
+Consumer capability resolution
+        |
+        v
+Consumer-specific projection plan
+        |
+        v
+Preflight + deterministic validation
         |
         v
 Reviewed materialization
@@ -280,8 +325,8 @@ Reviewed materialization
         +--> Project / workspace instructions
         +--> AGENTS.md managed region
         +--> Provider steering / rules
-        +--> Executor adapter guidance
-        +--> MCP / service instruction layer
+        +--> Structured executor / service contracts
+        +--> Live references or snapshot artifacts
 ```
 
 The projection layer is replaceable. The canonical source layer is not tied to any one consumer.
@@ -330,6 +375,10 @@ A bootstrap implementation is conformant when:
 10. No secrets or volatile execution state are embedded in the bootstrap.
 11. The projection can be regenerated or reviewed from persisted sources.
 12. Removing one provider-specific projection does not remove the canonical knowledge needed to create another.
+13. The projection shape matches the consumer's native capability model rather than an artificial cross-provider format.
+14. Deterministically derivable projections can be regenerated from persisted canonical sources and explicit consumer constraints.
+15. Destructive materialization is preceded by source resolution and deterministic preflight validation when applicable.
+16. Delivery semantics identify live-reference/service behavior versus snapshot materialization, including the required refresh path for snapshots.
 
 ## Example
 
