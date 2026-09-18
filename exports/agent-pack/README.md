@@ -33,6 +33,7 @@ It is derived from vault governance, prompts, workflows, and agent operating kno
 - `skills/perplexity/`: derived Perplexity Skill exports that wrap selected canonical Vault documents in disposable `SKILL.md` directories.
 - `projections/perplexity-research.md`: platform-specific derived operating guidance for Perplexity as a research and validation consumer.
 - `projections/chatgpt-project.md`: reviewed ChatGPT Project custom-instructions projection derived from the UIF Project Bootstrap specification.
+- `projections/kiro-bootstrap.md`: Kiro-specific bootstrap strategy that prefers native `AGENTS.md` consumption and reserves `.kiro/steering/` for genuine provider-specific gaps.
 - `projections/ui-foundations-intelligence-agents.md`: reviewed Vault-managed shared guidance region for the root `AGENTS.md` in UIF-INT.
 - `review-rules.md`: review stance for agents inspecting UI Foundations changes.
 - `reusable-prompts.md`: prompt starters for common cross-repo work.
