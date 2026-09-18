@@ -18,14 +18,17 @@ def fail!(message)
   exit 1
 end
 
-def read_manifest
-  raw = File.read(MANIFEST_PATH)
-  YAML.safe_load(raw, permitted_classes: [Date], aliases: false)
+def read_yaml(path)
+  YAML.safe_load(File.read(path), permitted_classes: [Date], aliases: false)
 end
 
-def required_string(value, path, errors)
-  if !value.is_a?(String) || value.strip.empty?
-    errors << "Missing or invalid required field: #{path}"
+def required_string(value, field, errors)
+  errors << "Missing or invalid required field: #{field}" unless value.is_a?(String) && !value.strip.empty?
+end
+
+def required_string_list(value, field, errors)
+  unless value.is_a?(Array) && !value.empty? && value.all? { |item| item.is_a?(String) && !item.strip.empty? }
+    errors << "#{field} must be a non-empty string list"
   end
 end
 
@@ -44,89 +47,111 @@ def repository_path(path, field, errors)
   candidate.to_s
 end
 
-def document_id(content)
-  frontmatter = content.match(/\A---\s*\n(.*?)\n---\s*\n/m)
-  return nil unless frontmatter
+def fragment_index(pack, projection_id)
+  fragments = pack["fragments"]
+  unless fragments.is_a?(Array) && !fragments.empty?
+    raise "#{projection_id} fragment pack must contain a non-empty fragments list"
+  end
 
-  data = YAML.safe_load(frontmatter[1], permitted_classes: [Date], aliases: false)
-  data.is_a?(Hash) ? data["id"] : nil
+  ids = fragments.map { |fragment| fragment["id"] }
+  duplicates = ids.compact.group_by(&:itself).select { |_id, values| values.length > 1 }.keys
+  raise "#{projection_id} fragment pack has duplicate ids: #{duplicates.join(", ")}" unless duplicates.empty?
+
+  index = {}
+  fragments.each do |fragment|
+    errors = []
+    required_string(fragment["id"], "#{projection_id}.fragments[].id", errors)
+    required_string(fragment["text"], "#{projection_id}.#{fragment["id"]}.text", errors)
+
+    source_ids = fragment["source_ids"]
+    if source_ids && !(source_ids.is_a?(Array) && source_ids.all? { |id| id.is_a?(String) && !id.strip.empty? })
+      errors << "#{projection_id}.#{fragment["id"]}.source_ids must be a string list when present"
+    end
+
+    raise errors.join("\n") unless errors.empty?
+    index[fragment["id"]] = fragment
+  end
+
+  index
 end
 
-def extract_fenced_section(content, section, language)
-  heading = /^##\s+#{Regexp.escape(section)}\s*$/
-  match = content.match(heading)
-  raise "Section not found: #{section.inspect}" unless match
+def compose_fragment_projection(entry, errors)
+  projection_id = entry["id"]
+  pack_path = repository_path(entry["fragment_pack_path"], "#{projection_id}.fragment_pack_path", errors)
+  required_string(entry["fragment_pack_id"], "#{projection_id}.fragment_pack_id", errors)
+  required_string_list(entry["fragment_ids"], "#{projection_id}.fragment_ids", errors)
 
-  tail = content[match.end(0)..]
-  fence = /^\`\`\`#{Regexp.escape(language)}\s*\n(.*?)^\`\`\`\s*$/m
-  fenced = tail.match(fence)
-  raise "Fenced #{language.inspect} block not found after section #{section.inspect}" unless fenced
-
-  fenced[1].sub(/\n\z/, "")
-end
-
-def validate_projection(entry)
-  errors = []
-
-  required_string(entry["id"], "projections[].id", errors)
-  required_string(entry["consumer"], "#{entry["id"]}.consumer", errors)
-  required_string(entry["source_document_id"], "#{entry["id"]}.source_document_id", errors)
-  required_string(entry["source_section"], "#{entry["id"]}.source_section", errors)
-  required_string(entry["source_fence_language"], "#{entry["id"]}.source_fence_language", errors)
-  required_string(entry["sync_mode"], "#{entry["id"]}.sync_mode", errors)
-
-  source_path = repository_path(entry["source_path"], "#{entry["id"]}.source_path", errors)
-  output_path = repository_path(entry["output_path"], "#{entry["id"]}.output_path", errors)
-
-  unless ALLOWED_DELIVERY.include?(entry["delivery"])
-    errors << "#{entry["id"]}.delivery must be one of #{ALLOWED_DELIVERY.join(", ")}"
-  end
-
-  unless ALLOWED_MATERIALIZATION.include?(entry["materialization"])
-    errors << "#{entry["id"]}.materialization must be generated"
-  end
-
-  max_characters = entry.dig("limits", "max_characters")
-  unless max_characters.is_a?(Integer) && max_characters.positive?
-    errors << "#{entry["id"]}.limits.max_characters must be a positive integer"
-  end
-
-  if output_path && !output_path.start_with?("#{GENERATED_ROOT}#{File::SEPARATOR}")
-    errors << "#{entry["id"]}.output_path must stay under .generated/project-projections/"
-  end
-
-  if source_path && !File.file?(source_path)
-    errors << "#{entry["id"]}.source_path does not exist: #{entry["source_path"]}"
+  if pack_path && !File.file?(pack_path)
+    errors << "#{projection_id}.fragment_pack_path does not exist: #{entry["fragment_pack_path"]}"
   end
 
   raise errors.join("\n") unless errors.empty?
 
-  content = File.read(source_path)
-  actual_id = document_id(content)
-  unless actual_id == entry["source_document_id"]
-    raise "#{entry["id"]}.source_document_id #{entry["source_document_id"].inspect} does not match source id #{actual_id.inspect}"
+  pack = read_yaml(pack_path)
+  unless pack.is_a?(Hash)
+    raise "#{projection_id} fragment pack must be a YAML object"
+  end
+  unless pack["id"] == entry["fragment_pack_id"]
+    raise "#{projection_id}.fragment_pack_id #{entry["fragment_pack_id"].inspect} does not match pack id #{pack["id"].inspect}"
   end
 
-  artifact = extract_fenced_section(
-    content,
-    entry["source_section"],
-    entry["source_fence_language"]
-  )
+  index = fragment_index(pack, projection_id)
+  missing = entry["fragment_ids"].reject { |id| index.key?(id) }
+  raise "#{projection_id} references missing fragments: #{missing.join(", ")}" unless missing.empty?
+
+  separator = entry.key?("separator") ? entry["separator"] : "\n\n"
+  unless separator.is_a?(String)
+    raise "#{projection_id}.separator must be a string"
+  end
+
+  entry["fragment_ids"].map { |id| index.fetch(id).fetch("text") }.join(separator)
+end
+
+def validate_projection(entry)
+  errors = []
+  projection_id = entry["id"]
+
+  required_string(projection_id, "projections[].id", errors)
+  required_string(entry["consumer"], "#{projection_id}.consumer", errors)
+  required_string(entry["sync_mode"], "#{projection_id}.sync_mode", errors)
+
+  output_path = repository_path(entry["output_path"], "#{projection_id}.output_path", errors)
+
+  unless ALLOWED_DELIVERY.include?(entry["delivery"])
+    errors << "#{projection_id}.delivery must be one of #{ALLOWED_DELIVERY.join(", ")}"
+  end
+
+  unless ALLOWED_MATERIALIZATION.include?(entry["materialization"])
+    errors << "#{projection_id}.materialization must be generated"
+  end
+
+  max_characters = entry.dig("limits", "max_characters")
+  unless max_characters.is_a?(Integer) && max_characters.positive?
+    errors << "#{projection_id}.limits.max_characters must be a positive integer"
+  end
+
+  if output_path && !output_path.start_with?("#{GENERATED_ROOT}#{File::SEPARATOR}")
+    errors << "#{projection_id}.output_path must stay under .generated/project-projections/"
+  end
+
+  raise errors.join("\n") unless errors.empty?
+
+  artifact = compose_fragment_projection(entry, errors)
 
   if artifact.length > max_characters
-    raise "#{entry["id"]} exceeds character limit: #{artifact.length}/#{max_characters}"
+    raise "#{projection_id} exceeds character limit: #{artifact.length}/#{max_characters}"
   end
 
   Array(entry["required_contains"]).each do |required|
-    required_string(required, "#{entry["id"]}.required_contains[]", errors)
+    required_string(required, "#{projection_id}.required_contains[]", errors)
     next unless required.is_a?(String) && !required.empty?
-    errors << "#{entry["id"]} is missing required content: #{required.inspect}" unless artifact.include?(required)
+    errors << "#{projection_id} is missing required content: #{required.inspect}" unless artifact.include?(required)
   end
 
   raise errors.join("\n") unless errors.empty?
 
   {
-    id: entry["id"],
+    id: projection_id,
     output_path: output_path,
     artifact: artifact,
     characters: artifact.length,
@@ -136,9 +161,7 @@ def validate_projection(entry)
 end
 
 def preflight(manifest)
-  unless manifest.is_a?(Hash)
-    raise "Projection registry must be a YAML object"
-  end
+  raise "Projection registry must be a YAML object" unless manifest.is_a?(Hash)
 
   projections = manifest["projections"]
   unless projections.is_a?(Array) && !projections.empty?
@@ -173,7 +196,7 @@ def main
   check = ARGV.include?("--check")
 
   plans = begin
-    preflight(read_manifest)
+    preflight(read_yaml(MANIFEST_PATH))
   rescue StandardError => e
     fail!("Projection preflight failed:\n#{e.message}")
   end
@@ -191,7 +214,7 @@ def main
     return
   end
 
-  # All projections have passed preflight before any output is replaced.
+  # Every projection has passed source resolution and validation before any output is replaced.
   plans.each { |plan| write_atomically(plan) }
 
   plans.each do |plan|
