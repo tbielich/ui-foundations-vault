@@ -2,7 +2,7 @@
 id: adr.bounded-browser-verification
 title: Bounded Browser Verification
 type: adr
-status: review
+status: accepted
 owners:
   - ui-foundations
 created: 2026-09-29

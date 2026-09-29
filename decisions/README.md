@@ -22,4 +22,4 @@ Use `templates/adr-template.md` for new ADRs.
 - `uif-public-api-namespace.md` — canonical public macro invocation and Custom
   Element tag namespaces (review)
 - `bounded-browser-verification.md` — bounded real-browser verification for Runtime
-  interaction behavior (review)
+  interaction behavior (accepted)
