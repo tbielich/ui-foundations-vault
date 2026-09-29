@@ -218,6 +218,7 @@ After acceptance, independent read-only Runtime verification must establish:
 
 ## Related
 
+- [Dependent Runtime issue #309](https://github.com/tbielich/ui-foundations-runtime/issues/309) — blocked pending ADR acceptance and explicit human execution authorization.
 - [Accepted bounded browser decision](bounded-browser-verification.md)
 - [Lifecycle](../governance/lifecycle.md) and [verification review](../governance/verification-review.md)
 - Runtime baseline inspected: `tbielich/ui-foundations-runtime` at
