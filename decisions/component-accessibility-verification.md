@@ -2,13 +2,13 @@
 id: adr.component-accessibility-verification
 title: "ADR: Component Accessibility Verification and Evidence Scoring"
 type: adr
-status: review
+status: accepted
 owners:
   - ui-foundations
 created: 2026-09-29
 updated: 2026-09-29
 authority: source
-summary: Proposes bounded automated component accessibility evidence and Design Checklist scoring while keeping real screenreader verification separate.
+summary: Defines bounded automated component accessibility evidence and Design Checklist scoring while keeping real screenreader verification separate.
 applies_to:
   - ui-foundations-runtime
 related:
@@ -42,7 +42,7 @@ Playground control is not evidence that the actual component input, trigger, and
 calendar interaction work. Tests must follow the user-facing component boundary.
 
 The inspected Runtime accessibility page already requires manual screenreader and
-keyboard checks before stable status. This proposal preserves that expectation.
+keyboard checks before stable status. This decision preserves that expectation.
 Playwright ARIA snapshots expose accessible structure; axe-core detects certain
 automatable problems. Neither proves actual VoiceOver, NVDA, or JAWS output.
 
@@ -51,9 +51,13 @@ Design System. No UILib architecture, governance, assets, or ownership is import
 
 ## Decision
 
-**Proposed for review; not implementation authority until accepted.** Adopt a
-bounded component accessibility verification capability and an evidence-backed
-score inside each participating component's existing **Design Checklist**.
+**Accepted by explicit human instruction on 2026-09-29.** UIF adopts a bounded
+component accessibility verification capability and an evidence-backed score
+inside each participating component's existing **Design Checklist**.
+
+The owner approved the lifecycle transition with “Setze ihn auf accepted”.
+Publication on Vault's default branch and Runtime execution authorization remain
+separate gates described below.
 
 ### Evidence layers
 
@@ -152,7 +156,7 @@ The first implementation issue is limited to **Button and Checkbox** in headless
 Chromium, brand A / light mode, using their existing rendered docs examples. This
 small slice exercises names, native states, keyboard behavior, axe results and docs
 integration. It does not certify other components, variants or contexts. Datepicker
-repair and coverage remain separate bounded work; this proposal does not select or
+repair and coverage remain separate bounded work; this decision does not select or
 authorize that work.
 
 The dependent Runtime issue starts blocked, without `agent:ready`. Before a human
@@ -182,7 +186,7 @@ path keeps the capability small and the ownership boundaries clear.
   bounded coverage and the existing runner limit maintenance overhead.
 - Existing failures may block the pilot. Persist findings and obtain separate
   bounded repair authority; do not silently broaden this implementation issue.
-- The numerical rubric and pilot scope are review choices. Accessibility foundation
+- The numerical rubric and pilot scope are accepted choices. Accessibility foundation
   and capability documents referenced below are themselves in review and are
   supporting context, not silently promoted governance.
 
@@ -200,10 +204,12 @@ path keeps the capability small and the ownership boundaries clear.
 
 ADR review checks boundaries, denominator and unknown-state treatment, evidence
 provenance, acceptance/readiness gates, and separation from manual screenreader work.
-This document remains `review` and `verification.status: unverified`; document
-validation does not establish an implemented or accessible component.
+The decision lifecycle is `accepted`; `verification.status: unverified` remains
+unchanged because implementation evidence is still outstanding. Document review
+and human acceptance do not establish an implemented or accessible component.
 
-After acceptance, independent read-only Runtime verification must establish:
+After the publication and execution gates are satisfied, independent read-only
+Runtime verification must establish:
 
 - Pilot tests use rendered components and assert intended semantic and interaction
   outcomes; known negative controls cause the corresponding checks/gates to fail.
@@ -218,7 +224,7 @@ After acceptance, independent read-only Runtime verification must establish:
 
 ## Related
 
-- [Dependent Runtime issue #309](https://github.com/tbielich/ui-foundations-runtime/issues/309) — blocked pending ADR acceptance and explicit human execution authorization.
+- [Dependent Runtime issue #309](https://github.com/tbielich/ui-foundations-runtime/issues/309) — blocked pending publication of the accepted ADR on Vault's default branch and explicit human execution authorization.
 - [Accepted bounded browser decision](bounded-browser-verification.md)
 - [Lifecycle](../governance/lifecycle.md) and [verification review](../governance/verification-review.md)
 - Runtime baseline inspected: `tbielich/ui-foundations-runtime` at

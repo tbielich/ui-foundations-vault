@@ -23,4 +23,4 @@ Use `templates/adr-template.md` for new ADRs.
   Element tag namespaces (review)
 - `bounded-browser-verification.md` — bounded real-browser verification for Runtime
   interaction behavior (accepted)
-- [component-accessibility-verification.md](component-accessibility-verification.md) — component accessibility evidence and Design Checklist scoring (review)
+- [component-accessibility-verification.md](component-accessibility-verification.md) — component accessibility evidence and Design Checklist scoring (accepted)
