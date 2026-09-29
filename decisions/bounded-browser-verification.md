@@ -133,4 +133,4 @@ This decision is satisfied when:
 
 ## Related
 
-- Runtime implementation issue: to be linked after creation.
+- Runtime implementation issue: https://github.com/tbielich/ui-foundations-runtime/issues/307
