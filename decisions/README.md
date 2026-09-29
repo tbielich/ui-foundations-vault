@@ -6,7 +6,7 @@ status: stable
 owners:
   - ui-foundations
 created: 2026-07-07
-updated: 2026-07-07
+updated: 2026-09-29
 authority: supporting
 summary: Entry point for architecture decision records and durable decisions.
 ---
@@ -23,3 +23,4 @@ Use `templates/adr-template.md` for new ADRs.
   Element tag namespaces (review)
 - `bounded-browser-verification.md` — bounded real-browser verification for Runtime
   interaction behavior (accepted)
+- [component-accessibility-verification.md](component-accessibility-verification.md) — component accessibility evidence and Design Checklist scoring (review)
