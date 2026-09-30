@@ -2,7 +2,7 @@
 id: adr.token-model-and-figma-projection
 title: Token Model and Figma Projection
 type: adr
-status: review
+status: accepted
 owners:
   - ui-foundations
 created: 2026-09-30
@@ -30,9 +30,9 @@ Those conflicts are explicit migration inputs, not evidence that a role layer
 already exists. UIF is separate from UILib and the official TUI Design System.
 
 The current owner instruction authorizes this bounded implementation experiment.
-This ADR is ready for review, not accepted governance. Global adoption and a
-governance-pack release require the normal Vault lifecycle. Existing consumed
-packs are not silently rewritten.
+The owner approved this ADR on 2026-09-30. It is accepted Vault governance.
+Implementation beyond the bounded slice and a governance-pack release remain
+separate work. Existing consumed packs are not silently rewritten.
 
 ## Decision
 
@@ -157,8 +157,9 @@ architecture, repositories or terminology are imported.
   generation must preserve dynamic brand/scheme references and alpha values.
 - Existing code-only token projections remain visible exceptions. This slice
   does not claim complete library synchronization or full accessibility.
-- The review ADR must be accepted before becoming a generally enforced Vault
-  governance pack. Runtime records this owner's bounded override explicitly.
+- This accepted ADR can guide work; publication in a consumed governance pack
+  remains a separate release. Runtime retains the original bounded execution
+  authorization as historical evidence.
 
 ## Alternatives Considered
 

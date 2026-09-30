@@ -25,4 +25,4 @@ Use `templates/adr-template.md` for new ADRs.
   interaction behavior (accepted)
 - [component-accessibility-verification.md](component-accessibility-verification.md) — component accessibility evidence and Design Checklist scoring (accepted)
 
-- [token-model-and-figma-projection.md](token-model-and-figma-projection.md) — refined token responsibilities and bounded compatible Figma migration (review)
+- [token-model-and-figma-projection.md](token-model-and-figma-projection.md) — refined token responsibilities and bounded compatible Figma migration (accepted)
