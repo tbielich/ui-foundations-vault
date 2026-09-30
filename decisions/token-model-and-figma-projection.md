@@ -68,6 +68,29 @@ depend on all three where its contract requires it. Appearance resolves that
 context while Semantics and Patterns retain stable purpose and slot names.
 Do not duplicate every value by brand when the brands intentionally share it.
 
+### Preserve brand identity during accessibility repairs
+
+Contrast compliance and brand identity are independent acceptance gates. A
+contrast repair must preserve each brand's intended hue, inversion and visual
+role. Do not replace distinct brand action borders or foregrounds with one
+shared neutral value merely because that value passes a contrast threshold.
+Use existing brand palette primitives and scoped Brand × Scheme projections;
+shared neutral values are allowed only where the contract intentionally shares
+them. Preserve the distinction between filled Action Surface, paired Content,
+Action Foreground and action Border.
+
+Verify every affected Brand × Scheme × State combination for both contrast and
+its expected brand-specific realization. Include assertions that distinguish
+brands, not only generic contrast thresholds. A repair passes only when both
+gates pass. Changes to shared semantic aliases require checking all consuming
+patterns before merge.
+
+The 30 September 2026 dark Outline repair demonstrated this failure: aliasing
+all brands to a neutral Strong Dark border made all outlines white. The
+correction keeps Brand A white and restores Brand B purple and Brand C blue
+through a dedicated Brand-owned dark action-border projection.
+
+
 The current bounded Scale projection contains shared literal Min/Max endpoints
 and Core bridges. It does not yet implement brand-specific endpoint selection.
 This is a recorded projection limitation, not a rule that Scale must be
