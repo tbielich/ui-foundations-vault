@@ -41,12 +41,14 @@ Arrows describe increasing abstraction; aliases point toward dependencies.
 
 - **Core** owns literal primitives, including qualified private Brand A/B/C
   source palettes. Palette qualification identifies provenance, not UI meaning.
-- **Appearance / Brand** selects identity, palette, typography and shape.
+- **Appearance / Brand** owns the full visual identity: palette, typography,
+  shape and, where specified, spacing, sizing and other visual properties.
+  Shape is one example of Brand responsibility, not its boundary.
 - **Appearance / Scheme** selects light/dark realizations. It may depend on
   Brand or Core. Brand and Scheme are orthogonal contextual axes, not one mode.
 - **Appearance / Scale** projects scalar and fluid typography/layout values.
   Min/Max are interpolation endpoints, not light/dark modes. It may depend on
-  Core; brand typography may be selected through Brand.
+  Core or Brand; typography and layout endpoints may be brand-specific.
 - **Semantics** owns reusable purpose and matched interaction-state roles.
   It aliases Appearance; it does not select brands or schemes.
 - **Patterns** expose family/variant/part/property/state slots and consume
@@ -56,6 +58,21 @@ Figma projects these responsibilities as `Core (Primitives)`,
 `Appearance (Brand)`, `Appearance (Scheme)`, `Appearance (Scale)`,
 `Semantics (Roles)` and `Patterns (UI)`. `Interaction (States)` remains an
 explicitly excluded prototype helper collection, not a foundation layer.
+
+### Independent axes, dependent values
+
+Brand, Scheme and Scale are independently selected contextual axes, not
+independent sets of visual values. A surface can depend on Brand × Scheme;
+responsive typography or layout can depend on Brand × Scale, and a value may
+depend on all three where its contract requires it. Appearance resolves that
+context while Semantics and Patterns retain stable purpose and slot names.
+Do not duplicate every value by brand when the brands intentionally share it.
+
+The current bounded Scale projection contains shared literal Min/Max endpoints
+and Core bridges. It does not yet implement brand-specific endpoint selection.
+This is a recorded projection limitation, not a rule that Scale must be
+brand-neutral. Adding such selection requires a separately bounded contract
+and parity verification; this clarification changes no existing token values.
 
 ### Naming and projection
 
