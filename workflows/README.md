@@ -6,7 +6,7 @@ status: stable
 owners:
   - ui-foundations
 created: 2026-07-07
-updated: 2026-07-07
+updated: 2026-10-03
 authority: supporting
 summary: Entry point for repeatable human and agent workflows.
 ---
@@ -16,3 +16,7 @@ summary: Entry point for repeatable human and agent workflows.
 Repeatable human and agent workflows for UI Foundations work.
 
 Use `templates/workflow-template.md` for new workflows.
+
+## Records
+
+- [evidence-based-architecture-decision.md](evidence-based-architecture-decision.md) — canonical research → hypothesis → ADR → spike → evidence → decision workflow (review)
