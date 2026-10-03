@@ -2,11 +2,11 @@
 id: adr.agent-collaboration-protocol-boundaries
 title: Agent Collaboration and Protocol Boundaries
 type: adr
-status: review
+status: accepted
 owners:
   - ui-foundations
 created: 2026-10-02
-updated: 2026-10-02
+updated: 2026-10-03
 authority: source
 summary: Defines orchestration-first collaboration for UIF agents, protocol-neutral work and event contracts, MCP as the capability boundary, and A2A only for independent remote agent service boundaries.
 applies_to:
