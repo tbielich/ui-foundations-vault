@@ -6,7 +6,7 @@ status: review
 owners:
   - ui-foundations
 created: 2026-07-07
-updated: 2026-07-07
+updated: 2026-10-04
 authority: source
 summary: Defines the capability to improve interface language.
 related:
@@ -15,6 +15,7 @@ related:
     - principle.foundation.accessibility-principles
     - principle.foundation.usability-heuristics
     - reference.terminology
+    - governance.natural-writing
 ---
 
 # UX Writing
@@ -42,15 +43,18 @@ UX writing improves interface language so people can understand context, make de
 - Usability heuristics
 - Canonical terminology
 - Relevant component or pattern context
+- Natural Writing Contract
 
 ## Reasoning Method
 
-1. Identify the text role and user state.
-2. Determine what the user needs to know or do.
-3. Remove ambiguity, jargon, and unnecessary wording.
-4. Preserve canonical terminology.
-5. Check that the text works without hidden context.
-6. Provide a concise recommendation with rationale.
+1. Apply `governance.natural-writing` as the global writing baseline.
+2. Identify the text role and user state.
+3. Determine what the user needs to know or do.
+4. Remove ambiguity, jargon, and unnecessary wording.
+5. Preserve canonical terminology.
+6. Check that the text works without hidden context.
+7. Review the result for writing signals defined by the Natural Writing Contract.
+8. Provide a concise recommendation with rationale.
 
 ## Outputs
 
@@ -66,6 +70,8 @@ UX writing improves interface language so people can understand context, make de
 - The wording supports accessibility and recognition.
 - Terminology is consistent with the vault reference layer.
 - The output avoids decorative or promotional language for functional UI.
+- The output conforms to the hard rules in `governance.natural-writing`.
+- Style signals from `governance.natural-writing` have been reviewed in context rather than mechanically removed.
 
 ## Related Documents
 
@@ -73,4 +79,5 @@ UX writing improves interface language so people can understand context, make de
 - `principle.foundation.accessibility-principles`
 - `principle.foundation.usability-heuristics`
 - `reference.terminology`
+- `governance.natural-writing`
 
