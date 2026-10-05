@@ -94,6 +94,10 @@ No credentials, private trace payloads or local session content are copied here.
 
 Change frequency, concurrent exceptions, response latency, and shared-owner/context switching are unmeasured. W4 and W5 may compete for the same accessibility/brand reviewer; W1 and W6 may share knowledge provenance. These are portfolio hypotheses, not observed concurrent operations. Autonomy may reduce routine attention while making exceptional interventions harder; the rubric is not monotonic proof that higher autonomy always costs more.
 
+## Retrospective artifact follow-up
+
+The [retrospective extraction and calibration sheet](./spike-2026-10-05-agentic-load-retrospective.md) inspects W1, W4 and W5 in more depth: six recorded browser invocations within one W4 task, one reported criterion improvement, and a structural FAIL → PASS cycle for W5. It preserves local artifact hashes and public source locators, without inferring human intervention counts or net capacity. The prospective repeated-run sample below remains unexecuted.
+
 ## Proposed next calibration sample — not executed
 
 Compare W1, W4 and W5 over repeated comparable runs, as a low-coupling documentation case, a bounded implementation with failed checks, and a coupled Git/Figma case. If W4/W5 are unavailable, choose equivalent future tasks rather than replaying or broadening their old authorization. This proposal does not authorize provider access or writes.

@@ -22,4 +22,6 @@ Use this area for reusable findings about agent behavior, review stance, prompts
 
 - [Agentic Load Spike — Initial UIF Workflow Matrix](./spike-2026-10-05-agentic-load-matrix.md) — artifact classifications and calibration gaps; supporting evidence only.
 
+- [Agentic Load Retrospective and Calibration Sheet](./spike-2026-10-05-agentic-load-retrospective.md) — retained artifact observations; human effort remains unmeasured.
+
 Promote durable findings to `agents/`, `prompts/`, `workflows/`, or `exports/agent-pack/` when they become stable.
