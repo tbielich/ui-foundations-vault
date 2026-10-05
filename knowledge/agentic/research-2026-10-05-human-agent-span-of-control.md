@@ -286,6 +286,10 @@ Primary and supporting references from the research:
 - Multi-UAV supervisory-control research: https://link.springer.com/chapter/10.1007/978-3-540-72696-8_2
 - McKinsey, span-of-control framework: https://www.mckinsey.com/capabilities/people-and-organization/our-insights/how-to-identify-the-right-spans-of-control-for-your-organization
 
+## Initial UIF artifact spike
+
+The [Agentic Load Matrix spike](./spike-2026-10-05-agentic-load-matrix.md) applies these dimensions to six existing UIF workflow profiles, distinguishes recorded cases from documented profiles, and identifies missing human effort and exception-rate measurements. It is supporting calibration evidence, not a governance decision or a completed capacity pilot.
+
 ## Research status
 
 Supporting research only.
