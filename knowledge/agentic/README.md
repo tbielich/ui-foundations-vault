@@ -6,7 +6,7 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-09
-updated: 2026-07-09
+updated: 2026-10-05
 authority: supporting
 summary: Cross-repo agent behavior and collaboration knowledge.
 ---
@@ -14,5 +14,10 @@ summary: Cross-repo agent behavior and collaboration knowledge.
 # Agentic Knowledge
 
 Use this area for reusable findings about agent behavior, review stance, prompts, and cross-repo collaboration.
+
+## Current research
+
+- [Agent-ready Foundations, Accessibility Trust, and Token Resolution](./research-2026-09-18-agent-ready-foundations.md)
+- [Human–Agent Span of Control and Agentic Load](./research-2026-10-05-human-agent-span-of-control.md)
 
 Promote durable findings to `agents/`, `prompts/`, `workflows/`, or `exports/agent-pack/` when they become stable.
