@@ -21,9 +21,9 @@ related:
 
 ## Open source as an inspection and collaboration model
 
-Open source is an **implementation strategy**, not part of the central thesis. It can strengthen a reference architecture by making formats, assumptions, and implementation choices inspectable. Organizations can evaluate the model without adopting a proprietary service, while standards mappings and validators can be reviewed independently.
+Open source is one possible **implementation strategy** for this model. It can strengthen a reference architecture by making formats, assumptions, and implementation choices inspectable. Organizations can evaluate the model without adopting a proprietary service, while standards mappings and validators can be reviewed independently.
 
-The argument is not that every design system should be public. Brand assets, product strategy, user research, and internal constraints may require restricted access. The relevant distinction is between an open reference model and an organization's private knowledge. A public framework can define document structures, relationship semantics, validation methods, and adapters while private repositories supply local content.
+The proposal does not require design systems to be public. Brand assets, product strategy, user research, and internal constraints may require restricted access. The relevant distinction is between an open reference model and an organization's private knowledge. A public framework can define document structures, relationship semantics, validation methods, and adapters while private repositories supply local content.
 
 ## Benefits
 
@@ -41,16 +41,16 @@ Issues, proposals, version history, and release notes make change visible. The D
 
 ### Avoiding duplicated foundational work
 
-Shared exchange formats, schemas, and validators reduce duplicated foundational work and let design-system teams focus on domain-specific semantics, research, and product quality.
+Shared formats, schemas, and validators can reduce the amount of foundational work each team has to rebuild. Teams can then spend more effort on domain-specific requirements and product work.
 
 ## Risks and limits
 
 Open-source maintenance is not free. A public project needs triage, security response, release discipline, documentation, and contributor expectations. External contributions may expand scope faster than maintainers can review. A reference architecture can also be mistaken for a mandatory implementation.
 
-These risks favor a narrow open core: stable schemas, conventions, validation, and examples. Organization-specific governance remains local. Extensions should be explicit and should not fragment the shared core without evidence.
+A small shared core of schemas, conventions, validation, and examples limits that maintenance burden. Organization-specific governance remains local. Extensions should be explicit and should not fragment the shared core without evidence.
 
 ## Open source is not the same as a standard
 
 An open-source implementation demonstrates feasibility and exposes trade-offs. A standard establishes shared expectations across independent implementations. Governance should therefore state compatibility precisely: using DTCG concepts, exporting a compatible file, and claiming conformance are different assertions.
 
-Open source is an enabling strategy, not a premise of the architectural model. A closed organization can implement the same responsibility boundaries. The next chapter positions TUI as one environment in which the open reference implementation can be tested and measured.
+A private organization can apply the same responsibility boundaries without publishing its implementation. Openness makes a reference model easier to inspect and challenge; it is not a condition for using it.
