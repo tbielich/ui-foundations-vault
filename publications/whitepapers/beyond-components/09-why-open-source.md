@@ -6,7 +6,7 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-16
-updated: 2026-07-16
+updated: 2026-10-09
 authority: supporting
 summary: Draft chapter on the role of open source in the proposed model.
 related:
