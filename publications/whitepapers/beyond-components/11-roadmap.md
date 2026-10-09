@@ -21,7 +21,7 @@ related:
 
 ## Adoption should be incremental
 
-This roadmap is a **UI Foundations proposal**, not a prescribed industry sequence. A knowledge platform should evolve from demonstrated needs rather than begin as a large transformation program. Establish governance and identity first, connect a small set of high-value artifacts, and expand only when evidence shows that the model reduces ambiguity or rework.
+The roadmap is a **UI Foundations proposal**, not a sequence every organization needs to follow. A knowledge platform should evolve from demonstrated needs rather than begin as a large transformation program. Begin with a small, governed set of documents. Connect them to implementation, then expand only if the pilot reduces ambiguity or rework.
 
 ## Phase 1: establish the knowledge baseline
 
@@ -91,30 +91,24 @@ Several assumptions require empirical review:
 
 ## Failure modes to avoid
 
-The roadmap can fail through over-centralization, premature tooling, or weak stewardship. A central team that must approve every contribution becomes a bottleneck. A graph or AI interface built before identifiers and ownership are stable makes inconsistency easier to query without making it easier to resolve. A migration that copies old documentation without reviewing authority preserves the original fragmentation in a new location.
+Three risks recur: centralizing too many decisions, building tools before the underlying knowledge is reliable, and leaving ownership unclear. A central team that must approve every contribution becomes a bottleneck. A graph or AI interface built before identifiers and ownership are stable makes inconsistency easier to query without making it easier to resolve. A migration that copies old documentation without reviewing authority preserves the original fragmentation in a new location.
 
-Another failure mode is measuring activity instead of outcomes. Document count, generated code volume, and agent sessions can rise while product quality remains unchanged. Each phase should have an exit criterion tied to decision quality, traceability, conformance, or correction cost.
+Activity metrics can also hide a lack of progress. Document count, generated code volume, and agent sessions can rise while product quality remains unchanged. Each phase should have an exit criterion tied to decision quality, traceability, conformance, or correction cost.
 
-Finally, organizations should avoid declaring the platform complete. Standards, products, and tools evolve. The architecture must support deprecation, supersession, and controlled experimentation. Evolutionary architecture treats change as continuous work rather than evidence that the original design failed ([Fowler, 2017](references.md#ref-fowler-evolutionary)).
+The work also needs room to change. Standards, products, and tools evolve. The architecture must support deprecation, supersession, and controlled experimentation. Evolutionary architecture treats change as continuous work rather than evidence that the original design failed ([Fowler, 2017](references.md#ref-fowler-evolutionary)).
 
 ## Leadership decisions
 
 Design and engineering leadership should decide whether the design system is expected to govern only reusable assets or also the knowledge required to apply them. Architecture leadership should define boundaries between canonical knowledge, runtime truth, and tool projections. Product leadership should ensure that system adoption remains connected to customer outcomes.
 
-The immediate next step is not to build a universal platform. It is to select one consequential workflow, make its knowledge and authority explicit, connect it to implementation and evidence, and measure whether the result improves decision quality. The architecture should earn its expansion.
+Select one consequential workflow, record its governing knowledge, connect that knowledge to implementation and tests, and measure whether decisions improve. Expand the architecture only when the results justify it.
 
 ## Conclusion
 
-Design systems have become durable production infrastructure because they make selected design and engineering decisions reusable. Components, design tokens, patterns, and documentation remain the foundation of that value. The next generation must standardize design knowledge, not only reusable components, so that people and machines can find, interpret, apply, and verify the knowledge that gives each asset meaning.
+A design system can already share components, tokens, and patterns across products. What remains harder to reuse is the reasoning behind them: which decisions govern an experience, where an exception is allowed, and how a team can tell whether an implementation is correct.
 
-AI makes this constraint visible because it can turn incomplete context into implementation at high speed. The appropriate response is neither unrestricted generation nor an attempt to encode every judgment. It is a governed knowledge architecture that distinguishes standards from observations, normative contracts from examples, and organizational proposals from established practice. Such an architecture supplies stable identity, provenance, lifecycle, precedence, explicit relationships, and validation while leaving product decisions with accountable humans.
+AI makes this gap easier to see. It can turn incomplete instructions into working code before anyone has resolved missing semantics or ownership. The response proposed here is a knowledge layer that records standards, decisions, provenance, lifecycle, relationships, and validation criteria. Execution tools consume this knowledge; they do not become its source of authority.
 
-The proposed model is deliberately layered. Open standards define shared boundaries. Canonical organizational knowledge records intent and decisions. Runtime and design tools implement that knowledge through replaceable representations. Context resolution supplies bounded guidance to humans, automation, and agents. Tests, review, and product evidence return learning to the system through a controlled promotion path.
+UI Foundations tests that separation through a Vault, an Intelligence layer, a Runtime, and a Studio. It is an experiment, not evidence that four repositories are the right structure for every team. Human judgment is still needed to resolve trade-offs and approve durable changes.
 
-This model will not remove disagreement. Design leadership will still balance coherence with expression. Engineering leadership will still balance reuse with local constraints. Architecture will still decide where coupling is justified. Product teams will still own outcomes. The platform's purpose is to make those decisions more legible and less likely to be replaced by accidental precedent.
-
-UI Foundations offers one reference implementation with a separated knowledge vault, execution concern, runtime, and human-facing workspace. Its value must be established through use. The project should remain open to smaller repository structures, different taxonomies, and alternative tools that preserve the same responsibility boundaries.
-
-The practical test is straightforward. When a new team or agent is asked to create or change an experience, can it identify the applicable standards, understand the organization's intent, find the correct implementation assets, recognize what remains undecided, and produce evidence that the result is acceptable? If the answer depends on locating the right person or copying the nearest example, the design system still contains critical tacit knowledge. Turning that knowledge into a governed, human-readable, and machine-usable platform is the work beyond components.
-
-The measure of progress is not how much knowledge is stored, but how reliably relevant knowledge improves decisions and outcomes.
+The useful question for a pilot is whether a new team or agent can find the relevant standards, understand the intent, select maintained assets, identify open decisions, and show evidence of an acceptable result. If the answer depends on finding the right colleague or copying the nearest example, critical knowledge is still difficult to reuse. The measure of progress is fewer avoidable errors and clearer decisions, not more documents.
