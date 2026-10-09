@@ -21,7 +21,7 @@ related:
 
 ## A reference implementation of the model
 
-UI Foundations is a reference implementation of the knowledge platform architecture proposed in this paper. It makes the proposal concrete; it is not evidence of industry consensus or the only valid implementation. Its current structure tests a hypothesis: separating canonical knowledge, reasoning and execution, runtime assets, and human-facing workspaces may improve clarity and tool independence.
+UI Foundations is a private reference implementation used to test the architecture described here. It demonstrates one possible separation of responsibilities, not an industry consensus. Its current structure tests a hypothesis: separating canonical knowledge, reasoning and execution, runtime assets, and human-facing workspaces may improve clarity and tool independence.
 
 The implementation uses four principal concerns:
 
@@ -51,13 +51,13 @@ Runtime repositories optimize for compilation, package distribution, framework c
 
 The Vault uses markdown and small machine-readable registries because they are inspectable, diffable, and broadly portable. Frontmatter gives each governed document identity, lifecycle, ownership, authority, and explicit relationships. A precedence model defines how conflicts are resolved. Specifications describe normative expectations; workflows and prompts operationalize them without acquiring higher authority.
 
-This reflects the rationale behind lightweight architecture decision records: decision context and consequences should remain available alongside the systems they affect, in a form that supports review and history ([Fowler, 2026](references.md#ref-fowler-adr)). UI Foundations generalizes that idea beyond ADRs while preserving the distinction between document types.
+The same reasoning underpins lightweight architecture decision records: decision context and consequences should remain available alongside the systems they affect, in a form that supports review and history ([Fowler, 2026](references.md#ref-fowler-adr)). UI Foundations generalizes that idea beyond ADRs while preserving the distinction between document types.
 
 ## What the execution layer may do
 
 An intelligence or execution layer can retrieve relevant knowledge, assemble task context, propose a plan, invoke tools, and verify results. It must not redefine canonical knowledge. If a retrieved prompt conflicts with a stable specification, the specification wins. If required knowledge is absent, the system should surface a gap rather than invent a durable rule.
 
-This boundary is particularly important for AI agents. The execution layer can adapt context to a task and model, but canonical meaning remains tool-independent. An organization can replace a model, orchestration framework, or design tool without rewriting its principles and specifications.
+For AI agents, this boundary matters because context and tools may change between tasks. The execution layer can adapt context to a task and model, but canonical meaning remains tool-independent. An organization can replace a model, orchestration framework, or design tool without rewriting its principles and specifications.
 
 ## What the runtime layer owns
 
@@ -69,7 +69,7 @@ This distinction supports controlled feedback. A runtime experiment may reveal t
 
 The Studio concern makes knowledge and system state understandable to people. It may provide navigation, dependency views, review queues, playgrounds, or evidence dashboards. It is a projection over canonical sources rather than the exclusive place where knowledge exists.
 
-This prevents a common portability failure: when the only meaningful representation lives inside a proprietary interface, migration risks losing rationale and relationships. A replaceable Studio can improve experience without owning meaning.
+This avoids a portability problem: when the only meaningful representation lives inside a proprietary interface, migration risks losing rationale and relationships. A replaceable Studio can improve experience without owning meaning.
 
 ## Deliberate limitations
 
@@ -77,4 +77,4 @@ UI Foundations does not attempt to encode all design judgment. It does not claim
 
 The current reference model favors a small set of document types and explicit lifecycle states. That simplicity creates trade-offs. Authors must decide when knowledge is mature enough to become normative. Relationships require maintenance. Human review remains necessary, particularly for accessibility, product appropriateness, and cross-organizational decisions.
 
-The model should be judged by practical outcomes: whether teams find authoritative guidance faster, whether implementation drift becomes more visible, whether agent output is easier to review, and whether the knowledge remains usable when tools change. Until such evidence accumulates, UI Foundations is an architectural probe rather than a proven operating model. The next chapters return to the general model, beginning with the standards that constrain any implementation.
+The model should be judged by practical outcomes: whether teams find authoritative guidance faster, whether implementation drift becomes more visible, whether agent output is easier to review, and whether the knowledge remains usable when tools change. Until such evidence accumulates, UI Foundations remains an architectural experiment rather than a proven operating model.
