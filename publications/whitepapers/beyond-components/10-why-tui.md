@@ -6,7 +6,7 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-16
-updated: 2026-07-16
+updated: 2026-10-09
 authority: supporting
 summary: Draft chapter on TUI's relationship to the proposed model.
 related:
@@ -48,4 +48,4 @@ Generalized findings could be shared without exposing internal product or custom
 
 Any evaluation should use measurable outcomes and external standards, state its limitations, and be open to review from design, engineering, accessibility, architecture, and product practitioners. If the layered model creates more maintenance than value, that result should change the architecture.
 
-TUI's role is that of a practitioner and steward of a reference implementation. The paper's thesis does not depend on TUI. What matters is whether a test can show that the approach improves how teams find, govern, and apply design knowledge.
+TUI could provide a setting for a separate evaluation. UI Foundations remains a private reference project; neither ownership nor adoption by TUI is implied. The paper's thesis does not depend on TUI. What matters is whether a test can show that the approach improves how teams find, govern, and apply design knowledge.
