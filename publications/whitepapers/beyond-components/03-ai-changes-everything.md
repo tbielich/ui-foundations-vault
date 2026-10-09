@@ -21,13 +21,13 @@ related:
 
 ## Generation changes the economics of ambiguity
 
-Published engineering practice treats effective agent behavior as dependent on context, tools, and evaluation. The architectural principle advanced here is that design systems must make their knowledge governable before supplying it to agents. AI-assisted development lowers the cost of producing a plausible implementation; it does not automatically lower the cost of determining whether that implementation is correct. Missing context moves downstream into review, testing, rework, accessibility remediation, security analysis, and maintenance.
+Agent results depend on the context they receive, the tools they can use, and how their work is evaluated. For design systems, that makes governed knowledge a prerequisite for reliable agent work. AI-assisted development lowers the cost of producing a plausible implementation; it does not automatically lower the cost of determining whether that implementation is correct. Missing context moves downstream into review, testing, rework, accessibility remediation, security analysis, and maintenance.
 
-This changes the economics of design-system knowledge. A human engineer who cannot find a component guideline may pause, ask a colleague, or inspect adjacent implementations. An agent may confidently infer a pattern and continue across many files. The resulting output can be syntactically sound and visually close while still violating semantic, architectural, or governance constraints.
+The difference becomes visible when guidance is missing. A human engineer who cannot find a component guideline may pause, ask a colleague, or inspect adjacent implementations. An agent may confidently infer a pattern and continue across many files. The resulting output can be syntactically sound and visually close while still violating semantic, architectural, or governance constraints.
 
 ## Context is an engineering dependency
 
-Anthropic defines context engineering as curating and maintaining the information available to a model, including system instructions, tools, external data, and conversation history. It argues that context is finite and that high-signal selection matters more than indiscriminately loading every possible source ([Anthropic, 2025](references.md#ref-anthropic-context)). This is directly relevant to design systems.
+Anthropic defines context engineering as curating and maintaining the information available to a model, including system instructions, tools, external data, and conversation history. It argues that context is finite and that high-signal selection matters more than indiscriminately loading every possible source ([Anthropic, 2025](references.md#ref-anthropic-context)). A design-system task has similar constraints.
 
 A design task may require only a subset of organizational knowledge: a governing principle, a component contract, applicable tokens, a composition pattern, content guidance, target-platform constraints, and tests. Loading the entire documentation estate can introduce conflicts and dilute attention. Loading only a component API can omit intent. A knowledge platform should enable progressive retrieval: begin with stable identifiers and summaries, then resolve the exact sources needed for the task.
 
@@ -40,11 +40,11 @@ flowchart LR
     V --> K
 ```
 
-The diagram is intentionally implementation-neutral. It does not assume that an agent owns the workflow. The same context-resolution step can support a designer, engineer, reviewer, static analyzer, or AI agent.
+The workflow in the diagram does not depend on an agent. The same context-resolution step can support a designer, engineer, reviewer, static analyzer, or AI agent.
 
 ## Prompts are not a durable source of truth
 
-Prompt engineering is useful for expressing a task, response shape, and immediate constraints. It is a poor substitute for governed organizational knowledge. Prompts are frequently copied, modified, and embedded in tools. They can become stale without an obvious owner. Long prompts also encourage duplication: the same accessibility or naming rule may be restated differently across many workflows.
+A prompt can describe a task, its desired output, and immediate constraints. It cannot replace a maintained source for organizational rules. Prompts are frequently copied, modified, and embedded in tools. They can become stale without an obvious owner. Long prompts also encourage duplication: the same accessibility or naming rule may be restated differently across many workflows.
 
 Microsoft's content-engineering guidance treats system prompts as shared design artifacts that require clear roles, tasks, rules, examples, and cross-functional refinement ([Microsoft, 2026](references.md#ref-microsoft-content-engineering)). GitHub's support for repository and path-scoped instruction files similarly recognizes that persistent instructions belong near the work they constrain ([GitHub, 2025](references.md#ref-github-agents-md)). These practices improve operational guidance, but they do not make prompts normative.
 
@@ -56,7 +56,7 @@ Examples show an agent what successful output can look like. Boundaries state wh
 
 A component contract should state required semantics, optional variants, prohibited combinations, ownership boundaries, and unresolved questions. A token specification should identify whether a name is public, internal, semantic, or provisional. A pattern should distinguish native-platform requirements from organization-specific preferences. A product exception should be local rather than silently mutating the system rule.
 
-This is not about constraining all creativity. It is about separating agent freedom from system decisions. An agent can explore layout alternatives within an approved pattern while remaining unable to invent public token names or weaken keyboard behavior. Humans benefit from the same distinction because review can focus on intentional variation rather than rediscovering baseline requirements.
+Agents can explore within clear boundaries without revisiting settled system decisions. An agent can explore layout alternatives within an approved pattern while remaining unable to invent public token names or weaken keyboard behavior. Humans benefit from the same distinction because review can focus on intentional variation rather than rediscovering baseline requirements.
 
 ## AI makes provenance operational
 
@@ -79,4 +79,4 @@ Agent output can be assessed at several layers. Structural validation checks met
 
 Anthropic's work on agent evaluations describes the value of combining code-based, model-based, and human graders, with criteria tailored to the task ([Anthropic, 2026](references.md#ref-anthropic-evals)). WCAG 2.2 similarly notes that broad accessibility evaluation requires both automated testing and human evaluation ([W3C, 2024](references.md#ref-wcag22)). A knowledge platform can connect each requirement to its expected evidence, making validation part of the contract rather than an afterthought.
 
-AI increases the rate at which ambiguous knowledge can become production output. The appropriate response is not to freeze experimentation or centralize every decision, but to establish a clear chain from intent to governed context, execution, and validation. The next chapter defines the proposed knowledge platform model for that chain.
+AI can turn ambiguous guidance into implementation quickly. A traceable path from intent through governed context to execution and validation makes that work easier to inspect without requiring central approval of every decision.
