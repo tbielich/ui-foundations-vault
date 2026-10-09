@@ -6,7 +6,7 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-16
-updated: 2026-07-16
+updated: 2026-10-09
 authority: supporting
 summary: Abstract for the Beyond Components whitepaper.
 related:
