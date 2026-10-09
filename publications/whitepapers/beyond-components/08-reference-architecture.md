@@ -21,9 +21,9 @@ related:
 
 ## Architectural goals
 
-The reference architecture is a **UI Foundations proposal** that translates the paper's principles into separable capabilities. It is technology-neutral. An organization may implement several capabilities in one repository or distribute them across services and tools. Alignment with the proposal depends on responsibility boundaries, not deployment topology.
+The reference architecture is a technology-neutral **UI Foundations proposal**. It separates the capabilities needed to manage and apply design knowledge. An organization may implement several capabilities in one repository or distribute them across services and tools. Alignment with the proposal depends on responsibility boundaries, not deployment topology.
 
-The architecture has six goals:
+It is designed to:
 
 1. preserve canonical design knowledge independently of presentation tools;
 2. expose authority, ownership, lifecycle, and provenance;
@@ -63,13 +63,13 @@ The output should include source identifiers and unresolved conflicts. Retrieval
 
 Runtime assets include token packages, components, styles, schemas, and tests. Design-tool representations include libraries, variables, annotations, and component mappings. Documentation surfaces publish guidance for particular audiences. Each is a consumer and potential evidence source.
 
-Figma Code Connect is an example of an explicit representation mapping: it connects a design component to production code ([Figma, 2024](references.md#ref-figma-code-connect)). DTCG token files provide a standardized exchange boundary ([DTCG, 2025](references.md#ref-dtcg-format)). These mechanisms fit within the architecture but do not define the canonical layer by themselves.
+Figma Code Connect is an example of an explicit representation mapping: it connects a design component to production code ([Figma, 2024](references.md#ref-figma-code-connect)). DTCG token files provide a standardized exchange boundary ([DTCG, 2025](references.md#ref-dtcg-format)). Neither mechanism determines the canonical knowledge layer.
 
 ### Agent workflows
 
 Agent workflows combine instructions, tools, and resolved knowledge. They may draft specifications, generate implementation, review changes, or collect evidence. Prompts remain operational artifacts. Their authority comes from the governed sources they invoke.
 
-Tool permissions should follow least privilege. Read-only retrieval should be distinct from repository writes, releases, or external communication. High-impact actions require deterministic validation and human authorization appropriate to organizational risk.
+Permissions should be limited to what each task requires. Read-only retrieval should be distinct from repository writes, releases, or external communication. High-impact actions require deterministic validation and human authorization appropriate to organizational risk.
 
 ### Assurance and learning
 
@@ -99,6 +99,6 @@ Agents create additional prompt-injection and data-exfiltration risks when they 
 
 ## Architectural trade-offs
 
-The model introduces maintenance cost. Metadata can drift, relationships can become stale, and authors can over-classify documents. Central repositories can distance knowledge from implementation, while fully distributed sources can weaken discovery. These are not arguments against the architecture; they are constraints to manage.
+The model introduces maintenance cost. Metadata can drift, relationships can become stale, and authors can over-classify documents. Central repositories can distance knowledge from implementation, while fully distributed sources can weaken discovery. Those costs need to be visible in the design.
 
-The smallest effective design is preferable. Use plain files until scale justifies additional infrastructure. Automate validation before adding elaborate authoring interfaces. Keep authoritative sources concise and link to evidence. The next chapter explains why an open-source reference implementation can make these architectural assumptions inspectable without making openness a requirement of the model.
+Start with the smallest arrangement that can be maintained. Plain files may be enough; richer infrastructure should follow a demonstrated need. Validate structure before investing in authoring interfaces, and keep source documents concise with links to their evidence.
