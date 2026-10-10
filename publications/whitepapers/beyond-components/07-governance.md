@@ -6,7 +6,7 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-16
-updated: 2026-07-16
+updated: 2026-10-09
 authority: supporting
 summary: Draft chapter on governance for design systems operating as knowledge platforms.
 related:
@@ -21,15 +21,15 @@ related:
 
 ## Governance is the control plane for meaning
 
-The governance model in this chapter is an **architectural principle and UI Foundations proposal**, informed by published engineering practice rather than presented as an industry standard. Governance determines which knowledge can guide work, who may change it, how conflicts are resolved, and what evidence is required. In a component-centered design system, governance is visible through contribution processes, maintainers, release reviews, and deprecation notices. In a knowledge platform, those mechanisms also apply to principles, decisions, specifications, patterns, prompts, and mappings.
+The governance approach here is an **architectural principle and UI Foundations proposal**, informed by published engineering practice. Governance determines which knowledge can guide work, who may change it, how conflicts are resolved, and what evidence is required. In a component-centered design system, governance is visible through contribution processes, maintainers, release reviews, and deprecation notices. In a knowledge platform, those mechanisms also apply to principles, decisions, specifications, patterns, prompts, and mappings.
 
-The objective is not centralized approval of every interface. Heavy governance can slow delivery and drive teams toward unofficial alternatives. The objective is a proportional control plane: high-impact normative changes receive deliberate review, while local and reversible decisions remain with product teams.
+Requiring central approval for every interface would slow delivery and encourage workarounds. Review should match risk: changes to shared normative contracts need deliberate scrutiny, while product teams retain local, reversible decisions.
 
 ## Precedence prevents accidental policy
 
 When all retrieved documents appear equally authoritative, polished examples or recent prompts can override durable decisions. A precedence model makes conflict resolution explicit. One possible order is governance, principles, accepted decisions, specifications, workflows, patterns, prompts, and examples. The exact taxonomy may vary, but the system should state it.
 
-Publications such as this paper are informative. They can propose and synthesize, but they should not change normative contracts. Similarly, a prompt can operationalize a specification but should not create a hidden accessibility exception. This separation supports human review and safer AI retrieval.
+This paper is informative. It can develop proposals, but it cannot change normative contracts. Similarly, a prompt can operationalize a specification but should not create a hidden accessibility exception. This separation supports human review and safer AI retrieval.
 
 ## Lifecycle makes change legible
 
@@ -65,7 +65,7 @@ The architectural-fitness-function approach describes tests that evaluate how cl
 
 ## Distributed contribution with accountable stewardship
 
-Public systems demonstrate that contribution and quality controls can coexist. Carbon describes phased contributions for new components and allows broader community participation ([IBM Carbon, 2026](references.md#ref-carbon-contributing)). Spectrum emphasizes transparency through versioning, open issues, and checklists ([Adobe Spectrum, 2026](references.md#ref-spectrum-principles)). These are organization-specific implementations of a general principle: contribution paths should expose expectations before work is completed.
+Public systems demonstrate that contribution and quality controls can coexist. Carbon describes phased contributions for new components and allows broader community participation ([IBM Carbon, 2026](references.md#ref-carbon-contributing)). Spectrum emphasizes transparency through versioning, open issues, and checklists ([Adobe Spectrum, 2026](references.md#ref-spectrum-principles)). Both make contribution expectations visible before work is complete.
 
 A knowledge platform can distribute authorship while retaining stewardship:
 
@@ -87,4 +87,4 @@ An exception record should identify scope, rationale, owner, expiry or review tr
 
 Adoption counts alone can reward superficial use. More meaningful governance indicators include unresolved contract conflicts, time to find authoritative guidance, deprecation completion, accessibility defects escaping to production, duplicated implementations, review lead time, and the percentage of high-impact rules with verification evidence.
 
-No single metric proves design-system value. Leadership should connect system health to product quality and delivery outcomes. Governance succeeds when teams make appropriate decisions with less ambiguity—not when every decision passes through a central team. The next chapter translates these controls into a logical reference architecture.
+No single metric establishes design-system value. Teams should examine these signals alongside product quality and delivery outcomes. Governance is working when people can make appropriate decisions with less uncertainty, without routing every change through a central group.

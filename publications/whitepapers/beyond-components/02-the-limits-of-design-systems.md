@@ -6,7 +6,7 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-16
-updated: 2026-07-16
+updated: 2026-10-09
 authority: supporting
 summary: Draft chapter on the limits of current design systems.
 related:
@@ -21,11 +21,11 @@ related:
 
 ## A component library is necessary but incomplete
 
-Published engineering practice establishes both the value and the boundary of component reuse. Component libraries package repeatable structure, styling, and behavior behind a maintained interface. GitHub reported replacing dozens of bespoke table implementations with a shared Primer component, combining component expertise with participation from disabled users ([GitHub, 2024](references.md#ref-github-inclusive-components)). The component succeeds because it is embedded in research, guidance, collaboration, and product migration—not because reusable code alone contains every relevant decision.
+Component reuse works well when the surrounding decisions are also maintained. Component libraries package repeatable structure, styling, and behavior behind a maintained interface. GitHub reported replacing dozens of bespoke table implementations with a shared Primer component, combining component expertise with participation from disabled users ([GitHub, 2024](references.md#ref-github-inclusive-components)). That work involved research, guidance, collaboration, and product migration. Reusable code was one part of the change.
 
 A component can define a default role, keyboard behavior, states, and API. It cannot independently determine the correct heading hierarchy of a page, the accessible name needed in a particular business context, whether an action should navigate or mutate data, or which error message helps a user recover. GitHub's accessibility-annotation work states this directly: accessible components can still be composed into inaccessible designs, and visual component properties often omit contextual semantics ([GitHub, 2025](references.md#ref-github-annotations)). WCAG 2.2 likewise defines conformance for full pages, not isolated components, and notes that conformance cannot exclude part of a page ([W3C, 2024](references.md#ref-wcag22)).
 
-The limit is therefore not a defect in components. It is a category boundary. Components encode reusable implementation; product experiences also depend on relationships, content, sequence, data, policy, and context.
+Components have a clear boundary. Components encode reusable implementation; product experiences also depend on relationships, content, sequence, data, policy, and context.
 
 ## Documentation is often fragmented by tool and audience
 
@@ -33,7 +33,7 @@ Most organizations document design-system knowledge in several places for legiti
 
 Fragmentation becomes problematic when these surfaces silently compete as sources of truth. A design file may show a newer variant than the code package. A documentation site may retain a deprecated example. An issue may contain the rationale for an exception that never reached the specification. A chat discussion may be the only record of why an apparently reasonable API was rejected. Search can locate these fragments, but retrieval alone does not establish authority.
 
-Figma's Code Connect addresses one part of this problem by linking design components to maintained production code and documentation ([Figma, 2024](references.md#ref-figma-code-connect)). The important architectural lesson is not that every organization should adopt a particular product. It is that explicit mappings are more reliable than resemblance. A node named “Button” and a component named `Button` are not necessarily equivalent unless the system records the relationship, supported properties, and ownership.
+Figma's Code Connect addresses one part of this problem by linking design components to maintained production code and documentation ([Figma, 2024](references.md#ref-figma-code-connect)). The broader lesson is that explicit mappings are more reliable than similar names or appearances. A node named “Button” and a component named `Button` are not necessarily equivalent unless the system records the relationship, supported properties, and ownership.
 
 ## Tokens carry values and intent, not complete behavior
 
@@ -41,7 +41,7 @@ Tokens are one of the strongest examples of design knowledge becoming structured
 
 Yet tokens do not specify complete interface behavior. Spectrum explicitly describes its token system as one resource used alongside design and engineering documentation ([Adobe Spectrum, 2025](references.md#ref-spectrum-tokens)). A focus-ring color token does not state when focus must move, which element receives it, or how focus is restored after a dialog closes. A spacing token does not determine the correct information hierarchy. A motion token does not decide whether animation should be suppressed under user preferences. Those decisions belong to patterns, specifications, accessibility guidance, and product context.
 
-This distinction matters for AI consumption. If an agent retrieves tokens without their semantic layer, it may reproduce values while violating intent. If it retrieves semantic names without component and pattern constraints, it may apply them in invalid contexts. Structured data is useful only when its scope is clear.
+For AI agents, this distinction affects what gets generated. If an agent retrieves tokens without their semantic layer, it may reproduce values while violating intent. If it retrieves semantic names without component and pattern constraints, it may apply them in invalid contexts. Structured data is useful only when its scope is clear.
 
 ## Examples are persuasive but weak as contracts
 
@@ -65,4 +65,4 @@ Adding enterprise search or retrieval-augmented generation to fragmented documen
 
 The missing capability is a precedence model. Consumers need to know which sources are normative, which are supporting, which are derived, and how conflicts are handled. They also need stable identifiers so a relationship survives file moves and publication changes.
 
-Current design systems have not failed; they have optimized for consistency, reuse, distribution, and collaboration. The emerging problem is that their design knowledge must now be consumed across more tools, repositories, and autonomous workflows. AI makes the cost of that unresolved ambiguity operational, which is the subject of the next chapter.
+Design systems have been built to support reuse, consistency, and delivery across teams. Now their guidance is being consumed across more tools, repositories, and agent workflows. Without clear authority, those consumers can reproduce contradictions at scale.

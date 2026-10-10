@@ -6,7 +6,7 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-16
-updated: 2026-07-16
+updated: 2026-10-09
 authority: supporting
 summary: Draft chapter defining the proposed knowledge platform model.
 related:
@@ -21,9 +21,9 @@ related:
 
 ## A proposal, not an industry standard
 
-This model is a **UI Foundations proposal**, not an established standard or universal market phase. It describes an architectural expansion in which a design system manages reusable knowledge with the same care that mature systems apply to reusable interface assets.
+The model presented here is a **UI Foundations proposal**. It is neither an industry standard nor a claim that every design system follows the same development path. It describes an architectural expansion in which a design system manages reusable knowledge with the same care that mature systems apply to reusable interface assets.
 
-The label is useful only if it makes a testable distinction:
+It distinguishes three responsibilities:
 
 1. A style system standardizes visual decisions.
 2. A component system packages reusable interface implementation.
@@ -96,6 +96,6 @@ Public initiatives suggest parts of this direction. DTCG provides interoperable 
 
 Treating a design system as a knowledge platform changes investment decisions. Documentation is no longer a secondary publishing task; it is part of the system's operational data. Governance is not a gate at the end of delivery; it determines which knowledge can safely guide work. Design-system teams become stewards of interfaces between design intent, software architecture, standards, and product delivery.
 
-This does not necessarily require a larger central team. It requires clear ownership and contribution paths. Distributed teams can author knowledge, specialists can review high-risk areas, and automation can validate structure. The system team maintains the framework and cross-cutting contracts rather than approving every product decision.
+A larger central team is not a prerequisite. It requires clear ownership and contribution paths. Distributed teams can author knowledge, specialists can review high-risk areas, and automation can validate structure. The system team maintains the framework and cross-cutting contracts rather than approving every product decision.
 
-The proposed maturity model is therefore less about adding features than about making design knowledge durable. Components remain the executable center of many design systems; they stop being the outer boundary of what the system knows. The next chapter introduces UI Foundations only as a reference implementation used to test this proposal.
+The practical change is durable, reviewable design knowledge. Components remain central, but the system also records the decisions and evidence that explain how to use them.
