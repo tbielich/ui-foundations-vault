@@ -107,7 +107,7 @@ Select one consequential workflow, record its governing knowledge, connect that 
 
 A design system can already share components, tokens, and patterns across products. What remains harder to reuse is the reasoning behind them: which decisions govern an experience, where an exception is allowed, and how a team can tell whether an implementation is correct.
 
-AI makes this gap easier to see. It can turn incomplete instructions into working code before anyone has resolved missing semantics or ownership. The response proposed here is a knowledge layer that records standards, decisions, provenance, lifecycle, relationships, and validation criteria. Execution tools consume this knowledge; they do not become its source of authority.
+AI makes this gap easier to see. It can turn incomplete instructions into working code before anyone has resolved missing semantics or ownership. The response proposed here is a governed knowledge architecture: open standards establish shared boundaries; canonical knowledge records intent, decisions, provenance, lifecycle, relationships, and validation criteria; runtime and design tools implement that knowledge through replaceable representations. Context resolution supports bounded execution and independent verification. Execution tools consume this knowledge; they do not become its source of authority.
 
 UI Foundations tests that separation through a Vault, an Intelligence layer, a Runtime, and a Studio. It is an experiment, not evidence that four repositories are the right structure for every team. Human judgment is still needed to resolve trade-offs and approve durable changes.
 
