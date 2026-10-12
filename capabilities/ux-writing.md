@@ -6,7 +6,7 @@ status: review
 owners:
   - ui-foundations
 created: 2026-07-07
-updated: 2026-10-04
+updated: 2026-10-12
 authority: source
 summary: Defines the capability to improve interface language.
 related:
@@ -50,10 +50,10 @@ UX writing improves interface language so people can understand context, make de
 1. Apply `governance.natural-writing` as the global writing baseline.
 2. Identify the text role and user state.
 3. Determine what the user needs to know or do.
-4. Remove ambiguity, jargon, and unnecessary wording.
+4. Remove ambiguity and unnecessary wording. Retain precise domain terminology and explain it when needed.
 5. Preserve canonical terminology.
 6. Check that the text works without hidden context.
-7. Review the result for writing signals defined by the Natural Writing Contract.
+7. Review the result for writing signals defined by the Natural Writing Contract, without flattening technical or scientific explanations.
 8. Provide a concise recommendation with rationale.
 
 ## Outputs
@@ -66,12 +66,12 @@ UX writing improves interface language so people can understand context, make de
 
 ## Quality Gates
 
-- The language is clear, concise, and action-oriented where appropriate.
+- The language is clear, concise, and action-oriented where appropriate; necessary explanatory depth is preserved.
 - The wording supports accessibility and recognition.
 - Terminology is consistent with the vault reference layer.
 - The output avoids decorative or promotional language for functional UI.
 - The output conforms to the hard rules in `governance.natural-writing`.
-- Style signals from `governance.natural-writing` have been reviewed in context rather than mechanically removed.
+- Style signals from `governance.natural-writing` have been reviewed in context rather than mechanically removed.\n- Technical meaning, necessary qualifications, and accessibility are preserved when simplifying interface terminology.
 
 ## Related Documents
 
