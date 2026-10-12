@@ -6,7 +6,7 @@ status: review
 owners:
   - ui-foundations
 created: 2026-10-04
-updated: 2026-10-04
+updated: 2026-10-12
 authority: source
 summary: Defines global writing invariants and style heuristics for human- and agent-authored UIF text.
 ---
@@ -73,6 +73,19 @@ Avoid habitual use of:
 
 No individual phrase is prohibited when it is the clearest wording for the context. Repetition and formulaic use are the failure condition.
 
+## Scientific and Technical Register
+
+Natural writing must not come at the expense of scientific rigor, technical accuracy, or conceptual depth.
+
+- Preserve definitions, qualifiers, causal distinctions, counterarguments, citations, uncertainty, and the difference between evidence and inference.
+- Explain complex mechanisms through explicit reasoning and concrete examples where needed; do not shorten text merely to make it sound conversational.
+- Keep established technical terminology when it is precise. Define unfamiliar terms for the intended audience rather than replacing them with imprecise synonyms.
+- Retain genuine contrasts, enumerations, nominalizations, and longer sentences when they convey necessary relationships.
+- Preserve source meaning and evidentiary strength during rewrites. Never upgrade hypotheses into facts or remove limitations.
+- Evaluate readability together with fidelity, completeness, traceability, and audience fit; no detector score is a quality or authorship oracle.
+- Treat frequently occurring AI-like expressions as contextual review signals, not forbidden words or proof of AI authorship. Their frequency and diagnostic value may change by model and genre.
+- Prefer a layered explanation when useful: precise claim, reasoning or mechanism, evidence or example, and implications or limitations.
+
 ## Content-Type Inheritance
 
 This governance document is the baseline for all prose-producing capabilities and workflows.
@@ -105,7 +118,7 @@ Before returning or committing prose, an agent should check for:
 - `repetitive-sentence-pattern`
 - `unnecessary-em-dash`
 - `generic-future-section`
-- `voice-normalization`
+- `voice-normalization`\n- `loss-of-technical-precision`\n- `unsupported-simplification`\n- `lost-qualification`
 
 A detected signal is a review trigger, not an automatic rewrite. The agent must first determine whether the pattern serves the content.
 
