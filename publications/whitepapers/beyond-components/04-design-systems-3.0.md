@@ -23,7 +23,7 @@ related:
 
 The model presented here is a **UI Foundations proposal**. It is neither an industry standard nor a claim that every design system follows the same development path. It describes an architectural expansion in which a design system manages reusable knowledge with the same care that mature systems apply to reusable interface assets.
 
-It distinguishes three responsibilities:
+The model makes a testable architectural distinction between three responsibilities:
 
 1. A style system standardizes visual decisions.
 2. A component system packages reusable interface implementation.
