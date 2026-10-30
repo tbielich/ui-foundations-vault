@@ -6,7 +6,7 @@ status: draft
 owners:
   - ui-foundations
 created: 2026-07-16
-updated: 2026-07-16
+updated: 2026-10-09
 authority: supporting
 summary: Draft chapter on TUI's relationship to the proposed model.
 related:
@@ -21,9 +21,9 @@ related:
 
 ## A demanding environment for the hypothesis
 
-This chapter is a **UI Foundations positioning proposal**, not evidence for the industry-wide thesis. TUI operates digital products across travel journeys, markets, brands, channels, and technology stacks. That environment creates the coordination problems a knowledge platform is intended to address: shared foundations must coexist with product variation, accessibility obligations, localization, platform differences, and independently evolving teams.
+This chapter explores TUI as a possible environment for evaluating the proposal. It is **UI Foundations positioning**, not evidence for an industry-wide conclusion. TUI operates digital products across travel journeys, markets, brands, channels, and technology stacks. That environment creates the coordination problems a knowledge platform is intended to address: shared foundations must coexist with product variation, accessibility obligations, localization, platform differences, and independently evolving teams.
 
-This makes TUI a useful place to test the architecture. It does not make TUI uniquely qualified to define an industry model. Many large organizations face comparable complexity, and the public systems discussed in this paper demonstrate alternative approaches.
+Those conditions could make TUI a useful test environment. They do not give it special authority to define an industry model. Many large organizations face comparable complexity, and the public systems discussed in this paper demonstrate alternative approaches.
 
 ## The relevance of travel products
 
@@ -42,10 +42,10 @@ TUI can contribute evidence from applying the model at organizational scale:
 - whether accessibility knowledge reaches implementation earlier; and
 - whether local lessons can improve shared contracts without erasing context.
 
-Publishing generalized findings can benefit the wider design-system community, while internal product and customer information remains protected. The appropriate contribution is evidence, tooling, and clearly bounded proposals—not claims that one company's operating model should become universal.
+Generalized findings could be shared without exposing internal product or customer information. The appropriate contribution is evidence, tooling, and clearly bounded proposals—not claims that one company's operating model should become universal.
 
 ## Conditions for credibility
 
-The project should be evaluated against measurable outcomes and external standards. It should disclose maturity, limitations, and changes. It should invite challenge from design, engineering, accessibility, architecture, and product practitioners. If the layered model creates more maintenance than value, that result should change the architecture.
+Any evaluation should use measurable outcomes and external standards, state its limitations, and be open to review from design, engineering, accessibility, architecture, and product practitioners. If the layered model creates more maintenance than value, that result should change the architecture.
 
-TUI's role is that of a practitioner and steward of a reference implementation. The paper's thesis does not depend on TUI; the implementation is credible only if it improves the governance and application of design knowledge in measurable ways. The roadmap in the next chapter describes how to test that claim incrementally.
+TUI could provide a setting for a separate evaluation. UI Foundations remains a private reference project; neither ownership nor adoption by TUI is implied. The paper's thesis does not depend on TUI. What matters is whether a test can show that the approach improves how teams find, govern, and apply design knowledge.
