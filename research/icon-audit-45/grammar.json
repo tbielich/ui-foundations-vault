@@ -9,6 +9,178 @@
     "authority_note": "Vault remains canonical governance. Implementation and usage guides are conventions, not approved numeric rules."
   },
   "status": "draft",
+  "applicability": {
+    "scope": "runtime-guide-only",
+    "status": "provisional",
+    "note": "After PR66 a user-authored Figma design guideline (UI Assets Library, file Eprjc6hw7QyMvvD01eGgGy, section node 482:12945 'Icons') was supplied as a primary design source previously missing from the audit. The rules in the 'rules' array below compare assets ONLY to the runtime implementation/usage guides and are therefore scoped runtime-guide-only and marked provisional pending reconciliation with the Figma source. Existing audit_rule IDs are UNCHANGED; the tool does NOT execute any Figma rule. See figma-guideline-addendum.md. The separate machine-readable 'design_guideline_rules' array below records the Figma design constraints; it does not re-evaluate the 601 inventory and is not executed by the tool.",
+    "see_also": "figma-guideline-addendum.md"
+  },
+  "design_guideline_provenance": {
+    "type": "design-source",
+    "role": "user-identified-design-guideline",
+    "tool": "figma",
+    "access": "official-figma-mcp-read-only",
+    "file": "Eprjc6hw7QyMvvD01eGgGy",
+    "section_node": "482:12945",
+    "section_name": "Icons",
+    "url": "https://www.figma.com/design/Eprjc6hw7QyMvvD01eGgGy/UI-Assets-Library?node-id=482-12945",
+    "accessed": "2026-10-31",
+    "fetched_by": "Codex",
+    "mcp_session": "cb67a792-4a02-4ef3-858d-30efbc79f94d",
+    "capture_sha256": "5be17544d471e06ff72b01db786a130ff33b9e6999cc14be00fbcc9b700869e7",
+    "version_id": null,
+    "commit_sha": null,
+    "immutability_note": "No immutable Figma version ID or commit SHA was obtained via MCP. Git commit SHAs do NOT version this Figma file; none is invented. Content snapshot text and capture SHA are supplied by Codex. The Figma file is unchanged.",
+    "authority_note": "Vault remains canonical governance. This external Figma design source is referenced with provenance, not promoted to governance. Membership/mapping of the 601 runtime icons to this library and the applicable Figma revision are unresolved; the approved production mapping of the 601 icons is NOT conflated with this library."
+  },
+  "design_guideline_rules": [
+    {
+      "id": "figma.anatomy.width",
+      "class": "hard",
+      "source_node": "4991:335",
+      "field": "width",
+      "literal": "24px",
+      "runtime_guide_comparison": "impl-guide.canvas.dimensions / canvas.viewbox (24x24)",
+      "status": "agrees",
+      "note": "Nominal 24 agrees with the runtime-guide canvas size. Not re-evaluated against the 601 inventory.",
+      "evaluation": "not-executed"
+    },
+    {
+      "id": "figma.anatomy.height",
+      "class": "hard",
+      "source_node": "4991:335",
+      "field": "height",
+      "literal": "24px",
+      "runtime_guide_comparison": "impl-guide.canvas.dimensions / canvas.viewbox (24x24)",
+      "status": "agrees",
+      "note": "Nominal 24 agrees with the runtime-guide canvas size. Not re-evaluated against the 601 inventory.",
+      "evaluation": "not-executed"
+    },
+    {
+      "id": "figma.anatomy.radius",
+      "class": "judgment",
+      "source_node": "4991:335",
+      "field": "radius",
+      "literal": "--corner-rounded-1",
+      "token_ref": "--corner-rounded-1",
+      "token_value_resolved": false,
+      "runtime_guide_comparison": "corner-radius.internal (manual)",
+      "status": "unresolved",
+      "note": "Token NAME is known; NO resolved numeric value was fetched. No numeric radius comparison is made.",
+      "evaluation": "not-executed"
+    },
+    {
+      "id": "figma.anatomy.fill",
+      "class": "judgment",
+      "source_node": "4991:335",
+      "field": "fill",
+      "literal": "transparent / deep blue",
+      "runtime_guide_comparison": "canvas.root-fill (fill=none) / fill.no-fill-on-path",
+      "status": "conflict",
+      "note": "Figma fill 'transparent / deep blue' conflicts with the stroke-only / no-path-fill asset rule. Human reconciliation required.",
+      "evaluation": "not-executed"
+    },
+    {
+      "id": "figma.anatomy.stroke-color",
+      "class": "judgment",
+      "source_node": "4991:335",
+      "field": "stroke",
+      "literal": "--stroke-color-primary",
+      "token_ref": "--stroke-color-primary",
+      "token_value_resolved": false,
+      "runtime_guide_comparison": "stroke.color (guide #9747FF; observed #333333)",
+      "status": "conflict-unresolved",
+      "note": "No token color value was fetched, so there is NO resolved color. The audit's #9747FF/#333333 are NOT compared against a Figma color and the existing 600 inconsistent color rows are NOT restated as violations against Figma.",
+      "evaluation": "not-executed"
+    },
+    {
+      "id": "figma.anatomy.stroke-width",
+      "class": "hard",
+      "source_node": "4991:335",
+      "field": "stroke-width",
+      "literal": "2pt",
+      "conversion_resolved": false,
+      "runtime_guide_comparison": "stroke.width (default 1; no explicit stroke-width)",
+      "status": "conflict",
+      "note": "Figma literal 2pt conflicts with the default-1/no-explicit-width asset rule. Unit/export scaling is UNRESOLVED. Do NOT silently convert 2pt to 2px or 8/3px.",
+      "evaluation": "not-executed"
+    },
+    {
+      "id": "figma.anatomy.stroke-linecap",
+      "class": "hard",
+      "source_node": "4991:335",
+      "field": "stroke-linecap",
+      "literal": "round",
+      "runtime_guide_comparison": "stroke.linecap (round)",
+      "status": "agrees",
+      "note": "Agrees. Not re-evaluated against the 601 inventory.",
+      "evaluation": "not-executed"
+    },
+    {
+      "id": "figma.anatomy.stroke-linejoin",
+      "class": "hard",
+      "source_node": "4991:335",
+      "field": "stroke-linejoin",
+      "literal": "round",
+      "runtime_guide_comparison": "stroke.linejoin (round)",
+      "status": "agrees",
+      "note": "Agrees. Not re-evaluated against the 601 inventory.",
+      "evaluation": "not-executed"
+    },
+    {
+      "id": "figma.notes.size-scale",
+      "class": "hard",
+      "source_node": "5009:1076",
+      "field": "size-scale",
+      "literal": {
+        "XSmall": 16,
+        "Small": 20,
+        "Medium": 24,
+        "Large": 32,
+        "XLarge": 36,
+        "XXLarge": 40,
+        "XXXLarge": 44
+      },
+      "runtime_guide_comparison": "not previously documented",
+      "status": "newly-documented",
+      "note": "Documents a size scale, NOT all asset canvas sizes. The notes legend also covers sorting and naming.",
+      "evaluation": "not-executed",
+      "classification_note": "Discrete documented size scale; deterministic membership can be checked after scope mapping. No approximate geometry tolerance or completed validation is implied."
+    },
+    {
+      "id": "figma.naming.layer-coloring",
+      "class": "judgment",
+      "source_node": "320:13734",
+      "field": "layer-naming",
+      "literal": "strokes named 'stroke'; shapes needing fill named 'fill'",
+      "runtime_guide_comparison": "naming.kebab-case / naming.double-dash-semantics",
+      "status": "separate-scope",
+      "note": "Figma LAYER naming convention ('Naming for Coloring' post-it). This is NOT SVG filename naming and NOT a statement about XML attribute presence in exported SVGs. Read directly from the screenshot (structured context intercepted by a CodeConnect suggestion).",
+      "evaluation": "not-executed"
+    },
+    {
+      "id": "figma.keyshape.frames",
+      "class": "judgment",
+      "source_node": "482:12955,482:13005,482:13008,482:13010",
+      "field": "keyshape-frames-24x24",
+      "literal": {
+        "circle": "482:12955",
+        "square": "482:13005",
+        "rect-portrait": "482:13008",
+        "rect-landscape": "482:13010"
+      },
+      "observed_example_bounds": {
+        "ellipse": "482:13032 22x22",
+        "rect": "482:13033 20x20",
+        "portrait": "482:13034 16x22",
+        "landscape": "482:13035 22x16"
+      },
+      "runtime_guide_comparison": "keyshape.circle/square/rect-landscape/rect-portrait (manual bbox tolerances)",
+      "status": "different-unresolved",
+      "note": "Example-layer bounds are OBSERVATIONS, not automatically normative keyshape bounding rules and not asserted equivalent to the actual keyshape frames. Inspect actual frames/export; NO automatic normalization is performed.",
+      "evaluation": "not-executed"
+    }
+  ],
   "rules": [
     {
       "id": "canvas.viewbox",
@@ -20,7 +192,11 @@
       "section": "Canvas",
       "status": "draft",
       "statement": "Root <svg> viewBox is '0 0 24 24'.",
-      "numeric_tolerance": {"value": "0 0 24 24", "proposed": true, "exact": true}
+      "numeric_tolerance": {
+        "value": "0 0 24 24",
+        "proposed": true,
+        "exact": true
+      }
     },
     {
       "id": "canvas.dimensions",
@@ -32,7 +208,11 @@
       "section": "Canvas",
       "status": "draft",
       "statement": "Root width and height are both '24'.",
-      "numeric_tolerance": {"value": 24, "proposed": true, "exact": true}
+      "numeric_tolerance": {
+        "value": 24,
+        "proposed": true,
+        "exact": true
+      }
     },
     {
       "id": "canvas.root-fill",
@@ -55,7 +235,14 @@
       "section": "Keyshapes (Circle)",
       "status": "draft",
       "statement": "Circled variants use a centered 20x20 circle inside the 24x24 canvas. Two distinct circle path encodings are observed in the set (clockwise 'M12 22C...' and counter-clockwise 'M2 12C...'); neither is canonical.",
-      "numeric_tolerance": {"bbox": "2,2 to 22,22", "diameter": 20, "bbox_abs_error_max": 0.5, "diameter_abs_error_max": 0.5, "units": "SVG user units", "proposed": true},
+      "numeric_tolerance": {
+        "bbox": "2,2 to 22,22",
+        "diameter": 20,
+        "bbox_abs_error_max": 0.5,
+        "diameter_abs_error_max": 0.5,
+        "units": "SVG user units",
+        "proposed": true
+      },
       "not_implemented_note": "Geometry matching is not performed by the audit tool; this tolerance (proposed bbox/diameter absolute-error bound of 0.5 SVG user units) is a documented, manual/unimplemented proposal for a future rendered-geometry check, not an executed criterion.",
       "contradiction": "impl-guide says to copy the circle path 'verbatim from plus-circled.svg', but checkmark-circled.svg uses a different circle encoding. Flagged, not reconciled."
     },
@@ -69,7 +256,14 @@
       "section": "Keyshapes (Square)",
       "status": "draft",
       "statement": "Square keyshape is a centered 20x20 box; corner radius proposed at 0 with an explicit maximum.",
-      "numeric_tolerance": {"bbox": "2,2 to 22,22", "corner_radius": 0, "corner_radius_max": 1.0, "bbox_abs_error_max": 0.5, "units": "SVG user units", "proposed": true},
+      "numeric_tolerance": {
+        "bbox": "2,2 to 22,22",
+        "corner_radius": 0,
+        "corner_radius_max": 1.0,
+        "bbox_abs_error_max": 0.5,
+        "units": "SVG user units",
+        "proposed": true
+      },
       "not_implemented_note": "Geometry matching is not performed by the audit tool; this tolerance (proposed bbox absolute-error bound 0.5 and corner-radius maximum 1.0 SVG user units) is a documented, manual/unimplemented proposal only."
     },
     {
@@ -82,7 +276,12 @@
       "section": "Keyshapes (Rect-landscape)",
       "status": "draft",
       "statement": "Wide containers use a vertically centered short rect.",
-      "numeric_tolerance": {"bbox": "2,5 to 22,19", "bbox_abs_error_max": 0.5, "units": "SVG user units", "proposed": true},
+      "numeric_tolerance": {
+        "bbox": "2,5 to 22,19",
+        "bbox_abs_error_max": 0.5,
+        "units": "SVG user units",
+        "proposed": true
+      },
       "not_implemented_note": "Geometry matching is not performed by the audit tool; this tolerance (proposed bbox absolute-error bound 0.5 SVG user units) is a documented, manual/unimplemented proposal only."
     },
     {
@@ -95,7 +294,12 @@
       "section": "Keyshapes (Rect-portrait)",
       "status": "draft",
       "statement": "Tall containers use a horizontally centered narrow rect.",
-      "numeric_tolerance": {"bbox": "5,2 to 19,22", "bbox_abs_error_max": 0.5, "units": "SVG user units", "proposed": true},
+      "numeric_tolerance": {
+        "bbox": "5,2 to 19,22",
+        "bbox_abs_error_max": 0.5,
+        "units": "SVG user units",
+        "proposed": true
+      },
       "not_implemented_note": "Geometry matching is not performed by the audit tool; this tolerance (proposed bbox absolute-error bound 0.5 SVG user units) is a documented, manual/unimplemented proposal only."
     },
     {
@@ -108,7 +312,12 @@
       "section": "Keyshapes / Composition rules",
       "status": "draft",
       "statement": "Inner symbol is inset from the keyshape edge by a proposed 2 to 3 SVG user units. Depends on rendered geometry; requires visual review.",
-      "numeric_tolerance": {"inset_min": 2, "inset_max": 3, "units": "SVG user units", "proposed": true},
+      "numeric_tolerance": {
+        "inset_min": 2,
+        "inset_max": 3,
+        "units": "SVG user units",
+        "proposed": true
+      },
       "not_implemented_note": "The audit emits requires-visual-review for this rule; the inset bound (proposed 2 to 3 SVG user units) is a documented, manual/unimplemented proposal for a future rendered check, not an executed criterion."
     },
     {
@@ -147,7 +356,10 @@
       "section": "Stroke rules",
       "status": "draft",
       "statement": "stroke-width is never set explicitly on any element (the SVG default of 1 applies). The audit checks for an explicit stroke-width on ANY element (path, g, svg) and for any path whose effective width comes from a non-initial source, so an inherited width from a <g stroke-width=...> is caught even when the path itself is bare.",
-      "numeric_tolerance": {"value": 1, "proposed": true}
+      "numeric_tolerance": {
+        "value": 1,
+        "proposed": true
+      }
     },
     {
       "id": "stroke.linecap",
@@ -285,16 +497,34 @@
       "status": "draft",
       "statement": "SEMANTIC judgement, separate from lexical syntax. The guide reserves '--' for rare dual-state icons and names exactly one: thumbs-up--down. The audit treats thumbs-up--down as a documented-exception; every other '--' name (arrow--left, chevron--down, aircraft--right, hand-pointing--left, ellipsis--vertical, arrow-circle--flip, and the -circled directional variants) uses '--' for a single direction or other meaning that the guide does NOT document, and is emitted as requires-visual-review for a semantic decision. These names are NOT auto-passed merely because the string is lexically valid.",
       "observed_double_dash_names": [
-        "aircraft--left", "aircraft--right", "arrow--down", "arrow--left",
-        "arrow--top", "arrow-circle--flip", "arrow-circled--down",
-        "arrow-circled--left", "arrow-circled--top", "arrow-to--bottom",
-        "arrow-to--top", "chevron--down", "chevron--left", "chevron--top",
-        "chevron-circled--down", "chevron-circled--left", "chevron-circled--top",
-        "ellipsis--vertical", "guillemet--down", "guillemet--left",
-        "guillemet--up", "hand-back-pointing--left", "hand-pointing--left",
+        "aircraft--left",
+        "aircraft--right",
+        "arrow--down",
+        "arrow--left",
+        "arrow--top",
+        "arrow-circle--flip",
+        "arrow-circled--down",
+        "arrow-circled--left",
+        "arrow-circled--top",
+        "arrow-to--bottom",
+        "arrow-to--top",
+        "chevron--down",
+        "chevron--left",
+        "chevron--top",
+        "chevron-circled--down",
+        "chevron-circled--left",
+        "chevron-circled--top",
+        "ellipsis--vertical",
+        "guillemet--down",
+        "guillemet--left",
+        "guillemet--up",
+        "hand-back-pointing--left",
+        "hand-pointing--left",
         "thumbs-up--down"
       ],
-      "documented_dual_state": ["thumbs-up--down"]
+      "documented_dual_state": [
+        "thumbs-up--down"
+      ]
     },
     {
       "id": "metadata.semantic",

@@ -53,6 +53,24 @@ assumptions:
 
 # Icon Set Audit (Issue 45)
 
+## Post-PR66 addendum: new primary design source
+
+After PR66 the user supplied an **existing icon guideline they authored** in
+Figma (UI Assets Library, file `Eprjc6hw7QyMvvD01eGgGy`, section node
+`482:12945` "Icons"). This is a **primary, user-identified design source** that
+was **not** in scope when this audit ran. Its existence **invalidates the claim
+that this audit is a complete design-guideline comparison**: the audit compared
+assets only to the runtime implementation/usage guides, so it is now a
+**runtime-guide-only** comparison with design-guideline completeness **pending
+reconciliation**.
+
+The **quantitative checks are unchanged**: still **601** inventory icons and
+**12621** finding rows (601 × 21), and they remain a **historical comparison
+against the pinned runtime guides**. Nothing was re-evaluated against Figma.
+Readiness is **blocked for any generation spike until reconciliation**. See
+[figma-guideline-addendum.md](figma-guideline-addendum.md) for the verified
+Figma observations, provenance, and the comparative rule table.
+
 ## Status of this document
 
 This is a research artifact. It does **not** promote any implementation
@@ -289,7 +307,14 @@ The following cannot be decided statically and are flagged
   candidates, not verified corrections.
 - `benchmark-concepts.json` proposes plausibly-missing **distinct** concepts
   checked for name absence and semantic overlap against the **601**-file pinned
-  inventory. Every proposed name was confirmed absent; every icon cited under
+  inventory. Filename-absence remains valid **only** against the pinned runtime
+  inventory; Figma concept presence is **pending comparison**. The Figma Icon Set
+  (node `5051:11598`) contains a **Fullscreen** (`5051:12335`) and an **Undo
+  Clock** (`5051:13421`) component, so the `fullscreen` and `clock-history`
+  candidates are **not established as missing** against Figma (no automatic name
+  mapping or visual equivalence inferred). The remaining selected concepts stay
+  **proposed, not approved missing**. See
+  [figma-guideline-addendum.md](figma-guideline-addendum.md). Every proposed name was confirmed absent; every icon cited under
   `semantic_overlap` was confirmed to exist, so name absence does not prove the
   concept is visually absent. Each selected candidate therefore carries
   `review_required: true` for human semantic/visual confirmation before
@@ -323,7 +348,17 @@ The following cannot be decided statically and are flagged
   **draft** pending human review. Prose grammar and copy have not had a human
   visual review pass.
 
-Not ready for promotion to governance.
+- Figma design source (post-PR66): a user-authored Figma icon guideline (file
+  `Eprjc6hw7QyMvvD01eGgGy`, node `482:12945`) was supplied after this audit ran.
+  It is recorded with provenance in
+  [figma-guideline-addendum.md](figma-guideline-addendum.md) and in the
+  `grammar.json` `design_guideline_rules`. The existing runtime-guide rules are
+  now scoped **runtime-guide-only** and **provisional**; reconciliation with the
+  Figma source is pending. No immutable Figma version ID was obtained and no Git
+  SHA is used to version the Figma file.
+
+Not ready for promotion to governance. Blocked for any generation spike until
+the Figma reconciliation is done.
 
 ## Next bounded step
 

@@ -7,6 +7,30 @@
     "source_icon_count": 601
   },
   "status": "draft",
+  "figma_applicability": {
+    "scope": "runtime-filename-absence-only",
+    "status": "pending-figma-comparison",
+    "note": "The 'missing concept' claims below were checked ONLY for name absence and semantic overlap against the 601-file pinned RUNTIME inventory. After PR66 a user-authored Figma design guideline (UI Assets Library, file Eprjc6hw7QyMvvD01eGgGy, section node 482:12945 'Icons') was supplied, including a large Icon Set frame (node 5051:11598). Filename-absence results remain valid ONLY against the pinned runtime inventory; Figma CONCEPT presence is pending comparison and no automatic name mapping or visual equivalence is inferred. See figma-guideline-addendum.md.",
+    "figma_source": {
+      "file": "Eprjc6hw7QyMvvD01eGgGy",
+      "section_node": "482:12945",
+      "icon_set_frame": "5051:11598",
+      "accessed": "2026-10-31",
+      "fetched_by": "Codex",
+      "mcp_session": "cb67a792-4a02-4ef3-858d-30efbc79f94d",
+      "observed_components": {
+        "Fullscreen": "5051:12335",
+        "Link External": "5051:12508",
+        "Undo Clock": "5051:13421",
+        "Thumbnails": "5051:13327"
+      }
+    },
+    "candidate_reassessment": {
+      "fullscreen": "NOT established as missing: a Fullscreen component (5051:12335) is present in the Figma Icon Set. No automatic name mapping/visual equivalence inferred; human confirmation still required.",
+      "clock-history": "NOT established as missing: an Undo Clock component (5051:13421) is present in the Figma Icon Set, which may satisfy the history/clock concept. No automatic name mapping/visual equivalence inferred; human confirmation still required.",
+      "remaining": "All other proposed candidates remain PROPOSED, not approved missing. The 13 selected concepts stay proposed-but-not-approved pending Figma comparison."
+    }
+  },
   "methodology": {
     "name_absence": "All proposed_name values were confirmed ABSENT from the 601-file inventory (no file of that name exists).",
     "overlap_existence": "All icons listed under semantic_overlap were confirmed to EXIST in the 601-file inventory.",
@@ -62,7 +86,9 @@
       "semantic_overlap": ["resize", "minimize", "focus", "arrow-to--top", "arrow-to--bottom"],
       "overlap_note": "Moderate overlap with resize/minimize; a decision is needed on whether resize already covers this.",
       "review_required": true,
-      "review_note": "All overlap files exist; confirm resize does not already serve fullscreen-expand."
+      "review_note": "All overlap files exist; confirm resize does not already serve fullscreen-expand.",
+      "figma_status": "not-established-missing",
+      "figma_note": "A Fullscreen component (node 5051:12335) is present in the Figma Icon Set (5051:11598). Filename absence remains valid only against the pinned runtime inventory; this candidate is NOT established as a missing concept against Figma. No automatic name mapping/visual equivalence inferred."
     },
     {
       "concept": "attachment / paperclip",
@@ -92,7 +118,9 @@
       "semantic_overlap": ["undo", "sync", "clock", "clock-alarm", "arrow-circle--flip"],
       "overlap_note": "Moderate overlap with undo and arrow-circle--flip; differentiate history vs undo action.",
       "review_required": true,
-      "review_note": "All overlap files exist; confirm undo/arrow-circle--flip do not already read as history."
+      "review_note": "All overlap files exist; confirm undo/arrow-circle--flip do not already read as history.",
+      "figma_status": "not-established-missing",
+      "figma_note": "An Undo Clock component (node 5051:13421) is present in the Figma Icon Set (5051:11598) and may satisfy the history/clock concept. Filename absence remains valid only against the pinned runtime inventory; this candidate is NOT established as a missing concept against Figma. No automatic name mapping/visual equivalence inferred."
     },
     {
       "concept": "cart add",

@@ -1,11 +1,12 @@
 {
   "artifact_sha256": {
-    "benchmark-concepts.json": "f9470ef9c68c0372a60343d8416e64609be90e0a717ad3c4a59730e7e50f3d0f",
+    "benchmark-concepts.json": "76312dd93f05ce3c5444bad827f8b4968176b4b09a892b3be335e94777839225",
+    "figma-guideline-addendum.md": "60abc2cddd7b76e95c42f851e5ffbcf7a5150f7e8b77f9e9c90481fe329c4a8f",
     "findings.json": "b98b9ac76e14b720dcbec9408db6047b13991fa78487f8359ece1da831dedbcd",
-    "grammar.json": "c4edf285bf8374b7a3a1035aa9374f10f5a1de5bc40480279b7500f2e08e381c",
+    "grammar.json": "1b1103273cfadd2e417750365c00762b2ba41f870e0b02d03845090357d8f1ba",
     "inventory.json": "8a7f9f6662b8aad4b6479d18cf4e1bafab4496d725adb880c5efaa3a563a1cf1",
     "reference-set.json": "622b69c6fcab27d8efdb868fd6e2a7d2de99cdab25604373f7fc8d100cdd41cf",
-    "report.md": "720a0e312f94cf3fe31375feccba30a6dedf329d43da0d2ca65446e643c07c83",
+    "report.md": "8fee29cb08e285b6785fc23a6c1f07a415b94e09180f84e68fa1ae8be82ae88f",
     "reproducibility.md": "47ff71a15ffcad50fee9dc32aa036497110e1f06f09af5866f3ee4871f16e6c5",
     "summary.json": "b1b22a43431ca1f8a15e98d7698e3b5a59654bd690e52ffab4fb221d31289bab"
   },
@@ -186,6 +187,57 @@
     "rules_total": 21
   },
   "date": "2026-10-31",
+  "figma_source_addendum": {
+    "accessed": "2026-10-31",
+    "acp_sessions": [
+      {
+        "changes_complete": true,
+        "error_code": "workspace_delta_unverified_or_outside_scope",
+        "session_id": "sess_1f461349-1f33-4a55-9c3c-eb285d6d846d",
+        "status": "blocked",
+        "stop_reason": "end_turn",
+        "task_id": "vlt45-figma-source",
+        "tools_complete": true,
+        "worker_reaped": true
+      },
+      {
+        "changes_complete": true,
+        "error_code": null,
+        "session_id": "sess_ab089793-1a0b-4a25-b53c-2783de53a76a",
+        "status": "completed",
+        "stop_reason": "end_turn",
+        "task_id": "vlt45-figma-finalize",
+        "tools_complete": true,
+        "worker_reaped": true
+      }
+    ],
+    "existing_executable_rules_unchanged": true,
+    "figma_rules_executed": false,
+    "file_key": "Eprjc6hw7QyMvvD01eGgGy",
+    "first_turn_blocker": "Codex wrote its hash-baseline evidence file during the first addendum ACP turn, producing an outside-allowed-path snapshot delta. That orchestrator file is identified; changes independently inspected. Follow-up provenance turn completed. No adapter permissions changed.",
+    "human_decisions": [
+      "Membership/mapping of 601 Runtime SVGs to Figma set",
+      "Applicable immutable Figma revision",
+      "Literal 2pt versus SVG default1/export scaling",
+      "Stroke and corner token resolution",
+      "Permitted fills and keyshape scope",
+      "Figma concept overlap before generation benchmark"
+    ],
+    "immutable_figma_version": null,
+    "mcp_session": "cb67a792-4a02-4ef3-858d-30efbc79f94d",
+    "preserved_artifact_sha256": {
+      "findings.json": "b98b9ac76e14b720dcbec9408db6047b13991fa78487f8359ece1da831dedbcd",
+      "inventory.json": "8a7f9f6662b8aad4b6479d18cf4e1bafab4496d725adb880c5efaa3a563a1cf1",
+      "reference-set.json": "622b69c6fcab27d8efdb868fd6e2a7d2de99cdab25604373f7fc8d100cdd41cf",
+      "reproducibility.md": "47ff71a15ffcad50fee9dc32aa036497110e1f06f09af5866f3ee4871f16e6c5",
+      "summary.json": "b1b22a43431ca1f8a15e98d7698e3b5a59654bd690e52ffab4fb221d31289bab"
+    },
+    "reviewer_edits": "Codex filled capture hash and classified the discrete size scale as hard/not-executed rather than heuristic without tolerance.",
+    "screenshot_capture_sha256": "5be17544d471e06ff72b01db786a130ff33b9e6999cc14be00fbcc9b700869e7",
+    "section_node": "482:12945",
+    "status": "source observations verified; reconciliation NOT complete",
+    "url": "https://www.figma.com/design/Eprjc6hw7QyMvvD01eGgGy/UI-Assets-Library?node-id=482-12945"
+  },
   "implementation_executor": "Kiro",
   "issue": "tbielich/ui-foundations-vault#45",
   "limitations": [
@@ -193,7 +245,8 @@
     "Implementation/usage sources identified at exact SHA; no external brand PDF or evidence establishing broader design-authority approval supplied.",
     "Benchmark name absence does not prove semantic absence; future concepts remain proposals.",
     "Structural and semantic duplicate groups are candidates, not rendering equivalence.",
-    "600 color mismatches are against the implementation guide; they do not establish production rendering defects."
+    "600 color mismatches are against the implementation guide; they do not establish production rendering defects.",
+    "User-authored Figma guideline supplied later and recorded in figma-guideline-addendum.md; original 12621 findings apply only to the pinned Runtime guides. They are not a complete design-guideline audit."
   ],
   "orchestrator_and_independent_verifier": "Codex",
   "sources": [
