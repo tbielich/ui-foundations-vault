@@ -39,8 +39,8 @@ jobs:
         # negatives, duplicate/alias/invalid-UTF-8 metadata, size and hard-cap
         # budgets, source and output symlink escapes, preexisting-output and
         # sentinel protection, schema dialect/keyword enforcement, and the
-        # current real-pack expected rejection with its SPECIFIC channel
-        # eligibility diagnostic (see test_real_pack_rejected_with_specific_diagnostic).
-        # The lifecycle rejection assertion lives here, not in a fragile shell
+        # real 0.9.0 candidate export and deterministic regeneration; review-channel
+        # rejection remains covered by test_negative_pack_channel.
+        # Lifecycle rejection assertions remain in the suite, not in a fragile shell
         # expectation. No network, dependencies, or publishing.
         run: ruby scripts/test-figma-export.rb

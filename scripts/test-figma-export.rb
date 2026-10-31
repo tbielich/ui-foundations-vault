@@ -12,10 +12,9 @@
 # safety, and fail-closed behavior. All generated output goes to external temp
 # dirs only.
 #
-# One test asserts that the CURRENT real Vault pack (review channel with
-# review/draft artifacts) is correctly REJECTED by an authoritative export, with
-# a specific eligibility diagnostic. That rejection is the expected, passing
-# negative result, not a positive export.
+# The real 0.9.0 release candidate must export deterministically within the
+# explicit 200000-byte budget. Synthetic negative cases still reject review
+# channels, draft sources and malformed metadata without changing eligibility.
 
 require "fileutils"
 require "json"
@@ -1722,24 +1721,78 @@ end
 
 # ---- Real pack + non-mutation ----------------------------------------------
 
-# The authoritative real-pack export MUST be rejected with the SPECIFIC
-# eligibility diagnostic (channel is not stable), not merely any nonzero exit.
-def test_real_pack_rejected_with_specific_diagnostic
+# Integration against the real release candidate, not a synthetic approved pack.
+# Candidate metadata is proposed for owner approval; a passing test is not approval.
+def test_real_pack_release_candidate
   Dir.mktmpdir("figma-export-real-out-") do |outparent|
-    out = File.join(outparent, "figma-guidelines")
+    out = File.join(outparent, "first")
+    other = File.join(outparent, "second")
+    args = ["--vault-root", REAL_VAULT_ROOT, "--max-total-bytes", "200000"]
+    code, _o, err = run_exporter(args + ["--out", out])
+    assert(code.zero?, "real release candidate must export: #{err}")
+    return unless code.zero?
+    manifest = read_manifest(out)
+    assert(manifest.dig("generated_from", "pack_version") == "0.9.0", "real pack version must be 0.9.0")
+    assert(manifest.dig("generated_from", "pack_channel") == "stable", "candidate proposes stable channel")
+    assert(manifest["files"].size == 7, "real pack exports seven guideline files")
+    assert(manifest["total_bytes"] <= 200000, "real pack must fit immutable upload cap")
+    manifest["files"].each do |f|
+      bytes = File.binread(File.join(out, f["path"]))
+      assert(Digest::SHA256.hexdigest(bytes) == f["sha256"], "real guideline hash must match #{f['path']}")
+    end
+    check, _o, err = run_exporter(args + ["--out", out, "--check"])
+    assert(check.zero?, "real pack --check must pass: #{err}")
+    again, _o, err = run_exporter(args + ["--out", other])
+    assert(again.zero?, "repeat real export must succeed: #{err}")
+    if again.zero?
+      assert(Dir.children(out).sort == Dir.children(other).sort, "repeat exports have identical entries")
+      Dir.children(out).each do |name|
+        assert(File.binread(File.join(out, name)) == File.binread(File.join(other, name)), "repeat real export must be byte-identical: #{name}")
+      end
+    end
+  end
+end
+
+# Preserve the real-source fail-closed check even after proposing a stable pack.
+# Only an external copy is mutated; the candidate source tree stays untouched.
+def test_real_pack_review_channel_rejected
+  Dir.mktmpdir("figma-real-review-copy-") do |vault|
+    canonical_snapshot(REAL_VAULT_ROOT).each do |rel, _sha|
+      next if rel == ".git"
+      target = File.join(vault, rel)
+      FileUtils.mkdir_p(File.dirname(target))
+      FileUtils.cp(File.join(REAL_VAULT_ROOT, rel), target)
+    end
+    registry = File.join(vault, "registry/governance-packs.yml")
+    before = File.read(registry)
+    changed = before.sub("    channel: stable", "    channel: review")
+    assert(changed != before, "real review-channel negative must mutate the current registry channel")
+    File.write(registry, changed)
+    Dir.mktmpdir("figma-real-review-output-") do |parent|
+      out = File.join(parent, "guidelines")
+      code, _o, err = run_exporter(["--out", out, "--vault-root", vault, "--max-total-bytes", "200000"])
+      assert(code == 1, "real review-channel copy must fail closed")
+      assert(err.include?("channel") && err.include?("not eligible"), "real review rejection cites channel eligibility")
+      assert(!File.exist?(out), "real review-channel rejection writes no partial output")
+    end
+  end
+end
+
+def test_real_pack_default_budget_rejected
+  Dir.mktmpdir("figma-real-budget-output-") do |parent|
+    out = File.join(parent, "guidelines")
     code, _o, err = run_exporter(["--out", out, "--vault-root", REAL_VAULT_ROOT])
-    assert(code == 1, "current real governance-pack must be rejected by authoritative export")
-    assert(err.include?("FAILED (closed"), "real-pack rejection must fail closed")
-    assert(!File.exist?(out), "real-pack rejection must write no output")
-    assert(err.include?("channel") && err.include?("not eligible"),
-           "real-pack rejection must cite the specific channel eligibility diagnostic, not a crash")
+    assert(code == 1, "full real-source pack requires an explicit upload budget")
+    assert(err.include?("exceeds configured budget"), "default-budget rejection must identify size")
+    assert(!File.exist?(out), "budget rejection writes no partial output")
   end
 end
 
 def test_no_canonical_mutation
   before = canonical_snapshot(REAL_VAULT_ROOT)
   Dir.mktmpdir("figma-export-nomut-out-") do |outparent|
-    run_exporter(["--out", File.join(outparent, "fig"), "--vault-root", REAL_VAULT_ROOT])
+    code, _o, err = run_exporter(["--out", File.join(outparent, "fig"), "--vault-root", REAL_VAULT_ROOT, "--max-total-bytes", "200000"])
+    assert(code.zero?, "real non-mutation probe must actually export: #{err}")
   end
   with_eligible_vault do |vault, out|
     run_exporter(["--out", out, "--vault-root", vault])
@@ -1759,9 +1812,9 @@ def test_sentinel_and_symlink_cannot_mutate_vault
     File.write(sentinel, "preexisting user content")
 
     # Refuse to overwrite the existing output directory (so the sentinel lives).
-    code, _o, err = run_exporter(["--out", out, "--vault-root", REAL_VAULT_ROOT])
+    code, _o, err = run_exporter(["--out", out, "--vault-root", REAL_VAULT_ROOT, "--max-total-bytes", "200000"])
     assert(code == 1, "exporter must refuse a preexisting output directory")
-    assert(err.include?("Refusing to overwrite") || err.include?("not eligible") || err.include?("external"),
+    assert(err.include?("Refusing to overwrite"),
            "refusal diagnostic expected")
     assert(File.read(sentinel) == "preexisting user content", "preexisting sentinel must be preserved untouched")
 
@@ -1769,7 +1822,7 @@ def test_sentinel_and_symlink_cannot_mutate_vault
     # output target, protecting canonical content.
     link = File.join(parent, "link-into-vault")
     File.symlink(REAL_VAULT_ROOT, link)
-    code2, _o2, err2 = run_exporter(["--out", File.join(link, "nested-out"), "--vault-root", REAL_VAULT_ROOT])
+    code2, _o2, err2 = run_exporter(["--out", File.join(link, "nested-out"), "--vault-root", REAL_VAULT_ROOT, "--max-total-bytes", "200000"])
     assert(code2 == 1, "symlinked output target into the vault must be refused")
     assert(err2.include?("vault"), "refusal must cite the vault boundary")
   end
@@ -1858,7 +1911,9 @@ TESTS = [
   :test_negative_unsafe_body_content,
   :test_negative_broken_local_link_in_body,
   :test_negative_resolvable_relative_link_rejected_until_mapping,
-  :test_real_pack_rejected_with_specific_diagnostic,
+  :test_real_pack_release_candidate,
+  :test_real_pack_review_channel_rejected,
+  :test_real_pack_default_budget_rejected,
   :test_no_canonical_mutation,
   :test_sentinel_and_symlink_cannot_mutate_vault
 ].freeze

@@ -2,11 +2,11 @@
 id: reference.terminology
 title: Terminology
 type: glossary
-status: review
+status: accepted
 owners:
   - ui-foundations
 created: 2026-07-07
-updated: 2026-07-07
+updated: 2026-10-31
 authority: source
 summary: Defines canonical terms used across UI Foundations knowledge documents.
 related:

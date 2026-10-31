@@ -2,11 +2,11 @@
 id: specification.pattern.schema
 title: Pattern Authoring Schema
 type: specification
-status: draft
+status: accepted
 owners:
   - ui-foundations
 created: 2026-07-08
-updated: 2026-07-09
+updated: 2026-10-31
 authority: source
 summary: Defines the markdown authoring schema for agent-readable pattern specifications.
 related:
@@ -45,7 +45,7 @@ Define the public component class scope. Public component classes must use the `
 
 ### Token Contract
 
-Define the CSS custom property scope. UIF-owned public CSS custom properties must use the `--uif-` prefix. Component token slots must use `--uif-[component]-*`. Experimental unresolved tokens must use `--uif-proof-*` or `--uif-assumption-*`. Do not use unscoped public tokens such as `--button-*`.
+Define the CSS custom property scope. UIF-owned public CSS custom properties must use the `--uif-` prefix. Component token slots must use `--uif-[component]-*`. Experimental unresolved tokens must use `--uif-proof-*` or `--uif-assumption-*`. Do not introduce unscoped public component tokens such as `--button-*`. Accepted source-specific compatibility exceptions take precedence: `adr.token-model-and-figma-projection` retains explicit legacy primitive CSS names and export paths while new semantic and appearance-bridge properties use `--uif-semantic-*` and `--uif-appearance-*`. This does not authorize new exceptions.
 
 ### Public Template API Contract
 
@@ -66,6 +66,10 @@ Define semantic precedence. Native attributes win where available. ARIA is used 
 ### Agent Freedom Boundary
 
 Define naming decisions that are not agent freedom. CSS naming, token scoping, native semantics, and accessibility semantics are not agent freedom. Agents may only introduce naming or data-attribute proposals when explicitly marked as proposed or recorded as an open question.
+
+### Pattern Identifier Contract
+
+Use `pattern.base.`, `pattern.composition.` and `pattern.product.` for the corresponding pattern types, followed by a stable lowercase slug. These identifiers classify pattern knowledge, not component or token names.
 
 ## Required Sections
 
