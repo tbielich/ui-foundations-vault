@@ -3,15 +3,15 @@
   "contract_id": "governance-pack.naming-contract",
   "title": "Naming Contract",
   "type": "naming-contract",
-  "status": "review",
+  "status": "accepted",
   "authority": "derived",
   "owner": "ui-foundations",
   "schema_version": "1.0.0",
-  "contract_version": "0.2.0",
-  "governance_pack_version": "0.8.0",
-  "channel": "review",
-  "release_date": "2026-07-15",
-  "updated": "2026-07-15",
+  "contract_version": "0.3.0",
+  "governance_pack_version": "0.9.0",
+  "channel": "stable",
+  "release_date": "2026-10-31",
+  "updated": "2026-10-31",
   "normativity": {
     "rules_are_normative": true,
     "examples_are_normative": false,
@@ -40,28 +40,8 @@
           "Token Contract",
           "Data Attribute Contract",
           "Native / ARIA Precedence",
-          "Agent Freedom Boundary"
-        ]
-      },
-      {
-        "id": "template.pattern.base",
-        "path": "patterns/templates/base-pattern.template.md",
-        "sections": [
-          "Implementation Naming Contract"
-        ]
-      },
-      {
-        "id": "template.pattern.composition",
-        "path": "patterns/templates/composition-pattern.template.md",
-        "sections": [
-          "Implementation Naming Contract"
-        ]
-      },
-      {
-        "id": "template.pattern.product",
-        "path": "patterns/templates/product-pattern.template.md",
-        "sections": [
-          "Implementation Naming Contract"
+          "Agent Freedom Boundary",
+          "Pattern Identifier Contract"
         ]
       },
       {
@@ -78,6 +58,14 @@
         "sections": [
           "Deprecated",
           "Archived"
+        ]
+      },
+      {
+        "id": "adr.token-model-and-figma-projection",
+        "path": "decisions/token-model-and-figma-projection.md",
+        "sections": [
+          "Naming and projection",
+          "Decision"
         ]
       }
     ]
@@ -105,7 +93,11 @@
       "component_token_slot_pattern": "--uif-[component]-*",
       "forbidden": [
         "unscoped public tokens such as --button-*"
-      ]
+      ],
+      "compatibility_exception": {
+        "source": "adr.token-model-and-figma-projection",
+        "policy": "Explicit legacy primitive CSS names and export paths remain compatibility projections. New semantic roles use --uif-semantic-* and appearance bridges use --uif-appearance-*. This release authorizes no blanket namespace migration."
+      }
     },
     "nunjucks_macro_namespace": {
       "alias": "uif",

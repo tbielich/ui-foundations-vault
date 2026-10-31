@@ -2,11 +2,11 @@
 id: export-pack.governance.changelog
 title: Governance Pack Changelog
 type: export-pack
-status: draft
+status: accepted
 owners:
   - ui-foundations
 created: 2026-07-09
-updated: 2026-07-09
+updated: 2026-10-31
 authority: derived
 summary: Version history for the UI Foundations Governance Pack.
 related:
@@ -16,6 +16,17 @@ related:
 ---
 
 # Governance Pack Changelog
+
+## 0.9.0 - Reviewed Consumption and Figma Guidelines
+
+Status: proposed stable release; effective only after owner review and merge.
+
+- Proposes acceptance of the five named source documents listed in release evidence.
+- Includes the previously accepted token-model ADR and brand-preserving contrast requirements.
+- Naming contract 0.3.0 cites the schema rather than three informative pattern templates; pattern-ID rules are now explicit in that schema.
+- Records the accepted ADR's legacy primitive namespace exception without authorizing a new migration.
+- Replaces stale README version/channel information and establishes a verified, deterministic seven-file Figma export.
+- Does not approve consumer implementations, publish Figma libraries, synchronize tokens, or rewrite previously consumed packs.
 
 ## 0.8.0 - UIF Public API Namespace
 

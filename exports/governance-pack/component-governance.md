@@ -2,16 +2,17 @@
 id: export-pack.governance.component-governance
 title: Component Governance
 type: governance
-status: draft
+status: accepted
 owners:
   - ui-foundations
 created: 2026-07-09
-updated: 2026-07-09
+updated: 2026-10-31
 authority: derived
 summary: Reusable component governance guidance for consuming repositories.
 related:
   references:
     - registry.sync-contract
+    - specification.pattern.schema
 ---
 
 # Component Governance

@@ -2,11 +2,11 @@
 id: principle.foundation.accessibility-principles
 title: Accessibility Principles
 type: principle
-status: review
+status: accepted
 owners:
   - ui-foundations
 created: 2026-07-07
-updated: 2026-07-07
+updated: 2026-10-31
 authority: source
 summary: Defines accessibility as a baseline condition for inclusive design.
 related:

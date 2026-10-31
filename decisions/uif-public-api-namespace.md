@@ -2,11 +2,11 @@
 id: adr.uif-public-api-namespace
 title: UIF Public API Namespace
 type: adr
-status: review
+status: accepted
 owners:
   - ui-foundations
 created: 2026-07-15
-updated: 2026-07-15
+updated: 2026-10-31
 authority: source
 summary: Defines the canonical UIF namespace for public macro invocations and Custom Element tag names.
 applies_to:

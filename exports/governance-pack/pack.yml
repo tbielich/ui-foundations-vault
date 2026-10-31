@@ -2,20 +2,20 @@
 id: export-pack.governance.manifest
 title: Governance Pack Manifest
 type: export-pack
-status: review
+status: accepted
 owners:
   - ui-foundations
 created: 2026-07-09
-updated: 2026-07-15
+updated: 2026-10-31
 authority: derived
 summary: Machine-readable manifest for the publishable UI Foundations governance pack.
 
 pack:
   id: governance-pack
   title: Governance Pack
-  version: 0.8.0
-  channel: review
-  release_date: 2026-07-15
+  version: 0.9.0
+  channel: stable
+  release_date: 2026-10-31
   owner: ui-foundations
   registry: registry/governance-packs.yml
   changelog: exports/governance-pack/CHANGELOG.md
@@ -42,55 +42,58 @@ artifacts:
     title: Naming Contract
     type: naming-contract
     path: exports/governance-pack/contracts/naming-contract.json
-    status: review
+    status: accepted
     review_required: true
     schema: schemas/naming-contract.schema.yml
     source_references:
       - adr.uif-public-api-namespace
       - specification.pattern.schema
-      - template.pattern.base
-      - template.pattern.composition
-      - template.pattern.product
       - registry.governance-packs
       - governance.lifecycle
+      - adr.token-model-and-figma-projection
 
   - id: governance-pack.naming-rules
     title: Naming Rules
     type: naming-rule
     path: exports/governance-pack/naming-rules.md
-    status: review
+    status: accepted
     review_required: true
     source_references:
       - reference.terminology
       - registry.sync-contract
       - adr.uif-public-api-namespace
+      - principle.foundation.design-principles
 
   - id: governance-pack.token-governance
     title: Token Governance
     type: token-governance
     path: exports/governance-pack/token-governance.md
-    status: draft
+    status: accepted
     review_required: true
     source_references:
       - registry.sync-contract
+      - adr.token-model-and-figma-projection
 
   - id: governance-pack.component-governance
     title: Component Governance
     type: component-governance
     path: exports/governance-pack/component-governance.md
-    status: draft
+    status: accepted
     review_required: true
     source_references:
       - registry.sync-contract
+      - specification.pattern.schema
 
   - id: governance-pack.accessibility-baseline
     title: Accessibility Baseline
     type: accessibility-baseline
     path: exports/governance-pack/accessibility-baseline.md
-    status: draft
+    status: accepted
     review_required: true
     source_references:
       - registry.sync-contract
+      - principle.foundation.accessibility-principles
+      - adr.token-model-and-figma-projection
 
 protected_boundaries:
   never_include:

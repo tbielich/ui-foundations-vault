@@ -2,23 +2,26 @@
 id: export-pack.governance.token-governance
 title: Token Governance
 type: governance
-status: draft
+status: accepted
 owners:
   - ui-foundations
 created: 2026-07-09
-updated: 2026-07-09
+updated: 2026-10-31
 authority: derived
 summary: Reusable token governance guidance for consuming repositories.
 related:
   references:
     - registry.sync-contract
+    - adr.token-model-and-figma-projection
 ---
 
 # Token Governance
 
 ## Rules
 
-- Token decisions must preserve a clear distinction between core, semantic, theme, mode, and component-facing usage.
+- Preserve `Core → Appearance {Brand, Scheme, Scale} → Semantics → Patterns`, as defined in `adr.token-model-and-figma-projection`. Brand, Scheme and Scale are independent contextual axes.
+- Preserve Surface, Content, Foreground and Border as distinct roles. Contrast repairs must preserve intended brand hue and inversion; verify every affected Brand × Scheme × State combination.
+- Library source changes, publication and consuming-file updates are separate steps. Verify actual resolved consumer values before claiming parity.
 - Runtime repositories may implement token output, but canonical token meaning belongs in the vault.
 - Token changes should describe consumer impact before implementation work begins.
 - Token aliases, renames, and removals require migration notes.

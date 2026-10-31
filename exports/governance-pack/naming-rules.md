@@ -2,11 +2,11 @@
 id: export-pack.governance.naming-rules
 title: Naming Rules
 type: governance
-status: review
+status: accepted
 owners:
   - ui-foundations
 created: 2026-07-09
-updated: 2026-07-15
+updated: 2026-10-31
 authority: derived
 summary: Reusable naming rules for UI Foundations ecosystem artifacts.
 related:
@@ -14,6 +14,7 @@ related:
     - reference.terminology
     - registry.sync-contract
     - adr.uif-public-api-namespace
+    - principle.foundation.design-principles
 ---
 
 # Naming Rules

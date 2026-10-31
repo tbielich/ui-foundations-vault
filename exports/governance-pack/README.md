@@ -2,11 +2,11 @@
 id: export-pack.governance
 title: Governance Pack
 type: export-pack
-status: draft
+status: accepted
 owners:
   - ui-foundations
 created: 2026-07-09
-updated: 2026-07-09
+updated: 2026-10-31
 authority: derived
 summary: Curated governance guidance for reviewed consumption by UI Foundations ecosystem repositories.
 related:
@@ -39,8 +39,15 @@ It is intended for reviewed consumption by runtime, documentation, package, and 
 
 ## Version
 
-Current version: `0.7.0`
+Current version: `0.9.0`
 
-Channel: `draft`
+Channel: `stable`
 
 The manifest in `pack.yml` defines publishable pack metadata. The changelog records version history. Runtime repositories may consume this pack only through reviewed local changes.
+
+## Release Review
+
+Version 0.9.0 and its source-status transitions are a proposal until owner review
+and merge. Branch output is a release candidate, not published governance.
+See `docs/evidence/governance-pack-0.9.0.md` for the review scope and validation.
+Runtime adoption and Figma upload remain separate reviewed consumer actions.
