@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/figma-export-manifest.schema.json",
+  "title": "Figma Guidelines Export Manifest Schema",
+  "description": "Structure of the machine-readable manifest produced by scripts/export-figma-guidelines.rb. The manifest is a deterministic, read-only projection of eligible Vault governance guidance. It is derived output, never normative on its own, and is NOT uploaded to Figma. This schema is intentionally a constrained subset of JSON Schema draft 2020-12; the bundled validator only implements the keywords used here and rejects any schema that uses others.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "generator",
+    "generated_from",
+    "input_checksums",
+    "size_unit",
+    "manifest_uploaded_to_figma",
+    "budgets",
+    "total_bytes",
+    "files"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "schemas/figma-export-manifest.schema.json"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "const": "figma-guidelines-export"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        }
+      }
+    },
+    "generated_from": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pack_id", "pack_version", "pack_channel", "registry_path", "manifest_path"],
+      "properties": {
+        "pack_id": { "type": "string", "minLength": 1 },
+        "pack_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "pack_channel": {
+          "type": "string",
+          "enum": ["draft", "review", "stable", "deprecated"]
+        },
+        "registry_path": { "type": "string", "minLength": 1 },
+        "manifest_path": { "type": "string", "minLength": 1 }
+      }
+    },
+    "input_checksums": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["registry", "repos", "pack_manifest", "schema", "governance", "artifacts"],
+      "properties": {
+        "registry": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "repos": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "pack_manifest": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "schema": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "governance": { "type": "object" },
+        "artifacts": { "type": "object" },
+        "naming_contract_schema": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "size_unit": {
+      "type": "string",
+      "const": "utf-8-bytes"
+    },
+    "manifest_uploaded_to_figma": {
+      "type": "boolean",
+      "const": false
+    },
+    "budgets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_file_bytes", "max_total_bytes", "hard_max_total_bytes"],
+      "properties": {
+        "max_file_bytes": { "type": "integer", "minimum": 1 },
+        "max_total_bytes": { "type": "integer", "minimum": 1 },
+        "hard_max_total_bytes": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "total_bytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "files": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "category",
+          "path",
+          "title",
+          "bytes",
+          "sha256",
+          "source_blocks"
+        ],
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": [
+              "overview",
+              "foundations",
+              "tokens",
+              "components",
+              "composition",
+              "accessibility",
+              "anti-patterns"
+            ]
+          },
+          "path": { "type": "string", "minLength": 1 },
+          "title": { "type": "string", "minLength": 1 },
+          "bytes": { "type": "integer", "minimum": 0 },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "source_blocks": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["source_id", "path", "type", "status", "authority", "normative", "sha256"],
+              "properties": {
+                "source_id": { "type": "string", "minLength": 1 },
+                "path": { "type": "string", "minLength": 1 },
+                "type": { "type": "string", "minLength": 1 },
+                "status": {
+                  "type": "string",
+                  "enum": ["accepted", "stable"]
+                },
+                "authority": { "type": "string", "minLength": 1 },
+                "normative": { "type": "boolean" },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
