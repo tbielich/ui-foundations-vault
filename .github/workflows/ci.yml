@@ -20,3 +20,27 @@ jobs:
 
       - name: Validate project projections
         run: ruby scripts/generate-project-projections.rb --check
+
+      - name: Validate governance packs
+        run: ruby schemas/validate-governance-packs.rb
+
+      - name: Run vault audit self-tests
+        run: |
+          set -euo pipefail
+          ruby schemas/validate-vault-audits.rb --self-test-contract
+          ruby schemas/validate-vault-audits.rb --self-test-frontmatter
+
+      - name: Figma guidelines export tests
+        # Deterministic stdlib tests covering: standalone script loadability,
+        # positive synthetic export, verbatim multiline body preservation,
+        # type-based normativity (informative sources stay informative),
+        # rule-level provenance, determinism and --check non-mutation,
+        # pack/registry/schema/artifact input invalidation, eligibility
+        # negatives, duplicate/alias/invalid-UTF-8 metadata, size and hard-cap
+        # budgets, source and output symlink escapes, preexisting-output and
+        # sentinel protection, schema dialect/keyword enforcement, and the
+        # current real-pack expected rejection with its SPECIFIC channel
+        # eligibility diagnostic (see test_real_pack_rejected_with_specific_diagnostic).
+        # The lifecycle rejection assertion lives here, not in a fragile shell
+        # expectation. No network, dependencies, or publishing.
+        run: ruby scripts/test-figma-export.rb
