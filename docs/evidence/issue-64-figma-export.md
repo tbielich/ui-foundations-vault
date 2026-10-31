@@ -143,6 +143,139 @@ real-pack eligibility diagnostic, required canonical governance path/type/
 authority/lifecycle and input hashes, schema enforcement, and `--check` source/
 input invalidation with no writes.
 
+### CI repair notes (2026-11-01): portable duplicate-JSON-key detection
+
+Hosted CI reported one failure that did NOT reproduce locally. This revision
+records that discrepancy and the fix; it does not alter any prior historical
+counts, commit hashes, or evidence rows above.
+
+- Initial hosted FAIL (authoritative): the `pull_request` run on head
+  `4e4a7fbee0288e973321c93cdf2d1d4baeaf7af2`
+  (https://github.com/tbielich/ui-foundations-vault/actions/runs/41183607422/job/124485905975)
+  reported, for the export suite, 312 assertions passing with 1 failure across
+  66 tests: `test_negative_contract_duplicate_json_key` — "diagnostic must cite
+  the duplicate JSON key". All earlier CI steps passed.
+- Local PASS at the same point: the same 66 tests / 313 assertions passed on
+  Ruby 2.6.10, including on a clean committed checkout. The failure was therefore
+  a cross-version portability gap, not a local regression.
+- Root cause: duplicate-key detection relied on `JSON.parse`'s handling of a
+  custom `object_class`. The earlier `StrictJSONHash < Hash` override was
+  bypassed by the optimized JSON C extension on the hosted runner; a subsequent
+  non-Hash `object_class` wrapper still delegated object construction to the
+  backend and also failed to surface the duplicate on that runner. In that case
+  the duplicate `status` key was silently resolved to the later value and the
+  contract fell through to a generic ineligible-status rejection (still exit 1,
+  but WITHOUT the explicit "Duplicate JSON key" diagnostic the test asserts).
+- Fix: duplicate-key detection no longer depends on any JSON backend. The
+  adapter now parses contract JSON with `StrictJSONParser`, a small
+  self-contained recursive-descent scanner. It tracks string state explicitly
+  (no regex that could confuse string contents with structural punctuation),
+  decodes `\uXXXX` escapes (including surrogate pairs) before comparing keys,
+  and raises a controlled `DuplicateJSONKeyError` on the first repeated key in
+  any object at any depth — in BOTH orders (accepted-then-draft and
+  draft-then-accepted). After a successful parse it yields ordinary
+  Hash/Array/scalar values with keys in textual insertion order, so downstream
+  behaviour and valid-input manifest bytes are unchanged. `parse_json_strict`
+  maps the duplicate error to a fail-closed `ExportError` whose message retains
+  the explicit "Duplicate JSON key" text; no partial export is written.
+- Regressions added (inside `scripts/test-figma-export.rb`): the existing
+  `test_negative_contract_duplicate_json_key` assertion is kept unchanged, plus
+  `test_negative_contract_duplicate_json_key_reverse_order`,
+  `test_negative_contract_duplicate_nested_json_key`,
+  `test_negative_contract_unicode_escaped_duplicate_key`, a direct in-process
+  parser unit test `test_strict_json_parser_unit_behaviour` (duplicate detection
+  both orders, nested, Unicode-escaped collision, surrogate decoding, malformed
+  input, and a positive nested baseline whose result equals `JSON.parse` with
+  stable key order and ordinary Hash/Array types), and
+  `test_strict_json_parser_positive_contract_baseline` (a valid nested contract
+  still exports). Only `scripts/export-figma-guidelines.rb` and
+  `scripts/test-figma-export.rb` were edited; schema and CI were not changed.
+- New local result (2026-11-01, Ruby 2.6.10): `ruby scripts/test-figma-export.rb`
+  exits 0 with 349 assertions passing, 0 failures across 71 tests
+  (ALL TESTS PASSED). `ruby schemas/validate-governance-packs.rb` exits 0;
+  `ruby scripts/generate-project-projections.rb --check` exits 0;
+  `ruby -c` on both edited scripts reports Syntax OK.
+- Hosted status: the hosted fix is PENDING. It must not be claimed green until
+  Codex commits and pushes this change and the hosted `pull_request` run reports
+  the duplicate-key test passing on the CI Ruby. Draft PR65 on
+  `head4e4a7fbee0288e973321c93cdf2d1d4baeaf7af2` requested review from tbielich;
+  no git, push, PR, merge, or Figma actions were taken in this session. Final
+  committed content hashes for the two edited scripts are to be recorded by
+  Codex at commit time.
+
+### CI repair notes (2026-10-31, follow-up): stdlib JSON grammar + scanner-only duplicate detection
+
+A follow-up to the duplicate-key repair. Codex independently found two concrete
+FALSE ACCEPTANCES in the handwritten standalone scanner that
+`parse_json_strict` had been using as its grammar authority:
+
+1. `FigmaGuidelinesExport.parse_json_strict('{"a":01}', 'probe')` returned
+   `{"a" => 1}` — a leading-zero number is invalid JSON grammar but was accepted.
+2. `FigmaGuidelinesExport.parse_json_strict('{"a":1e999}', 'probe')` returned
+   `{"a" => Infinity}` — a non-finite value that cannot be safely JSON-generated
+   afterwards was accepted.
+
+Fix (small, no new architecture), in `scripts/export-figma-guidelines.rb` only:
+
+- `parse_json_strict` now validates the actual JSON grammar with the Ruby
+  standard library parser FIRST: `JSON.parse(raw, create_additions: false,
+  allow_nan: false, max_nesting: 100)`. This rejects the leading-zero number and
+  the non-finite token as grammar/value errors instead of silently decoding
+  them.
+- The parsed value is then round-tripped through
+  `JSON.generate(parsed, allow_nan: false)` as an explicit finite /
+  JSON-generatable guard.
+- The existing `StrictJSONParser` scanner is retained but is now run ONLY to
+  detect a duplicate decoded key in the original text (Unicode-escaped keys
+  decoded before comparison, both orders, any depth). Its own decoded value is
+  discarded.
+- On success, `parse_json_strict` RETURNS THE STANDARD PARSER RESULT: a plain
+  `Hash`/`Array` with object keys in the original textual order and ordinary
+  scalar values, not the handwritten scanner's numeric/string interpretation.
+- stdlib parser, nesting, and generator errors are converted to controlled
+  `ExportError`/exit 1 (`JSON::ParserError`, `JSON::NestingError`,
+  `JSON::GeneratorError`); no raw backtrace is leaked. The explicit
+  "Duplicate JSON key" diagnostic is preserved.
+
+Regressions added (inside `scripts/test-figma-export.rb`,
+`test_parse_json_strict_grammar_and_value_validation`): leading-zero number
+rejected; non-finite number rejected; over-100-depth JSON rejected cleanly
+before any recursion overflow; a positive nested structure returns the standard
+parser result with original key order and `JSON.parse`-equal shape; and a
+duplicate key still fails closed with the explicit diagnostic. Every prior
+duplicate-key test (both orders, nested, Unicode-escaped) and the full existing
+suite continue to pass. No existing check was weakened. Only
+`scripts/export-figma-guidelines.rb` and `scripts/test-figma-export.rb` were
+edited; schema, CI, and canonical content were not changed.
+
+Evidence correction (applied in source comments and here): the prior note's
+claim that a NON-HASH `object_class` wrapper was tested on the hosted runner and
+failed there is incorrect — that variant was NOT pushed or tested on the hosted
+runner, so no claim is made about its hosted behaviour. The only observed hosted
+failure is head `4e4a7fbee0288e973321c93cdf2d1d4baeaf7af2`, which used
+`StrictJSONHash < Hash`; the observed CI failure there was the missing explicit
+duplicate diagnostic (the duplicate-key test's assertion). The explanation of
+the JSON C backend not routing every member through an overridden `[]=` is an
+inference from that observed behaviour, not an independently proven internal
+fact. The source comment and this log now state only observed facts and drop the
+universal "every Ruby/backend" qualification; the duplicate scanner is described
+as an independent check layered on top of stdlib grammar validation, not as a
+portability guarantee across all backends.
+
+New local result (2026-10-31 follow-up, Ruby 2.6.10):
+`ruby scripts/test-figma-export.rb` exits 0 with 359 assertions passing, 0
+failures across 72 tests (ALL TESTS PASSED).
+`ruby schemas/validate-governance-packs.rb` exits 0;
+`ruby scripts/generate-project-projections.rb --check` exits 0;
+`ruby -c` on both edited scripts reports Syntax OK.
+
+Hosted status: the hosted fix remains PENDING. It must not be claimed green
+until Codex commits, pushes, and the hosted `pull_request` run reports these
+tests passing on the CI Ruby. The historical failed-run link above
+(runs/41183607422) and the prior local results are preserved; the initial CI is
+not marked green. No git, push, PR, merge, or Figma actions were taken in this
+session.
+
 ## Current Pack Reality
 
 The current `governance-pack` is version `0.8.0` on the `review` channel, with
@@ -156,28 +289,39 @@ steps therefore cannot be executed and are marked BLOCKED / not-run.
 
 ## Verification Status
 
-The three checks below were re-run on 2026-10-31. Actual results captured this
-turn:
+The three checks below were re-run on 2026-10-31 after the stdlib JSON grammar +
+scanner-only duplicate-detection fix (see "CI repair notes (2026-10-31,
+follow-up)"). Actual results captured this turn. The current local suite is 359
+assertions across 72 tests. The prior 349/71 count is the immediately preceding
+local baseline (after the first duplicate-key fix), and 313/66 is the superseded
+pre-fix local baseline that remains accurate for the hosted run that reported
+the single duplicate-key failure.
 
 | Command | Exit code | Result |
 |---|---|---|
-| `ruby scripts/test-figma-export.rb` | 0 | 313 assertions passed, 0 failures across 66 tests (ALL TESTS PASSED) |
+| `ruby scripts/test-figma-export.rb` | 0 | 359 assertions passed, 0 failures across 72 tests (ALL TESTS PASSED) |
 | `ruby schemas/validate-governance-packs.rb` | 0 | Governance pack validation passed |
 | `ruby scripts/generate-project-projections.rb --check` | 0 | PASS chatgpt-project; PASS kiro-uif-int (no drift) |
+| `ruby -c scripts/export-figma-guidelines.rb` | 0 | Syntax OK |
+| `ruby -c scripts/test-figma-export.rb` | 0 | Syntax OK |
 
-Scope of this turn: documentation/handoff only, with native write access to
-exactly two docs (this evidence log and `docs/figma-guidelines-export.md`) and
-permission to run exactly the three commands above. No code, schema, or CI was
-changed this turn, and no exporter was invoked directly. An earlier turn's
-attempt to run a direct real-pack export fell outside the allowlist and was
-stopped by the coordinator; that transport-scope stop is distinct from the
-passing checks here, prior effects were reconciled, and no worker remains. The
-real-pack expected rejection is already exercised inside the test suite
+The hosted CI result for this fix is PENDING; it is verified by Codex after
+commit/push and must not be claimed green here.
+
+Scope of this turn: a small, focused code fix plus its docs. Native write access
+was limited to `scripts/export-figma-guidelines.rb`,
+`scripts/test-figma-export.rb`, this evidence log, and
+`docs/figma-guidelines-export.md`, with permission to run only the authorized
+native commands above. Schema, CI, canonical content, dependencies, and git were
+not changed, and no exporter was invoked directly; all probes live in the test
+file and run via `ruby scripts/test-figma-export.rb`. The real-pack expected
+rejection is already exercised inside the test suite
 (`test_real_pack_rejected_with_specific_diagnostic`), so no separate exporter
 invocation is needed.
 
-The final suite is 313 assertions / 66 tests. Earlier intermediate counts
-(197/45, then 258/50) are superseded repair-history, not the current result.
+The current local suite is 359 assertions / 72 tests. Earlier counts (197/45,
+258/50, 313/66, and 349/71) are superseded repair-history, not the current
+result.
 
 Independent counterprobes: Codex independently performed 14 additional
 counterprobes that PASS (unknown authority, draft pack, wrong governance path,
@@ -193,11 +337,11 @@ those remain blocked.
 ## Evidence Table
 
 All test rows below were run on 2026-10-31 via `ruby scripts/test-figma-export.rb`
-(exit 0, 313 assertions, 66 tests, ALL TESTS PASSED). The table lists
+(exit 0, 359 assertions, 72 tests, ALL TESTS PASSED). The table lists
 representative named tests; the full suite includes additional cases covering
-JSON eligibility/pack/version/channel/id/path/schema binding, governed YAML
-registry sources, and strict required-source-metadata and duplicate JSON/YAML
-checks.
+JSON grammar/value validation, eligibility/pack/version/channel/id/path/schema
+binding, governed YAML registry sources, and strict required-source-metadata and
+duplicate JSON/YAML checks.
 
 | # | Check | How verified | Expected | Status |
 |---|---|---|---|---|
@@ -220,6 +364,13 @@ checks.
 | 14a | Null artifact list element controlled | `test_negative_artifact_list_null_element_controlled` | exit 1, cites non-mapping element, no NoMethodError/backtrace, no output | passed |
 | 14b | Approved artifact body consumed | `test_artifact_body_consumed_into_export` | sentinel rule appears in tokens.md; block is derived + informative | passed |
 | 14c | Naming-contract projected | `test_naming_contract_projected_into_export` | rule/example sentinels in fenced JSON under normative/non-normative headings; derived + informative | passed |
+| 14d | Duplicate JSON key (accepted-then-draft) | `test_negative_contract_duplicate_json_key` | fail closed, cites "Duplicate JSON key", no output | passed |
+| 14e | Duplicate JSON key (draft-then-accepted) | `test_negative_contract_duplicate_json_key_reverse_order` | fail closed, cites "Duplicate JSON key" (not a generic status failure) | passed |
+| 14f | Duplicate NESTED JSON key | `test_negative_contract_duplicate_nested_json_key` | fail closed, cites "Duplicate JSON key" | passed |
+| 14g | Unicode-escaped duplicate key collides | `test_negative_contract_unicode_escaped_duplicate_key` | `\u0073tatus` collides with `status` after decoding; fail closed | passed |
+| 14h | Strict JSON parser unit behaviour | `test_strict_json_parser_unit_behaviour` | both-order/nested/Unicode duplicates raise; surrogate decode; positive nested baseline == `JSON.parse`, ordinary Hash/Array, stable order | passed |
+| 14i | Valid nested contract still exports | `test_strict_json_parser_positive_contract_baseline` | nested rule/example sentinels survive the strict parse at exit 0 | passed |
+| 14j | `parse_json_strict` stdlib grammar + value + duplicate guards | `test_parse_json_strict_grammar_and_value_validation` | leading-zero and non-finite numbers rejected; over-100-depth rejected cleanly; valid nested returns `JSON.parse`-equal result in original key order; duplicate still cites "Duplicate JSON key" | passed |
 | 15 | Manifest/document status mismatch | `test_negative_artifact_status_mismatch_with_document` | fail closed | passed |
 | 16 | Unknown artifact type | `test_negative_unknown_artifact_type` | fail closed, not silently ignored | passed |
 | 17 | Non-stable pack channel | `test_negative_pack_channel` | fail closed | passed |
@@ -296,12 +447,15 @@ CI workflow. Canonical governance, pack, registry, source documents, and existin
 projection tooling are unchanged by this proposal. Local ACP orchestration and
 profiles are outside the proposed repository changes.
 
-Verified content SHA-256 values:
+Verified content SHA-256 values (snapshot from the earlier Codex verification;
+the two edited scripts below were changed again by the 2026-10-31 follow-up fix,
+so their hashes here are SUPERSEDED and the final values are recorded by Codex at
+commit time):
 
-- `scripts/export-figma-guidelines.rb`: `81a76ca2c89a67012cd2902a8714ff59d4033690565cf5579d7fa5ecd3d28125`
-- `scripts/test-figma-export.rb`: `a5370eec4cac40b9ea98e651a3772b3deb8e9ceb6787f329552349d7194667ce`
-- `schemas/figma-export-manifest.schema.json`: `7b6dff3ce9a5115eb2e73ebede39303ad4db30681208954272cc7b9e142b6c44`
-- `.github/workflows/ci.yml`: `885da0643172d65aec0c381411b24c268ea5adf7584c11c3fa32c1eaefe063bb`
+- `scripts/export-figma-guidelines.rb`: `81a76ca2c89a67012cd2902a8714ff59d4033690565cf5579d7fa5ecd3d28125` (superseded by the follow-up fix)
+- `scripts/test-figma-export.rb`: `a5370eec4cac40b9ea98e651a3772b3deb8e9ceb6787f329552349d7194667ce` (superseded by the follow-up fix)
+- `schemas/figma-export-manifest.schema.json`: `7b6dff3ce9a5115eb2e73ebede39303ad4db30681208954272cc7b9e142b6c44` (unchanged)
+- `.github/workflows/ci.yml`: `885da0643172d65aec0c381411b24c268ea5adf7584c11c3fa32c1eaefe063bb` (unchanged)
 
 Local baseline audit limitation: the unmodified full frontmatter audit
 (`schemas/validate-vault-audits.rb --audit frontmatter --format json`) cannot
@@ -309,3 +463,76 @@ complete on system Ruby 2.6.10 because its existing `repository_names` method
 uses `Array#filter_map`. This failure was not counted as a pass or repaired
 outside scope. Both audit self-tests passed; a focused metadata check of the
 two new documents also passed. The exporter and its 66 tests run on this Ruby.
+### CI repair notes (2026-11-01, follow-up): fail CLOSED on duplicate-scanner uncertainty
+
+An independent Codex review found a fail-OPEN branch in `parse_json_strict`.
+After the stdlib parser accepted an input, the duplicate-key scanner was run,
+but its `rescue StrictJSONParser::ParseError` branch returned `nil` and then let
+the method return the stdlib `parsed` result. That treated an INCOMPLETE or
+FAILED duplicate scan as a successful validation: the stdlib grammar verdict
+cannot prove the ABSENCE of a duplicate object key (`JSON.parse` silently keeps
+the last value for a repeated key), so a document whose duplicate scan did not
+complete could still be returned as validated.
+
+Fix (small, one branch only), in `scripts/export-figma-guidelines.rb`:
+
+- The scanner's `StrictJSONParser::ParseError` rescue no longer returns `nil`
+  and no longer falls through to `parsed`. It now raises a controlled
+  `ExportError`: "Cannot validate duplicate JSON keys in <where>: duplicate
+  scanner could not complete (unsupported validation path): ...". It describes
+  an unsupported validation path rather than re-declaring the stdlib-valid input
+  ungrammatical, and `parse_json_strict` never returns a parsed result after
+  scanner uncertainty.
+- All prior behaviour is preserved: stdlib `JSON.parse` grammar/finite/nesting
+  guards, the `JSON.generate(allow_nan: false)` finite guard, the explicit
+  "Duplicate JSON key" diagnostic, and returning the standard stdlib result only
+  after a SUCCESSFUL complete scan.
+
+Regression added (inside `scripts/test-figma-export.rb`):
+`test_parse_json_strict_fails_closed_on_scanner_uncertainty` temporarily
+replaces `StrictJSONParser.parse` with a singleton method that raises its
+`ParseError` for an otherwise-valid JSON input, asserts `parse_json_strict`
+RAISES an `ExportError` (never returns a value), checks the diagnostic explains
+the scan could not complete and does not re-declare the input ungrammatical, and
+restores the original singleton method in an `ensure` so no other test is
+affected. Normal input, both duplicate orders, nested/Unicode-escaped,
+leading-zero, and finite/depth cases all remain green.
+
+New local result (2026-11-01 follow-up, Ruby 2.6.10):
+`ruby scripts/test-figma-export.rb` exits 0 with 365 assertions passing, 0
+failures across 73 tests (ALL TESTS PASSED).
+`ruby schemas/validate-governance-packs.rb` exits 0;
+`ruby scripts/generate-project-projections.rb --check` exits 0;
+`ruby -c` on both edited scripts reports Syntax OK. Only
+`scripts/export-figma-guidelines.rb` and `scripts/test-figma-export.rb` were
+edited (one error branch plus its regression); schema, CI, dependencies, and
+canonical content were not changed.
+
+Hosted status: the hosted CI repair remains PENDING and is not yet green. The
+initial failed hosted run on head `4e4a7fbee0288e973321c93cdf2d1d4baeaf7af2`
+(runs/41183607422) is preserved above and is not marked green. No human approval
+is invented. Codex independently verifies and pushes to the existing draft PR65;
+no git, push, PR, merge, or Figma actions were taken in this session.
+
+## Final independent verification after CI portability repair
+
+Codex independently repeated the repaired suite on 2026-10-31: 365 assertions
+across 73 tests passed, as did governance-pack validation and project-projection
+checks. Seventeen additional independent counterprobes passed, including both
+duplicate-key orders, nested and Unicode-equivalent keys, standard JSON grammar,
+finite-value/nesting rejection, and fault injection proving that a failed
+duplicate scan blocks acceptance. These later counts supersede earlier local
+counts in this history; they are not real Figma-agent evidence.
+
+The final Kiro correction session was
+`sess_9cfb9ee4-96d2-48f8-bbdd-cfa44f75d07d` via actual ACP, with `end_turn`,
+complete tools, all final authorized checks returning 0, and the worker reaped.
+The initial hosted failures at commit `4e4a7fb` remain recorded above. Hosted
+validation of this correction is pending a new push and is not claimed here.
+
+Final independently checked source/schema/CI SHA-256 values for this correction:
+
+- `scripts/export-figma-guidelines.rb`: `3f3c200887779b3be241fe7ad33ed377b2095fccc2cc42c003fb9bac3d548a14`
+- `scripts/test-figma-export.rb`: `f5bdb5941181a49d40a2b24ecba37a56627ffc43ac0303ae8680f6af5c69acd9`
+- `schemas/figma-export-manifest.schema.json`: `7b6dff3ce9a5115eb2e73ebede39303ad4db30681208954272cc7b9e142b6c44`
+- `.github/workflows/ci.yml`: `885da0643172d65aec0c381411b24c268ea5adf7584c11c3fa32c1eaefe063bb`

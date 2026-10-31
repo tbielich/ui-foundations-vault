@@ -29,6 +29,13 @@ SCRIPT_DIR = __dir__
 EXPORTER = File.join(SCRIPT_DIR, "export-figma-guidelines.rb")
 REAL_VAULT_ROOT = File.expand_path("..", SCRIPT_DIR)
 
+# Load the exporter in-process so the strict JSON parser can be unit-tested
+# directly (its module body guards `main` behind `$PROGRAM_NAME == __FILE__`, so
+# requiring it here does not run the CLI). This lets the duplicate-key
+# regressions assert the parser behaviour itself, independent of any JSON
+# backend, in addition to the end-to-end exporter subprocess checks.
+require EXPORTER
+
 $failures = []
 $passed = 0
 
@@ -1004,7 +1011,8 @@ end
 
 # Duplicate JSON keys must be rejected during parsing so draft/accepted or
 # source metadata cannot be overwritten. We inject a textual duplicate key into
-# the contract JSON (JSON.parse with the strict object_class must raise).
+# the contract JSON; the self-contained strict parser must raise the explicit
+# Duplicate JSON key diagnostic (this is the CI-reproducing case).
 def test_negative_contract_duplicate_json_key
   with_eligible_vault do |vault, out|
     add_naming_contract_artifact(vault, "r", "e")
@@ -1020,6 +1028,298 @@ def test_negative_contract_duplicate_json_key
     assert(code == 1, "duplicate JSON key must fail closed")
     assert(err.include?("Duplicate JSON key"), "diagnostic must cite the duplicate JSON key")
     assert(!File.exist?(out), "no partial output on fail-closed")
+  end
+end
+
+# The reverse order (draft declared BEFORE accepted) must also be rejected with
+# the same explicit diagnostic. A parser that merely kept the last value would
+# accept this one as `accepted` and silently export a draft-influenced contract.
+def test_negative_contract_duplicate_json_key_reverse_order
+  with_eligible_vault do |vault, out|
+    add_naming_contract_artifact(vault, "r", "e")
+    path = contract_path(vault)
+    raw = File.read(path)
+    # Insert "draft" BEFORE the real "accepted" status member.
+    dup = raw.sub(/("status":\s*"accepted",)/, "\"status\": \"draft\",\n  \\1")
+    assert(dup != raw, "test setup must inject a leading duplicate status key")
+    assert(dup.scan(/"status":/).length >= 2, "mutated JSON must contain two status members")
+    File.write(path, dup)
+    code, _o, err = run_exporter(["--out", out, "--vault-root", vault])
+    assert(code == 1, "duplicate JSON key (draft-then-accepted) must fail closed")
+    assert(err.include?("Duplicate JSON key"),
+           "reverse-order duplicate must still cite the duplicate JSON key, not a generic status failure")
+    assert(!File.exist?(out), "no partial output on fail-closed")
+  end
+end
+
+# A duplicate key NESTED inside an object (here inside the rules mapping) must be
+# rejected too; detection is not limited to top-level keys.
+def test_negative_contract_duplicate_nested_json_key
+  with_eligible_vault do |vault, out|
+    add_naming_contract_artifact(vault, "r", "e")
+    path = contract_path(vault)
+    raw = File.read(path)
+    # css_class_prefix is an object with a "prefix" member; add a second one.
+    dup = raw.sub(/("prefix":\s*"uif-",)/, "\\1\n        \"prefix\": \"evil-\",")
+    assert(dup != raw, "test setup must inject a duplicate nested prefix key")
+    File.write(path, dup)
+    code, _o, err = run_exporter(["--out", out, "--vault-root", vault])
+    assert(code == 1, "duplicate nested JSON key must fail closed")
+    assert(err.include?("Duplicate JSON key"), "nested duplicate must cite the duplicate JSON key")
+    assert(!File.exist?(out), "no partial output on fail-closed")
+  end
+end
+
+# A Unicode-escaped key must collide with its plain-text equivalent after JSON
+# decoding. "\u0073tatus" decodes to "status"; pairing it with a plain "status"
+# is a duplicate and must be rejected rather than treated as two distinct keys.
+def test_negative_contract_unicode_escaped_duplicate_key
+  with_eligible_vault do |vault, out|
+    add_naming_contract_artifact(vault, "r", "e")
+    path = contract_path(vault)
+    raw = File.read(path)
+    # Inject a Unicode-escaped "status" (\u0073 == 's') carrying draft, next to
+    # the real plain-text accepted status.
+    dup = raw.sub(/("status":\s*"accepted",)/,
+                  "\\1\n  \"\\u0073tatus\": \"draft\",")
+    assert(dup != raw, "test setup must inject a unicode-escaped duplicate status key")
+    assert(dup.include?("\\u0073tatus"), "mutated JSON must contain the escaped key form")
+    File.write(path, dup)
+    code, _o, err = run_exporter(["--out", out, "--vault-root", vault])
+    assert(code == 1, "unicode-escaped duplicate key must fail closed")
+    assert(err.include?("Duplicate JSON key"),
+           "unicode-escaped duplicate must collide after decoding and cite the duplicate JSON key")
+    assert(!File.exist?(out), "no partial output on fail-closed")
+  end
+end
+
+# Direct unit tests of the self-contained strict JSON parser, independent of any
+# JSON backend. These lock in the portable behaviour the hosted CI needs and
+# make a backend-specific regression impossible to hide behind the subprocess.
+def test_strict_json_parser_unit_behaviour
+  parser = FigmaGuidelinesExport::StrictJSONParser
+
+  # Positive nested baseline: object/array/string/number/bool/null round-trip
+  # into ORDINARY Hash/Array with stable, textual insertion order.
+  raw = <<~JSON
+    {
+      "b": 1,
+      "a": "x",
+      "nested": { "k2": [1, 2, {"deep": true}], "k1": null },
+      "list": ["s", 2.5, false]
+    }
+  JSON
+  value = parser.parse(raw)
+  assert(value.is_a?(Hash) && !value.is_a?(FigmaGuidelinesExport::StrictJSONParser),
+         "parser must return an ordinary Hash")
+  assert(value.keys == %w[b a nested list], "top-level keys must preserve textual insertion order")
+  assert(value["nested"].is_a?(Hash), "nested object must be an ordinary Hash")
+  assert(value["nested"].keys == %w[k2 k1], "nested keys must preserve textual insertion order")
+  assert(value["nested"]["k2"].is_a?(Array), "nested array must be an ordinary Array")
+  assert(value["nested"]["k2"][2]["deep"] == true, "deeply nested boolean must decode")
+  assert(value["nested"]["k1"].nil?, "null must decode to nil")
+  assert(value["list"] == ["s", 2.5, false], "array of mixed scalars must decode with order and types")
+  assert(value["b"] == 1 && value["b"].is_a?(Integer), "integer must decode as Integer")
+
+  # The parser output must match the shape stdlib JSON.parse produces for the
+  # same valid input (so downstream code is unaffected for valid contracts).
+  assert(value == JSON.parse(raw), "strict parse of valid JSON must equal stdlib JSON.parse result")
+
+  # Duplicate top-level key, both orders, raises the controlled duplicate error.
+  [
+    '{"status":"accepted","status":"draft"}',
+    '{"status":"draft","status":"accepted"}'
+  ].each do |dup_raw|
+    raised =
+      begin
+        parser.parse(dup_raw)
+        false
+      rescue FigmaGuidelinesExport::DuplicateJSONKeyError => e
+        assert(e.message.include?("Duplicate JSON key"), "duplicate error must carry the explicit text")
+        true
+      end
+    assert(raised, "duplicate top-level key must raise DuplicateJSONKeyError for #{dup_raw.inspect}")
+  end
+
+  # Duplicate nested key is detected.
+  nested_dup = '{"outer":{"k":1,"k":2}}'
+  nested_raised =
+    begin
+      parser.parse(nested_dup)
+      false
+    rescue FigmaGuidelinesExport::DuplicateJSONKeyError
+      true
+    end
+  assert(nested_raised, "duplicate nested key must raise DuplicateJSONKeyError")
+
+  # Unicode-escaped key collides with its decoded plain-text equivalent.
+  unicode_dup = '{"status":"accepted","\u0073tatus":"draft"}'
+  unicode_raised =
+    begin
+      parser.parse(unicode_dup)
+      false
+    rescue FigmaGuidelinesExport::DuplicateJSONKeyError
+      true
+    end
+  assert(unicode_raised, "unicode-escaped key must collide with its decoded equivalent")
+
+  # A non-duplicate escaped key decodes correctly and is preserved.
+  decoded = parser.parse('{"\u0073tatus":"accepted"}')
+  assert(decoded == { "status" => "accepted" }, "escaped key must decode to its plain-text form")
+
+  # Surrogate pair decoding (astral character) so escaped keys cannot smuggle a
+  # distinct byte sequence for a logically equal key.
+  emoji = parser.parse('{"k":"\uD83D\uDE00"}')
+  assert(emoji["k"].bytesize == 4, "surrogate pair must decode to a single 4-byte UTF-8 character")
+
+  # Malformed JSON raises a ParseError (mapped to a controlled ExportError by
+  # parse_json_strict), not a silent acceptance.
+  bad_raised =
+    begin
+      parser.parse('{"a":}')
+      false
+    rescue FigmaGuidelinesExport::StrictJSONParser::ParseError
+      true
+    end
+  assert(bad_raised, "malformed JSON must raise a ParseError")
+end
+
+# Direct unit tests of parse_json_strict, which now delegates JSON grammar and
+# value validation to the Ruby standard library parser (create_additions:false,
+# allow_nan:false, max_nesting:100), round-trips through JSON.generate with
+# allow_nan:false as a finite/generatable guard, then runs the internal scanner
+# ONLY for duplicate-key detection and RETURNS the stdlib result. These probes
+# lock in the two concrete false acceptances that were found in the handwritten
+# scanner, plus clean rejection of over-deep nesting and preservation of the
+# valid path.
+def test_parse_json_strict_grammar_and_value_validation
+  mod = FigmaGuidelinesExport
+  err_class = FigmaGuidelinesExport::ExportError
+
+  # Regression 1: a leading-zero number is invalid JSON grammar. The handwritten
+  # scanner previously accepted '{"a":01}' as {"a" => 1}; the stdlib parser must
+  # now reject it with a controlled ExportError.
+  leading_zero_raised =
+    begin
+      mod.parse_json_strict('{"a":01}', "probe")
+      false
+    rescue err_class
+      true
+    end
+  assert(leading_zero_raised, "a leading-zero number must be rejected as invalid JSON grammar")
+
+  # Regression 2: a non-finite number ('{"a":1e999}' -> Infinity) cannot be
+  # safely JSON-generated and must be rejected, not decoded to Infinity.
+  non_finite_raised =
+    begin
+      mod.parse_json_strict('{"a":1e999}', "probe")
+      false
+    rescue err_class
+      true
+    end
+  assert(non_finite_raised, "a non-finite number must be rejected (not decoded to Infinity)")
+
+  # Over-100-depth JSON must be rejected cleanly up front (max_nesting) before
+  # any recursive descent could overflow. Build 200 nested arrays.
+  deep = ("[" * 200) + ("]" * 200)
+  deep_raised =
+    begin
+      mod.parse_json_strict(deep, "probe")
+      false
+    rescue err_class => e
+      assert(e.message.include?("Invalid JSON"), "deep-nesting rejection must be a controlled JSON error")
+      true
+    end
+  assert(deep_raised, "over-100-depth JSON must be rejected cleanly (no recursion overflow)")
+
+  # Positive nested structure: the stdlib result is returned, as an ordinary
+  # Hash with keys in original order and identical to JSON.parse of the same
+  # input. Numbers keep their standard stdlib interpretation.
+  raw = '{"b":1,"a":"x","nested":{"k2":[1,2.5,{"deep":true}],"k1":null},"n":10}'
+  value = mod.parse_json_strict(raw, "probe")
+  assert(value == JSON.parse(raw), "valid JSON must return the standard parser result")
+  assert(value.keys == %w[b a nested n], "object keys must be preserved in original order")
+  assert(value["nested"]["k2"] == [1, 2.5, { "deep" => true }], "nested values must decode via stdlib")
+  assert(value["n"] == 10 && value["n"].is_a?(Integer), "plain integers decode as Integer")
+
+  # Duplicate keys are still rejected with the explicit diagnostic, via the
+  # internal scanner, even though the stdlib parser would silently keep the last.
+  dup_raised =
+    begin
+      mod.parse_json_strict('{"status":"accepted","status":"draft"}', "probe")
+      false
+    rescue err_class => e
+      assert(e.message.include?("Duplicate JSON key"), "duplicate must cite the explicit diagnostic")
+      true
+    end
+  assert(dup_raised, "duplicate key must still be rejected through parse_json_strict")
+end
+
+# Fault-injection regression: if the internal duplicate-key scanner cannot
+# complete (it raises its ParseError) for an input the stdlib parser accepted,
+# parse_json_strict MUST fail CLOSED with a controlled ExportError and MUST NOT
+# return the stdlib result. A returned value would treat an incomplete duplicate
+# scan as a successful validation, letting an unverified document through. We
+# temporarily replace StrictJSONParser.parse to raise ParseError for otherwise
+# valid JSON, then restore the original singleton method in an ensure so no
+# other test is affected.
+def test_parse_json_strict_fails_closed_on_scanner_uncertainty
+  mod = FigmaGuidelinesExport
+  err_class = FigmaGuidelinesExport::ExportError
+  parser = FigmaGuidelinesExport::StrictJSONParser
+
+  raw = '{"status":"accepted","title":"ok"}'
+
+  # Sanity: this input is accepted and returned normally before injection.
+  baseline = mod.parse_json_strict(raw, "probe")
+  assert(baseline == JSON.parse(raw), "baseline valid JSON must parse before fault injection")
+
+  original = parser.method(:parse)
+  begin
+    parser.define_singleton_method(:parse) do |_raw|
+      raise FigmaGuidelinesExport::StrictJSONParser::ParseError,
+            "injected scanner uncertainty"
+    end
+
+    raised =
+      begin
+        result = mod.parse_json_strict(raw, "injected-probe")
+        $failures << "fail-closed violation: parse_json_strict returned #{result.inspect} " \
+                     "after scanner uncertainty instead of raising"
+        false
+      rescue err_class => e
+        assert(e.message.include?("duplicate scanner could not complete"),
+               "scanner-uncertainty error must explain the duplicate scan could not complete")
+        assert(e.message.include?("injected-probe"),
+               "scanner-uncertainty error must name the where context")
+        assert(!e.message.include?("invalid JSON grammar"),
+               "must not re-declare stdlib-valid input ungrammatical")
+        true
+      end
+    assert(raised, "parse_json_strict must raise (fail closed) on scanner uncertainty, not return a value")
+  ensure
+    # Restore the original singleton method so later tests are unaffected.
+    parser.define_singleton_method(:parse, original)
+  end
+
+  # After restore, the scanner behaves normally again.
+  restored = mod.parse_json_strict(raw, "probe")
+  assert(restored == JSON.parse(raw), "scanner must behave normally after the singleton method is restored")
+end
+
+# A positive contract with nested JSON objects/arrays/strings must still export
+# cleanly through the strict parser (no false duplicate, stable order preserved),
+# proving the robust parser did not regress the valid path.
+def test_strict_json_parser_positive_contract_baseline
+  with_eligible_vault do |vault, out|
+    add_naming_contract_artifact(vault, "nested-rule-sentinel", "nested-example-sentinel")
+    code, _o, err = run_exporter(["--out", out, "--vault-root", vault])
+    assert(code.zero?, "valid nested naming-contract must export through the strict parser: #{err}")
+    overview = File.read(File.join(out, "overview.md"))
+    assert(overview.include?("nested-rule-sentinel"),
+           "projected contract rules (nested JSON) must survive the strict parse")
+    assert(overview.include?("nested-example-sentinel"),
+           "projected contract non-normative examples (nested JSON) must survive the strict parse")
   end
 end
 
@@ -1521,6 +1821,13 @@ TESTS = [
   :test_negative_contract_schema_enum_violation,
   :test_negative_contract_alternate_schema_path,
   :test_negative_contract_duplicate_json_key,
+  :test_negative_contract_duplicate_json_key_reverse_order,
+  :test_negative_contract_duplicate_nested_json_key,
+  :test_negative_contract_unicode_escaped_duplicate_key,
+  :test_strict_json_parser_unit_behaviour,
+  :test_parse_json_strict_grammar_and_value_validation,
+  :test_parse_json_strict_fails_closed_on_scanner_uncertainty,
+  :test_strict_json_parser_positive_contract_baseline,
   :test_contract_schema_change_invalidates_check,
   :test_negative_unknown_source_format_rejected,
   :test_negative_source_missing_owners,

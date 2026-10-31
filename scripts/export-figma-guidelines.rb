@@ -245,23 +245,317 @@ module FigmaGuidelinesExport
     end
   end
 
-  # A Hash subclass that refuses duplicate keys during construction. JSON.parse
-  # with object_class populates objects via []=, so a duplicate key in the raw
-  # JSON (e.g. two "status" members) would normally let the last value silently
-  # overwrite the first. That is exactly how a malicious contract could hide a
-  # draft status behind an accepted one, or swap source metadata during parse.
-  # We fail closed instead. Iteration order and all other Hash behavior are
-  # unchanged (insertion order is preserved), so downstream code that treats the
-  # result as a normal Hash keeps working deterministically.
-  class StrictJSONHash < Hash
-    def []=(key, value)
-      if key?(key)
-        raise ExportError, "Duplicate JSON key #{key.inspect} (refusing ambiguous JSON; " \
-          "a repeated key could overwrite status or source metadata during parsing)."
+  # Self-contained scanner used ONLY to detect duplicate object keys at any
+  # nesting level. It is NOT the grammar authority: parse_json_strict delegates
+  # grammar and value validation to the Ruby standard library JSON parser and
+  # keeps the stdlib result. This scanner runs over the same raw text purely to
+  # surface a repeated decoded key, which the stdlib parser does not report
+  # (it keeps the last value for a repeated key).
+  #
+  # OBSERVED HISTORY (what was actually run), kept distinct from inference:
+  #
+  #   * The one observed hosted failure was at head 4e4a7fb, which used a Hash
+  #     subclass (StrictJSONHash < Hash) overriding Hash#[]= to detect
+  #     duplicates. On the hosted runner a duplicate-key contract was NOT
+  #     surfaced with the explicit "Duplicate JSON key" diagnostic; it fell
+  #     through to a generic ineligible-status rejection. That is the observed
+  #     fact. The exact reason inside the JSON C backend (that it does not route
+  #     every textual member through an overridden []=) is INFERRED from that
+  #     behaviour, not independently proven here.
+  #   * A plain (non-Hash) wrapper passed as object_class was considered but was
+  #     NOT pushed to or tested on the hosted runner, so no claim is made about
+  #     how it would behave there.
+  #
+  # Because duplicate detection via an overridden []= depended on parser
+  # internals we did not control, detection now lives in this scanner, which we
+  # do control. A repeated key in the SAME object is detected here, before any
+  # value is kept. It is NOT a regex and never confuses string contents with
+  # structural punctuation: it scans character by character and tracks string
+  # state explicitly.
+  #
+  # Decoding happens before key comparison, so a Unicode-escaped key
+  # ("\u0073tatus") decodes to "status" and collides with a plain-text "status",
+  # which is exactly the evasion we must block.
+  #
+  # Its own decoded result (ordinary Hash/Array/String/Numeric/true/false/nil
+  # with object keys in textual order) is discarded by parse_json_strict; only
+  # the stdlib parser's result is returned to callers.
+  class StrictJSONParser
+    class ParseError < StandardError; end
+
+    WHITESPACE = [" ", "\t", "\n", "\r"].freeze
+
+    def self.parse(raw)
+      new(raw).parse
+    end
+
+    def initialize(raw)
+      # Operate on a decoded UTF-8 character view so \uXXXX escapes and literal
+      # multibyte characters compare correctly.
+      @chars = raw.dup.force_encoding("UTF-8")
+      unless @chars.valid_encoding?
+        raise ParseError, "input is not valid UTF-8"
       end
-      super
+      @scanner = @chars.each_char.to_a
+      @pos = 0
+      @len = @scanner.length
+    end
+
+    def parse
+      skip_whitespace
+      value = parse_value
+      skip_whitespace
+      unless @pos >= @len
+        raise ParseError, "trailing characters after JSON value at position #{@pos}"
+      end
+      value
+    end
+
+    private
+
+    def parse_value
+      skip_whitespace
+      raise ParseError, "unexpected end of input" if @pos >= @len
+      c = @scanner[@pos]
+      case c
+      when "{" then parse_object
+      when "[" then parse_array
+      when '"' then parse_string
+      when "t", "f" then parse_boolean
+      when "n" then parse_null
+      else
+        if c == "-" || (c >= "0" && c <= "9")
+          parse_number
+        else
+          raise ParseError, "unexpected character #{c.inspect} at position #{@pos}"
+        end
+      end
+    end
+
+    def parse_object
+      expect("{")
+      obj = {}
+      skip_whitespace
+      if peek == "}"
+        advance
+        return obj
+      end
+      loop do
+        skip_whitespace
+        unless peek == '"'
+          raise ParseError, "expected string object key at position #{@pos}"
+        end
+        key = parse_string
+        if obj.key?(key)
+          # Detected by us, not by an optimized backend: a repeated key in the
+          # same object is ambiguous and could overwrite status or source
+          # metadata (e.g. draft hidden behind accepted, in either order).
+          raise FigmaGuidelinesExport::DuplicateJSONKeyError,
+                "Duplicate JSON key #{key.inspect} (refusing ambiguous JSON; a repeated key " \
+                "could overwrite status or source metadata during parsing)."
+        end
+        skip_whitespace
+        expect(":")
+        value = parse_value
+        obj[key] = value
+        skip_whitespace
+        case peek
+        when ","
+          advance
+          next
+        when "}"
+          advance
+          break
+        else
+          raise ParseError, "expected ',' or '}' in object at position #{@pos}"
+        end
+      end
+      obj
+    end
+
+    def parse_array
+      expect("[")
+      arr = []
+      skip_whitespace
+      if peek == "]"
+        advance
+        return arr
+      end
+      loop do
+        arr << parse_value
+        skip_whitespace
+        case peek
+        when ","
+          advance
+          next
+        when "]"
+          advance
+          break
+        else
+          raise ParseError, "expected ',' or ']' in array at position #{@pos}"
+        end
+      end
+      arr
+    end
+
+    def parse_string
+      expect('"')
+      buffer = +""
+      loop do
+        raise ParseError, "unterminated string" if @pos >= @len
+        c = @scanner[@pos]
+        advance
+        case c
+        when '"'
+          return buffer
+        when "\\"
+          buffer << parse_escape
+        else
+          # Control characters must be escaped in JSON strings.
+          if c.ord < 0x20
+            raise ParseError, "unescaped control character in string at position #{@pos}"
+          end
+          buffer << c
+        end
+      end
+    end
+
+    def parse_escape
+      raise ParseError, "unterminated escape" if @pos >= @len
+      e = @scanner[@pos]
+      advance
+      case e
+      when '"' then '"'
+      when "\\" then "\\"
+      when "/" then "/"
+      when "b" then "\b"
+      when "f" then "\f"
+      when "n" then "\n"
+      when "r" then "\r"
+      when "t" then "\t"
+      when "u" then parse_unicode_escape
+      else
+        raise ParseError, "invalid escape \\#{e} at position #{@pos}"
+      end
+    end
+
+    def parse_unicode_escape
+      code = read_hex4
+      # Handle UTF-16 surrogate pairs so astral characters decode correctly and
+      # cannot be used to smuggle a distinct byte sequence for the same key.
+      if code >= 0xD800 && code <= 0xDBFF
+        unless @scanner[@pos] == "\\" && @scanner[@pos + 1] == "u"
+          raise ParseError, "invalid high surrogate without following low surrogate"
+        end
+        advance # backslash
+        advance # u
+        low = read_hex4
+        unless low >= 0xDC00 && low <= 0xDFFF
+          raise ParseError, "invalid low surrogate in pair"
+        end
+        code = 0x10000 + ((code - 0xD800) << 10) + (low - 0xDC00)
+      elsif code >= 0xDC00 && code <= 0xDFFF
+        raise ParseError, "unexpected low surrogate"
+      end
+      [code].pack("U")
+    end
+
+    def read_hex4
+      hex = +""
+      4.times do
+        ch = @scanner[@pos]
+        unless ch && ch.match?(/[0-9a-fA-F]/)
+          raise ParseError, "invalid \\u escape at position #{@pos}"
+        end
+        hex << ch
+        advance
+      end
+      hex.to_i(16)
+    end
+
+    def parse_number
+      start = @pos
+      advance if peek == "-"
+      consume_digits
+      is_float = false
+      if peek == "."
+        is_float = true
+        advance
+        consume_digits(require_one: true)
+      end
+      if peek == "e" || peek == "E"
+        is_float = true
+        advance
+        advance if peek == "+" || peek == "-"
+        consume_digits(require_one: true)
+      end
+      token = @scanner[start...@pos].join
+      is_float ? Float(token) : Integer(token, 10)
+    rescue ArgumentError
+      raise ParseError, "invalid number at position #{start}"
+    end
+
+    def consume_digits(require_one: false)
+      count = 0
+      while (c = peek) && c >= "0" && c <= "9"
+        advance
+        count += 1
+      end
+      if require_one && count.zero?
+        raise ParseError, "expected digit at position #{@pos}"
+      end
+      if count.zero? && !require_one
+        raise ParseError, "expected digit at position #{@pos}"
+      end
+    end
+
+    def parse_boolean
+      if match_literal("true")
+        true
+      elsif match_literal("false")
+        false
+      else
+        raise ParseError, "invalid literal at position #{@pos}"
+      end
+    end
+
+    def parse_null
+      return nil if match_literal("null")
+      raise ParseError, "invalid literal at position #{@pos}"
+    end
+
+    def match_literal(literal)
+      literal.each_char.with_index do |ch, i|
+        return false unless @scanner[@pos + i] == ch
+      end
+      @pos += literal.length
+      true
+    end
+
+    def peek
+      @scanner[@pos]
+    end
+
+    def advance
+      @pos += 1
+    end
+
+    def expect(char)
+      unless peek == char
+        raise ParseError, "expected #{char.inspect} at position #{@pos}"
+      end
+      advance
+    end
+
+    def skip_whitespace
+      advance while @pos < @len && WHITESPACE.include?(@scanner[@pos])
     end
   end
+
+  # Raised for a duplicate JSON key. A distinct class lets parse_json_strict
+  # distinguish a controlled duplicate-key rejection (which must surface the
+  # explicit "Duplicate JSON key" diagnostic) from a generic parse error.
+  class DuplicateJSONKeyError < StandardError; end
 
   module_function
 
@@ -273,14 +567,105 @@ module FigmaGuidelinesExport
     Digest::SHA256.hexdigest(string.dup.force_encoding("UTF-8"))
   end
 
-  # Parse JSON while rejecting duplicate object keys at every level. The
-  # object_class hook routes every parsed object through StrictJSONHash#[]=,
-  # which raises on a repeated key. The result is an ordinary Hash-compatible
-  # structure (StrictJSONHash is a Hash), so callers need no special handling.
+  # Maximum JSON nesting depth we are willing to decode. Passed explicitly to
+  # the stdlib parser so a deeply nested document is rejected cleanly up front,
+  # before any recursive descent could overflow the stack.
+  JSON_MAX_NESTING = 100
+
+  # Parse JSON while enforcing real JSON grammar, finite JSON-generatable
+  # values, and no duplicate object keys at any level.
+  #
+  # Grammar + value validation uses the Ruby standard library JSON parser FIRST,
+  # so the actual JSON grammar (as implemented by the stdlib) decides what is
+  # valid:
+  #
+  #   * create_additions: false  - never materialise custom classes from JSON.
+  #   * allow_nan: false         - reject NaN / Infinity / -Infinity tokens; a
+  #                                non-finite number cannot be JSON-generated
+  #                                later and must not slip through.
+  #   * max_nesting: JSON_MAX_NESTING - reject an over-deep document cleanly up
+  #                                front rather than risking a recursion overflow
+  #                                in the duplicate scanner below.
+  #
+  # The handwritten scanner here previously accepted inputs the JSON grammar
+  # forbids: a leading-zero number ('{"a":01}' became {"a" => 1}) and a
+  # non-finite number ('{"a":1e999}' became {"a" => Infinity}, which cannot be
+  # safely JSON-generated afterwards). Delegating grammar and value validation
+  # to the stdlib parser removes that class of false acceptance without us
+  # reimplementing JSON number grammar by hand.
+  #
+  # After the stdlib parser accepts the input, the parsed value is round-tripped
+  # through JSON.generate(parsed, allow_nan: false) as an explicit finite /
+  # JSON-generatable guard, so any value that could not be regenerated (a
+  # non-finite float) is rejected with a controlled diagnostic.
+  #
+  # Duplicate object keys are NOT distinguished by the stdlib parser (it keeps
+  # the last value for a repeated key). The self-contained StrictJSONParser
+  # scanner is therefore still run over the SAME raw text, but ONLY to detect a
+  # repeated decoded key in the original document. It is a character-by-character
+  # scanner that tracks string state explicitly (not a regex) and decodes
+  # \uXXXX escapes before comparison, so a Unicode-escaped key ("\u0073tatus")
+  # collides with a plain-text "status" in either order and at any nesting
+  # depth. Its own decoded value is discarded.
+  #
+  # On success the STANDARD parser result is returned: ordinary Hash / Array /
+  # String / Numeric / true / false / nil values with object keys in the
+  # original textual order, exactly the shape downstream code expects. Any
+  # stdlib parser, nesting, or generator error is converted to a controlled
+  # ExportError (exit 1); the process never leaks a raw backtrace.
   def parse_json_strict(raw, where)
-    JSON.parse(raw, object_class: StrictJSONHash)
-  rescue JSON::ParserError => e
-    raise ExportError, "Invalid JSON in #{where}: #{e.message.lines.first&.strip}"
+    parsed =
+      begin
+        JSON.parse(
+          raw,
+          create_additions: false,
+          allow_nan: false,
+          max_nesting: JSON_MAX_NESTING
+        )
+      rescue JSON::NestingError => e
+        raise ExportError, "Invalid JSON in #{where}: nesting too deep (#{e.message})"
+      rescue JSON::ParserError => e
+        raise ExportError, "Invalid JSON in #{where}: #{e.message.lines.first&.strip}"
+      end
+
+    # Explicit finite / JSON-generatable guard. allow_nan:false here rejects any
+    # non-finite float that somehow survived parsing, so we never keep a value
+    # that cannot be regenerated as JSON later.
+    begin
+      JSON.generate(parsed, allow_nan: false)
+    rescue JSON::GeneratorError => e
+      raise ExportError, "Invalid JSON in #{where}: value is not finite/JSON-generatable (#{e.message})"
+    end
+
+    # Duplicate-key detection only. The scanner's decoded value is discarded;
+    # the stdlib result above is what callers receive. The same max nesting cap
+    # has already been enforced by JSON.parse, so the scanner cannot recurse
+    # deeper than an already-accepted document.
+    begin
+      StrictJSONParser.parse(raw)
+    rescue DuplicateJSONKeyError => e
+      # Preserve the explicit "Duplicate JSON key" text reviewers and tests
+      # assert on.
+      raise ExportError, e.message
+    rescue StrictJSONParser::ParseError => e
+      # Fail CLOSED on scanner uncertainty. The stdlib parser already settled
+      # the JSON grammar verdict, so we deliberately do NOT re-declare this
+      # stdlib-valid input ungrammatical. But a ParseError here means the
+      # duplicate-key scan did not complete, and the stdlib result cannot prove
+      # the absence of a duplicate object key (JSON.parse silently keeps the last
+      # value for a repeated key). Returning `parsed` in that state would treat
+      # an INCOMPLETE duplicate scan as a successful validation, which is exactly
+      # the fail-open branch we must not have. Deferring grammar to the stdlib
+      # does not authorize bypassing duplicate verification on internal
+      # uncertainty, so we raise a controlled ExportError and never return a
+      # value after an unresolved scan.
+      raise ExportError,
+            "Cannot validate duplicate JSON keys in #{where}: duplicate scanner " \
+            "could not complete (unsupported validation path): " \
+            "#{e.message.lines.first&.strip}"
+    end
+
+    parsed
   end
 
   # Strict YAML load that rejects duplicate keys. Psych merges duplicate keys

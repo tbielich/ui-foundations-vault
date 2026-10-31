@@ -99,6 +99,28 @@ Authoritative export requires all of the following:
 - Source references are unambiguous (no broken or duplicate ids), all reads go
   through the safe-path resolver, YAML metadata is valid (no duplicate keys or
   aliases), and source bodies are valid UTF-8.
+- Naming-contract JSON grammar and values are validated by the Ruby standard
+  library JSON parser first (`JSON.parse` with `create_additions: false`,
+  `allow_nan: false`, and an explicit `max_nesting` of 100). This rejects
+  invalid JSON grammar (for example a leading-zero number such as `01`) and
+  non-finite values (for example `1e999`, which would decode to `Infinity` and
+  could not be safely JSON-generated afterwards), and rejects an over-deep
+  document cleanly before any recursive descent. The parsed value is then
+  round-tripped through `JSON.generate(..., allow_nan: false)` as a finite /
+  JSON-generatable guard. A self-contained scanner is run over the same text
+  ONLY to detect duplicate object keys at any nesting depth, in either order,
+  treating a Unicode-escaped key (e.g. `\u0073tatus`) as colliding with its
+  decoded plain-text equivalent; duplicate keys fail closed with an explicit
+  "Duplicate JSON key" diagnostic and no partial export, so a repeated key
+  cannot overwrite status or source metadata during parsing. On success the
+  standard parser result is returned (ordinary Hash/Array values with object
+  keys in their original textual order), not the scanner's own numeric/string
+  interpretation. Any stdlib parser, nesting, or generator error is converted to
+  a controlled fail-closed diagnostic. If the duplicate-key scanner itself
+  cannot complete on a stdlib-valid input, the adapter fails CLOSED rather than
+  fall through: because the stdlib result cannot prove the absence of a
+  duplicate key, it raises a controlled "duplicate scanner could not complete"
+  error and never returns a parsed value after scanner uncertainty.
 - Artifact and source paths are safe (no absolute paths, traversal, or symlink
   escapes). Each artifact list entry is a well-formed mapping with the required
   id/type/path/status; a null or scalar list entry fails closed with a
@@ -314,9 +336,16 @@ rejected (its channel is `review`). The 2026-10-31 repair turn fixed four
 independent acceptance failures (unknown source authority/type accepted,
 `artifacts: [null]` crashing with an unhandled `NoMethodError`, approved
 artifact bodies omitted from the export, and the blanket naming-contract
-rejection) and added regression tests for each. All retained protections (hard
-cap, no-overwrite, path/symlink safety, byte-preserved bodies, strict YAML,
-schema enforcement, `--check` invalidation, real-pack eligibility) still hold.
+rejection) and added regression tests for each. A subsequent 2026-10-31
+follow-up fixed two concrete false acceptances in the JSON parsing path: a
+leading-zero number (`{"a":01}`) and a non-finite number (`{"a":1e999}`) were
+accepted by the handwritten scanner. `parse_json_strict` now validates JSON
+grammar and finite values with the Ruby standard library parser first (and a
+`JSON.generate` finite guard) and keeps the self-contained scanner only for
+duplicate-key detection, returning the standard parser result. All retained
+protections (hard cap, no-overwrite, path/symlink safety, byte-preserved bodies,
+strict YAML, schema enforcement, `--check` invalidation, real-pack eligibility,
+and duplicate JSON/YAML-key rejection) still hold.
 
 No approved export, no eligible stable pack, and no Figma library have been
 produced. Real Figma upload and human review remain blocked. See the evidence
