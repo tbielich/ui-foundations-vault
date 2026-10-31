@@ -1,0 +1,141 @@
+{
+  "$comment": "Curated reference set of EXISTING icons from the runtime snapshot, chosen to span structural categories. Rationales describe why each icon represents its category. Optical-correction entries are REVIEW candidates only: they flag icons that likely rely on optical adjustment, NOT verified corrections. No geometry is asserted as correct; all optical claims require rendered visual review. These are existing assets; nothing is generated.",
+  "provenance": {
+    "issue": "tbielich/ui-foundations-vault#45",
+    "runtime_snapshot": "tbielich/ui-foundations-runtime@aa153b79668df7c3b655a96d9541171de1899580",
+    "source_dir": "src/assets/icons"
+  },
+  "status": "draft",
+  "categories_covered": [
+    "simple", "complex", "rounded", "angular", "diagonal", "enclosed",
+    "open", "overlays", "directional", "optical-correction-review"
+  ],
+  "references": [
+    {
+      "icon": "minus",
+      "categories": ["simple", "open"],
+      "rationale": "Single horizontal stroke M6 12H18. The minimal case: one open path, no keyshape, no fill, round caps. Baseline for 'simplest valid icon'."
+    },
+    {
+      "icon": "bar-horizontal",
+      "categories": ["simple", "open"],
+      "rationale": "Single near-horizontal stroke with a non-integer endpoint (M21 11.9334H3). Representative of simple icons that nonetheless carry non-integer coordinates, which matters for duplicate/visual comparison."
+    },
+    {
+      "icon": "checkmark",
+      "categories": ["simple", "angular", "diagonal", "open"],
+      "rationale": "Open polyline with two diagonal segments and a sharp interior vertex (M4 13L10 19L20 5). Canonical angular/diagonal open stroke."
+    },
+    {
+      "icon": "search",
+      "categories": ["enclosed", "rounded", "diagonal", "overlays"],
+      "rationale": "Enclosed circle lens plus a diagonal handle stroke (M15 15L21 21). Two-path composition of an enclosed shape plus an open overlay stroke."
+    },
+    {
+      "icon": "circle",
+      "categories": ["enclosed", "rounded"],
+      "rationale": "Pure enclosed circle keyshape, the clockwise 'M12 22C...' encoding. Reference for the circle keyshape variant A."
+    },
+    {
+      "icon": "checkmark-circled",
+      "categories": ["enclosed", "rounded", "overlays"],
+      "rationale": "Circle keyshape using the counter-clockwise 'M2 12C...' encoding plus an inner checkmark. Reference for circle keyshape variant B AND for keyshape-first path ordering."
+    },
+    {
+      "icon": "square",
+      "categories": ["enclosed", "angular"],
+      "rationale": "Pure enclosed sharp-cornered box (M3 21H21V3H3V21Z). Reference for the square keyshape at full canvas extent."
+    },
+    {
+      "icon": "star",
+      "categories": ["complex", "angular", "diagonal", "enclosed"],
+      "rationale": "Ten-vertex closed star polygon with many diagonals. Standalone (no keyshape) complex angular shape.",
+      "optical_correction_review": true,
+      "optical_note": "Stars commonly need optical vertical centering because the visual mass sits low; whether this asset applies such a shift is UNVERIFIED and needs rendered review."
+    },
+    {
+      "icon": "star-circled",
+      "categories": ["complex", "enclosed", "overlays", "rounded", "angular"],
+      "rationale": "Circle keyshape (variant A) plus an inset star using fill-rule evenodd. Reference for overlay-inside-keyshape composition and for inner-symbol safe-area inset."
+    },
+    {
+      "icon": "heart",
+      "categories": ["rounded", "enclosed", "complex"],
+      "rationale": "Single closed organic curve with two rounded lobes and a bottom point. Reference for smooth Bezier-heavy rounded shapes.",
+      "optical_correction_review": true,
+      "optical_note": "Hearts typically need optical centering; the point vs lobe balance should be reviewed visually. UNVERIFIED."
+    },
+    {
+      "icon": "shield-check",
+      "categories": ["enclosed", "overlays", "complex"],
+      "rationale": "Shield outline plus an overlaid checkmark. KEY reference for the contradictory path ordering: the checkmark path is drawn BEFORE the shield outline, contradicting keyshape-first."
+    },
+    {
+      "icon": "lock-checkmark",
+      "categories": ["complex", "overlays", "enclosed", "angular"],
+      "rationale": "Padlock body/shackle plus a small overlaid checkmark, both using fill-rule evenodd compound paths. Reference for object+symbol overlay naming (object-symbol)."
+    },
+    {
+      "icon": "mail",
+      "categories": ["enclosed", "angular", "overlays"],
+      "rationale": "Rect-landscape envelope body plus a V flap overlay. Reference for the rect-landscape keyshape and a two-path container+detail split."
+    },
+    {
+      "icon": "arrow--left",
+      "categories": ["directional", "angular", "open"],
+      "rationale": "Leftward arrow (M12 6L6 12L12 18M6 12H18) using the double-dash directional suffix. Reference for directional naming AND for RTL mirroring questions."
+    },
+    {
+      "icon": "chevron--down",
+      "categories": ["directional", "angular", "open"],
+      "rationale": "Downward chevron (M18 9L12 15L6 9). Reference for a minimal directional open stroke and the directional '--' suffix overload."
+    },
+    {
+      "icon": "arrow-circled--left",
+      "categories": ["directional", "enclosed", "overlays", "rounded"],
+      "rationale": "Directional arrow enclosed in a circle keyshape, combining directional suffix with the -circled modifier semantics."
+    },
+    {
+      "icon": "trash-crossed",
+      "categories": ["complex", "overlays", "angular", "enclosed"],
+      "rationale": "Trash can with a crossing diagonal stroke (M3 3L21 21) baked into a single multi-subpath 'd'. Reference for the -crossed/negation modifier and multi-subpath composition."
+    },
+    {
+      "icon": "whatsapp",
+      "categories": ["complex", "rounded", "enclosed", "overlays"],
+      "rationale": "Speech-bubble outline plus an inner handset glyph, both fill-rule evenodd. Reference for brand-derived complex two-path icons."
+    },
+    {
+      "icon": "sun-tui",
+      "categories": ["complex", "rounded", "enclosed", "overlays"],
+      "rationale": "Many-rayed sun burst plus an inner circle. Reference for radially symmetric complex geometry and optical centering of a central motif.",
+      "optical_correction_review": true,
+      "optical_note": "Radial bursts rely on precise optical centering; UNVERIFIED whether the inner circle is optically vs geometrically centered."
+    },
+    {
+      "icon": "robot-smile",
+      "categories": ["complex", "enclosed", "overlays"],
+      "rationale": "One of only two icons wrapped in <g clip-path> with a <defs><clipPath><rect/></clipPath>. KEY reference for the clip-path/defs structural variant and the rect fill='white' mask-bound artifact."
+    },
+    {
+      "icon": "sign-directions",
+      "categories": ["complex", "enclosed", "directional", "overlays", "diagonal"],
+      "rationale": "Diamond sign with inner directional arrows, also wrapped in <g clip-path> with sub-pixel coordinates extending to the canvas edge (0.814..23.178). Second clip-path reference and a bounds-edge coordinate example."
+    },
+    {
+      "icon": "tui-extras",
+      "categories": ["enclosed", "overlays", "rounded"],
+      "rationale": "Circle keyshape plus a plus symbol, stroked in #9747FF, the exact color the implementation guide documents for every path. It is the ONLY asset in the set that uses the guide's documented color; the other 600 use #333333 and are inconsistent with the guide. KEY reference for the stroke.color rule (documented #9747FF passes) and for the asset-stroke vs CSS-mask-currentColor scope distinction. The guide does not describe #9747FF as a placeholder or authoring color, and this entry does not either."
+    },
+    {
+      "icon": "plus-heavy",
+      "categories": ["angular", "enclosed", "simple"],
+      "rationale": "A plus drawn as a closed outlined cross (M18 10H14V6...Z) rather than two crossing strokes, achieving 'heavy' weight by geometry since stroke-width is never set. KEY reference that -heavy weight comes from outline geometry, not a stroke attribute, and must NOT be auto-exempted."
+    },
+    {
+      "icon": "none",
+      "categories": ["angular", "enclosed", "overlays"],
+      "rationale": "A box with a full diagonal X (M2.997 21.011L20.997 3.011...). Reference for an 'empty/none' semantic sentinel and a multi-subpath single path."
+    }
+  ]
+}
