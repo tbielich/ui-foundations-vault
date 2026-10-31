@@ -30,6 +30,53 @@ This log records what was implemented for the read-only deterministic Figma
 guidelines export adapter, what was verified, and what remains blocked. It is a
 draft. The issue must remain open. Human approval is pending.
 
+## Practical Figma evaluation (2026-10-31)
+
+This section supersedes earlier statements that no Figma library or manual test
+was supplied. Earlier verification sections remain execution history.
+
+A manually curated experimental pack was uploaded by the owner to the published
+UIF library. It contained seven Markdown files (26517 UTF-8 bytes), assembled
+from Vault revision `f2f21e45399315acb0ad50e1a101b82043ceabe5`. Each file explicitly
+said TEST ONLY and retained source lifecycle labels. This was NOT output from
+an eligible authoritative exporter run and did not promote Governance Pack
+0.8.0 or approve draft/review sources. Its local provenance JSON and checksums
+were kept separate from the uploaded Markdown files.
+
+Observed evidence:
+
+- The Figma agent reported reading all seven files and correctly identified the
+  experimental status. Its quoted guidance matched the supplied files.
+- The agent created the [settings smoke-test frame](https://www.figma.com/design/fsbgTfP30XZGuawayhgDGn/UIF-Agents-Test-File?node-id=2-2191).
+  Codex independently inspected it through the desktop UI: two Button library
+  instances (Solid and Outline), a Switch Field instance, Heading/Heading 4,
+  variable-bound surface/text colors, Form/Gap, Size/Spacing Spacious, and
+  Button/Group/Gap were confirmed. No claim is made that all 31 bindings reported
+  by the agent were independently counted.
+- A separate [320 px Dark test](https://www.figma.com/design/fsbgTfP30XZGuawayhgDGn/UIF-Agents-Test-File?node-id=6-23)
+  retained the instances and exposed a real library/version mismatch: dark text
+  and switch parts resolved to #333333 on black; Outline text and border resolved
+  to black. Codex independently read the mode and resolved bindings through MCP.
+  The agent left the defect visible rather than masking it with local colors.
+- The token-structure Figma branch was the code projection's recorded source.
+  Codex checked 452 color variables / 565 mode values against Runtime revision
+  `aa153b79668df7c3b655a96d9541171de1899580`, with no mismatches. After the owner
+  reported merging, the same comparison passed on the Figma main file.
+  The consumer test frame still used older published values at last readback;
+  publication, consumer update and a passing Dark retest are not claimed.
+
+Outcome: manual Markdown delivery, agent readability, source-status recognition,
+and practical use with real library instances are demonstrated. This supports
+adopting the adapter workflow, but does not establish an approved-pack export,
+prove that the adapter generated the tested files, or isolate guideline influence
+from the task prompt/library defaults. Keyboard behavior, screen-reader behavior,
+all component states and all brands were not evaluated in Figma. No WCAG or
+production-library release approval follows from this smoke test.
+
+Implementation approval and governance-pack eligibility are separate. The owner
+requested permanent implementation after this evaluation; no merge, lifecycle
+promotion or automated Figma publication is inferred from that request.
+
 ## Scope Delivered
 
 - `scripts/export-figma-guidelines.rb`: read-only, fail-closed export adapter
@@ -284,8 +331,9 @@ expected to FAIL CLOSED. This is encoded as a passing negative test
 (`test_real_pack_rejected_with_specific_diagnostic`, which asserts the specific
 channel eligibility diagnostic, exit 1, and no output).
 
-There is no approved export and no supplied Figma library. Real Figma import
-steps therefore cannot be executed and are marked BLOCKED / not-run.
+There is still no approved authoritative export. A supplied Figma library and a
+manual experimental upload were evaluated later; see Practical Figma evaluation.
+Approved-pack export/import acceptance remains blocked by pack eligibility.
 
 ## Verification Status
 

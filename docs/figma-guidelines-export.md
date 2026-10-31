@@ -312,6 +312,41 @@ This procedure refers to Figma design library guidelines, not Figma Make or any
 other feature. This adapter does not provision Figma access and performs no
 network calls to Figma.
 
+## Repeatable Library Acceptance
+
+The manual seven-file experiment on 2026-10-31 demonstrated that Figma can read
+this delivery format and use the guidance with library instances. See
+`docs/evidence/issue-64-figma-export.md` for the exact evidence and limitations.
+The tested pack was manually curated and experimental; it must not be presented
+as an eligible output of this adapter. The adapter's eligibility checks remain
+mandatory for routine authoritative exports.
+
+For each future approved pack version:
+
+1. Generate to a fresh external directory and verify it using the CLI above.
+2. Retain the manifest and checksums with the review record; upload only the
+   seven Markdown guidelines, never the manifest.
+3. Apply the library guidelines and explicitly connect that library to a Figma
+   Design agent chat in a separate consumer test file.
+4. Ask the agent to identify three specific guidelines and their filenames,
+   report the pack status, and list accessible assets before creating a design.
+5. Create a small settings screen using actual library instances and variables.
+   Independently inspect component identity, selected variants, text styles,
+   spacing/color bindings and any missing assets rather than accepting agent
+   narrative as verification.
+6. Test a separate 320 px Dark copy. Preserve the baseline, inspect actual mode
+   inheritance and resolved colors, and record contrast/visibility/overflow
+   defects. Do not hide library defects with local color overrides.
+7. Record pack/source revision, checksums, target library/file/frame links,
+   observed checks, unresolved findings, and human review separately. Agent
+   quotations alone do not prove causal guideline adherence or accessibility.
+
+A library source merge, publication and consumer update are distinct steps.
+Confirm the consuming file actually resolves the reviewed variables; a corrected
+source file alone does not demonstrate that a published consumer is current.
+Token synchronization and automated Figma publication remain outside this
+adapter's scope. A successful test does not change source lifecycle status.
+
 ## Repeatable Figma-Agent Task Set
 
 A small, repeatable task set for a Figma-capable agent, once an approved export
