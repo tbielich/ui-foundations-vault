@@ -1,0 +1,590 @@
+{
+  "$comment": "DRAFT icon grammar for ui-foundations-vault#45. This is a research artifact, NOT approved governance. Two independent axes are kept separate (D7): 'class' is the FIELD CLASSIFICATION of the rule, defined by HOW THE RULE IS DECIDED and NOT by how prevalent the observed convention is. hard = the rule is validated DETERMINISTICALLY regardless of prevalence (a near-universal convention does not make a rule hard, and a deterministically checkable convention is hard even if most assets violate it); heuristic = an APPROXIMATION comparing against observed values within an EXPLICIT numeric tolerance (every heuristic rule carries a concrete proposed numeric tolerance; no vague 'small'/'~' allowance may stand in for a tolerance); judgment = requires a HUMAN decision (rendered geometry, visual, or semantic). Where a rule has no numeric metric: it is 'hard' if automated presence detection IS the claimed deterministic rule, otherwise it is 'judgment' routed to human approval. Machine-checkability does NOT confer policy legitimacy. 'status' is the DRAFT LIFECYCLE of the rule in this artifact (always 'draft' here). 'evaluation' ties each rule to how it is decided: 'automated' means the audit tool decides it deterministically; 'manual' means it is surfaced for a human/visual decision and is never auto-passed. A rule is EITHER automated with a concrete criterion OR manual; there are no empty numeric tolerances attached to manual/heuristic rules, and every numeric tolerance below is an EXPLICIT proposed number (manual/unimplemented), not an executed check. Provenance keys: impl-guide = source/docs/agentic/icon-creation.md (status active, implementation convention only); usage-guide = source/site/patterns/icon.md (component usage scope); vault-pattern = vault/patterns/base/icon.pattern.md (derived draft). No source constitutes approved numeric governance. Nothing here promotes a repeated implementation convention to canonical approved governance, and no canonical governance is inferred from observed conventions.",
+  "provenance": {
+    "issue": "tbielich/ui-foundations-vault#45",
+    "runtime_snapshot": "tbielich/ui-foundations-runtime@aa153b79668df7c3b655a96d9541171de1899580",
+    "vault_base": "995c580ce6f162fbf9baa2f5e4819da1aa3384d8",
+    "input_source": "src/assets/icons/*.svg (owned input; read by runtime scripts/generate-icon-list.mjs, invoked from build.mjs Stage 1)",
+    "external_brand_pdf": "not supplied; no claim of external authority or manual design provenance is made",
+    "authority_note": "Vault remains canonical governance. Implementation and usage guides are conventions, not approved numeric rules."
+  },
+  "status": "draft",
+  "applicability": {
+    "scope": "runtime-guide-only",
+    "status": "provisional",
+    "note": "After PR66 a user-authored Figma design guideline (UI Assets Library, file Eprjc6hw7QyMvvD01eGgGy, section node 482:12945 'Icons') was supplied as a primary design source previously missing from the audit. The rules in the 'rules' array below compare assets ONLY to the runtime implementation/usage guides and are therefore scoped runtime-guide-only and marked provisional pending reconciliation with the Figma source. Existing audit_rule IDs are UNCHANGED; the tool does NOT execute any Figma rule. See figma-guideline-addendum.md. The separate machine-readable 'design_guideline_rules' array below records the Figma design constraints; it does not re-evaluate the 601 inventory and is not executed by the tool.",
+    "see_also": "figma-guideline-addendum.md"
+  },
+  "design_guideline_provenance": {
+    "type": "design-source",
+    "role": "user-identified-design-guideline",
+    "tool": "figma",
+    "access": "official-figma-mcp-read-only",
+    "file": "Eprjc6hw7QyMvvD01eGgGy",
+    "section_node": "482:12945",
+    "section_name": "Icons",
+    "url": "https://www.figma.com/design/Eprjc6hw7QyMvvD01eGgGy/UI-Assets-Library?node-id=482-12945",
+    "accessed": "2026-10-31",
+    "fetched_by": "Codex",
+    "mcp_session": "cb67a792-4a02-4ef3-858d-30efbc79f94d",
+    "capture_sha256": "5be17544d471e06ff72b01db786a130ff33b9e6999cc14be00fbcc9b700869e7",
+    "version_id": null,
+    "commit_sha": null,
+    "immutability_note": "No immutable Figma version ID or commit SHA was obtained via MCP. Git commit SHAs do NOT version this Figma file; none is invented. Content snapshot text and capture SHA are supplied by Codex. The Figma file is unchanged.",
+    "authority_note": "Vault remains canonical governance. This external Figma design source is referenced with provenance, not promoted to governance. Membership/mapping of the 601 runtime icons to this library and the applicable Figma revision are unresolved; the approved production mapping of the 601 icons is NOT conflated with this library."
+  },
+  "design_guideline_rules": [
+    {
+      "id": "figma.anatomy.width",
+      "class": "hard",
+      "source_node": "4991:335",
+      "field": "width",
+      "literal": "24px",
+      "runtime_guide_comparison": "impl-guide.canvas.dimensions / canvas.viewbox (24x24)",
+      "status": "agrees",
+      "note": "Nominal 24 agrees with the runtime-guide canvas size. Not re-evaluated against the 601 inventory.",
+      "evaluation": "not-executed"
+    },
+    {
+      "id": "figma.anatomy.height",
+      "class": "hard",
+      "source_node": "4991:335",
+      "field": "height",
+      "literal": "24px",
+      "runtime_guide_comparison": "impl-guide.canvas.dimensions / canvas.viewbox (24x24)",
+      "status": "agrees",
+      "note": "Nominal 24 agrees with the runtime-guide canvas size. Not re-evaluated against the 601 inventory.",
+      "evaluation": "not-executed"
+    },
+    {
+      "id": "figma.anatomy.radius",
+      "class": "judgment",
+      "source_node": "4991:335",
+      "field": "radius",
+      "literal": "--corner-rounded-1",
+      "token_ref": "--corner-rounded-1",
+      "token_value_resolved": false,
+      "runtime_guide_comparison": "corner-radius.internal (manual)",
+      "status": "unresolved",
+      "note": "Token NAME is known; NO resolved numeric value was fetched. No numeric radius comparison is made.",
+      "evaluation": "not-executed"
+    },
+    {
+      "id": "figma.anatomy.fill",
+      "class": "judgment",
+      "source_node": "4991:335",
+      "field": "fill",
+      "literal": "transparent / deep blue",
+      "runtime_guide_comparison": "canvas.root-fill (fill=none) / fill.no-fill-on-path",
+      "status": "conflict",
+      "note": "Figma fill 'transparent / deep blue' conflicts with the stroke-only / no-path-fill asset rule. Human reconciliation required.",
+      "evaluation": "not-executed"
+    },
+    {
+      "id": "figma.anatomy.stroke-color",
+      "class": "judgment",
+      "source_node": "4991:335",
+      "field": "stroke",
+      "literal": "--stroke-color-primary",
+      "token_ref": "--stroke-color-primary",
+      "token_value_resolved": false,
+      "runtime_guide_comparison": "stroke.color (guide #9747FF; observed #333333)",
+      "status": "conflict-unresolved",
+      "note": "No token color value was fetched, so there is NO resolved color. The audit's #9747FF/#333333 are NOT compared against a Figma color and the existing 600 inconsistent color rows are NOT restated as violations against Figma.",
+      "evaluation": "not-executed"
+    },
+    {
+      "id": "figma.anatomy.stroke-width",
+      "class": "hard",
+      "source_node": "4991:335",
+      "field": "stroke-width",
+      "literal": "2pt",
+      "conversion_resolved": false,
+      "runtime_guide_comparison": "stroke.width (default 1; no explicit stroke-width)",
+      "status": "conflict",
+      "note": "Figma literal 2pt conflicts with the default-1/no-explicit-width asset rule. Unit/export scaling is UNRESOLVED. Do NOT silently convert 2pt to 2px or 8/3px.",
+      "evaluation": "not-executed"
+    },
+    {
+      "id": "figma.anatomy.stroke-linecap",
+      "class": "hard",
+      "source_node": "4991:335",
+      "field": "stroke-linecap",
+      "literal": "round",
+      "runtime_guide_comparison": "stroke.linecap (round)",
+      "status": "agrees",
+      "note": "Agrees. Not re-evaluated against the 601 inventory.",
+      "evaluation": "not-executed"
+    },
+    {
+      "id": "figma.anatomy.stroke-linejoin",
+      "class": "hard",
+      "source_node": "4991:335",
+      "field": "stroke-linejoin",
+      "literal": "round",
+      "runtime_guide_comparison": "stroke.linejoin (round)",
+      "status": "agrees",
+      "note": "Agrees. Not re-evaluated against the 601 inventory.",
+      "evaluation": "not-executed"
+    },
+    {
+      "id": "figma.notes.size-scale",
+      "class": "hard",
+      "source_node": "5009:1076",
+      "field": "size-scale",
+      "literal": {
+        "XSmall": 16,
+        "Small": 20,
+        "Medium": 24,
+        "Large": 32,
+        "XLarge": 36,
+        "XXLarge": 40,
+        "XXXLarge": 44
+      },
+      "runtime_guide_comparison": "not previously documented",
+      "status": "newly-documented",
+      "note": "Documents a size scale, NOT all asset canvas sizes. The notes legend also covers sorting and naming.",
+      "evaluation": "not-executed",
+      "classification_note": "Discrete documented size scale; deterministic membership can be checked after scope mapping. No approximate geometry tolerance or completed validation is implied."
+    },
+    {
+      "id": "figma.naming.layer-coloring",
+      "class": "judgment",
+      "source_node": "320:13734",
+      "field": "layer-naming",
+      "literal": "strokes named 'stroke'; shapes needing fill named 'fill'",
+      "runtime_guide_comparison": "naming.kebab-case / naming.double-dash-semantics",
+      "status": "separate-scope",
+      "note": "Figma LAYER naming convention ('Naming for Coloring' post-it). This is NOT SVG filename naming and NOT a statement about XML attribute presence in exported SVGs. Read directly from the screenshot (structured context intercepted by a CodeConnect suggestion).",
+      "evaluation": "not-executed"
+    },
+    {
+      "id": "figma.keyshape.frames",
+      "class": "judgment",
+      "source_node": "482:12955,482:13005,482:13008,482:13010",
+      "field": "keyshape-frames-24x24",
+      "literal": {
+        "circle": "482:12955",
+        "square": "482:13005",
+        "rect-portrait": "482:13008",
+        "rect-landscape": "482:13010"
+      },
+      "observed_example_bounds": {
+        "ellipse": "482:13032 22x22",
+        "rect": "482:13033 20x20",
+        "portrait": "482:13034 16x22",
+        "landscape": "482:13035 22x16"
+      },
+      "runtime_guide_comparison": "keyshape.circle/square/rect-landscape/rect-portrait (manual bbox tolerances)",
+      "status": "different-unresolved",
+      "note": "Example-layer bounds are OBSERVATIONS, not automatically normative keyshape bounding rules and not asserted equivalent to the actual keyshape frames. Inspect actual frames/export; NO automatic normalization is performed.",
+      "evaluation": "not-executed"
+    }
+  ],
+  "rules": [
+    {
+      "id": "canvas.viewbox",
+      "class": "hard",
+      "evaluation": "automated",
+      "audit_rule": "impl-guide.canvas.viewbox",
+      "scope": "canvas",
+      "provenance": "impl-guide",
+      "section": "Canvas",
+      "status": "draft",
+      "statement": "Root <svg> viewBox is '0 0 24 24'.",
+      "numeric_tolerance": {
+        "value": "0 0 24 24",
+        "proposed": true,
+        "exact": true
+      }
+    },
+    {
+      "id": "canvas.dimensions",
+      "class": "hard",
+      "evaluation": "automated",
+      "audit_rule": "impl-guide.canvas.dimensions",
+      "scope": "canvas",
+      "provenance": "impl-guide",
+      "section": "Canvas",
+      "status": "draft",
+      "statement": "Root width and height are both '24'.",
+      "numeric_tolerance": {
+        "value": 24,
+        "proposed": true,
+        "exact": true
+      }
+    },
+    {
+      "id": "canvas.root-fill",
+      "class": "hard",
+      "evaluation": "automated",
+      "audit_rule": "impl-guide.canvas.root-fill-none",
+      "scope": "canvas",
+      "provenance": "impl-guide",
+      "section": "Canvas",
+      "status": "draft",
+      "statement": "Root <svg> fill is 'none' (transparent canvas)."
+    },
+    {
+      "id": "keyshape.circle",
+      "class": "heuristic",
+      "evaluation": "manual",
+      "audit_rule": null,
+      "scope": "keyshapes",
+      "provenance": "impl-guide",
+      "section": "Keyshapes (Circle)",
+      "status": "draft",
+      "statement": "Circled variants use a centered 20x20 circle inside the 24x24 canvas. Two distinct circle path encodings are observed in the set (clockwise 'M12 22C...' and counter-clockwise 'M2 12C...'); neither is canonical.",
+      "numeric_tolerance": {
+        "bbox": "2,2 to 22,22",
+        "diameter": 20,
+        "bbox_abs_error_max": 0.5,
+        "diameter_abs_error_max": 0.5,
+        "units": "SVG user units",
+        "proposed": true
+      },
+      "not_implemented_note": "Geometry matching is not performed by the audit tool; this tolerance (proposed bbox/diameter absolute-error bound of 0.5 SVG user units) is a documented, manual/unimplemented proposal for a future rendered-geometry check, not an executed criterion.",
+      "contradiction": "impl-guide says to copy the circle path 'verbatim from plus-circled.svg', but checkmark-circled.svg uses a different circle encoding. Flagged, not reconciled."
+    },
+    {
+      "id": "keyshape.square",
+      "class": "heuristic",
+      "evaluation": "manual",
+      "audit_rule": null,
+      "scope": "keyshapes",
+      "provenance": "impl-guide",
+      "section": "Keyshapes (Square)",
+      "status": "draft",
+      "statement": "Square keyshape is a centered 20x20 box; corner radius proposed at 0 with an explicit maximum.",
+      "numeric_tolerance": {
+        "bbox": "2,2 to 22,22",
+        "corner_radius": 0,
+        "corner_radius_max": 1.0,
+        "bbox_abs_error_max": 0.5,
+        "units": "SVG user units",
+        "proposed": true
+      },
+      "not_implemented_note": "Geometry matching is not performed by the audit tool; this tolerance (proposed bbox absolute-error bound 0.5 and corner-radius maximum 1.0 SVG user units) is a documented, manual/unimplemented proposal only."
+    },
+    {
+      "id": "keyshape.rect-landscape",
+      "class": "heuristic",
+      "evaluation": "manual",
+      "audit_rule": null,
+      "scope": "keyshapes",
+      "provenance": "impl-guide",
+      "section": "Keyshapes (Rect-landscape)",
+      "status": "draft",
+      "statement": "Wide containers use a vertically centered short rect.",
+      "numeric_tolerance": {
+        "bbox": "2,5 to 22,19",
+        "bbox_abs_error_max": 0.5,
+        "units": "SVG user units",
+        "proposed": true
+      },
+      "not_implemented_note": "Geometry matching is not performed by the audit tool; this tolerance (proposed bbox absolute-error bound 0.5 SVG user units) is a documented, manual/unimplemented proposal only."
+    },
+    {
+      "id": "keyshape.rect-portrait",
+      "class": "heuristic",
+      "evaluation": "manual",
+      "audit_rule": null,
+      "scope": "keyshapes",
+      "provenance": "impl-guide",
+      "section": "Keyshapes (Rect-portrait)",
+      "status": "draft",
+      "statement": "Tall containers use a horizontally centered narrow rect.",
+      "numeric_tolerance": {
+        "bbox": "5,2 to 19,22",
+        "bbox_abs_error_max": 0.5,
+        "units": "SVG user units",
+        "proposed": true
+      },
+      "not_implemented_note": "Geometry matching is not performed by the audit tool; this tolerance (proposed bbox absolute-error bound 0.5 SVG user units) is a documented, manual/unimplemented proposal only."
+    },
+    {
+      "id": "safe-area.inner-inset",
+      "class": "judgment",
+      "evaluation": "manual",
+      "audit_rule": "impl-guide.safe-area",
+      "scope": "safe-area",
+      "provenance": "impl-guide",
+      "section": "Keyshapes / Composition rules",
+      "status": "draft",
+      "statement": "Inner symbol is inset from the keyshape edge by a proposed 2 to 3 SVG user units. Depends on rendered geometry; requires visual review.",
+      "numeric_tolerance": {
+        "inset_min": 2,
+        "inset_max": 3,
+        "units": "SVG user units",
+        "proposed": true
+      },
+      "not_implemented_note": "The audit emits requires-visual-review for this rule; the inset bound (proposed 2 to 3 SVG user units) is a documented, manual/unimplemented proposal for a future rendered check, not an executed criterion."
+    },
+    {
+      "id": "stroke.color",
+      "class": "hard",
+      "evaluation": "automated",
+      "audit_rule": "impl-guide.stroke.color",
+      "scope": "color",
+      "provenance": "impl-guide",
+      "section": "Stroke rules",
+      "status": "draft",
+      "statement": "The implementation guide states explicitly that every <path> uses stroke='#9747FF'. The audit compares each icon's effective stroke color to that documented value: '#9747FF' PASSES; any other concrete color is INCONSISTENT with the implementation guide. This is a convention conflict against the guide, not a production defect, because the guide is a convention and not approved governance.",
+      "documented_value": "#9747FF",
+      "observed_distribution_note": "The observed stroke-color distribution across the set (the reality is that most assets use '#333333', with only tui-extras.svg using '#9747FF') is reported separately in summary.json as a NON-NORMATIVE statistic. It is NOT the pass criterion. No 'dominant' color is treated as a pass. No color is labelled a 'placeholder' or 'authoring' color, because the guide does not describe '#9747FF' that way."
+    },
+    {
+      "id": "color.mask-applicability",
+      "class": "judgment",
+      "evaluation": "manual",
+      "audit_rule": "usage-guide.color.mask-applicability",
+      "scope": "color",
+      "provenance": "usage-guide",
+      "section": "Behaviors / Color",
+      "status": "draft",
+      "statement": "At render time the Icon component applies the SVG as a CSS mask-image with background-color: currentColor. Whether that technique neutralizes an asset's hardcoded literal color is a DIFFERENT SCOPE (component usage) that this asset-level audit does not test. The audit therefore emits requires-visual-review when an asset carries a hardcoded color, rather than inventing an approved exception to the asset-level color rule.",
+      "scope_distinction": "stroke.color = the literal color inside the SVG asset, compared to the guide's documented #9747FF. color.mask-applicability = whether the consuming component's CSS mask + currentColor changes the painted result at runtime. These are separate scopes; the asset rule is not waived by the usage behavior.",
+      "no_invented_exception": "There is no approved exception to the asset-level color rule. Marking the hardcoded color a 'documented-exception' on the basis of the mask technique would conflate the two scopes; it is not done. 0 documented exceptions is a valid outcome."
+    },
+    {
+      "id": "stroke.width",
+      "class": "hard",
+      "evaluation": "automated",
+      "audit_rule": "impl-guide.stroke.width-default",
+      "scope": "stroke",
+      "provenance": "impl-guide",
+      "section": "Stroke rules",
+      "status": "draft",
+      "statement": "stroke-width is never set explicitly on any element (the SVG default of 1 applies). The audit checks for an explicit stroke-width on ANY element (path, g, svg) and for any path whose effective width comes from a non-initial source, so an inherited width from a <g stroke-width=...> is caught even when the path itself is bare.",
+      "numeric_tolerance": {
+        "value": 1,
+        "proposed": true
+      }
+    },
+    {
+      "id": "stroke.linecap",
+      "class": "hard",
+      "evaluation": "automated",
+      "audit_rule": "impl-guide.stroke.cap-round",
+      "scope": "stroke",
+      "provenance": "impl-guide",
+      "section": "Stroke rules",
+      "status": "draft",
+      "statement": "Every drawn path has an effective stroke-linecap='round' (own, inherited, or resolved)."
+    },
+    {
+      "id": "stroke.linejoin",
+      "class": "hard",
+      "evaluation": "automated",
+      "audit_rule": "impl-guide.stroke.join-round",
+      "scope": "stroke",
+      "provenance": "impl-guide",
+      "section": "Stroke rules",
+      "status": "draft",
+      "statement": "Every drawn path has an effective stroke-linejoin='round' (own, inherited, or resolved)."
+    },
+    {
+      "id": "fill.no-fill-on-path",
+      "class": "hard",
+      "evaluation": "automated",
+      "audit_rule": "impl-guide.fill.no-fill-on-path",
+      "scope": "fill",
+      "provenance": "impl-guide",
+      "section": "Stroke rules",
+      "status": "draft",
+      "statement": "The fill attribute is OMITTED on every path (guide: 'Never use fill on any path'). The audit distinguishes the literal syntax (is a fill attribute present at all) from the effective paint model (does the fill paint anything): a path with a painting fill is inconsistent, AND a path carrying a literal fill attribute of any value, including fill='none', is also flagged as a syntax-level deviation. fill-rule/clip-rule='evenodd' may appear on closed compound shapes and are not fills."
+    },
+    {
+      "id": "corner-radius.internal",
+      "class": "judgment",
+      "evaluation": "manual",
+      "audit_rule": "impl-guide.corner-radius",
+      "scope": "corner-radii",
+      "provenance": "impl-guide",
+      "section": "Keyshapes / Composition",
+      "status": "draft",
+      "statement": "Corner radii and internal spacing/alignment depend on rendered geometry and are not statically decidable. The audit emits requires-visual-review."
+    },
+    {
+      "id": "alignment.optical",
+      "class": "judgment",
+      "evaluation": "manual",
+      "audit_rule": "impl-guide.optical-correction",
+      "scope": "alignment",
+      "provenance": "impl-guide",
+      "section": "Composition rules",
+      "status": "draft",
+      "statement": "Optical centering/correction is a human visual decision; never auto-passed. The audit emits requires-visual-review."
+    },
+    {
+      "id": "svg.elements-allowed",
+      "class": "judgment",
+      "evaluation": "manual",
+      "audit_rule": null,
+      "scope": "svg-elements",
+      "provenance": "impl-guide",
+      "section": "Canvas / Composition",
+      "status": "draft",
+      "statement": "Observed elements: svg, path, g, defs, clipPath, rect (rect only inside clipPath as a clip bound). No <style>, <image>, <use>, <mask>, gradients, or <text> observed in the snapshot. The allowed-element set is a proposed inventory, not a governed allowlist; the audit inventories element_counts rather than enforcing a fixed set.",
+      "class_rationale": "No numeric metric and no deterministic automated allow/deny rule is claimed (the tool inventories rather than enforces). Classified judgment for human approval of any future allowlist, not heuristic."
+    },
+    {
+      "id": "svg.no-raster",
+      "class": "hard",
+      "evaluation": "automated",
+      "audit_rule": "impl-guide.structure.no-raster",
+      "scope": "svg-elements",
+      "provenance": "impl-guide",
+      "section": "Canvas",
+      "status": "draft",
+      "statement": "No raster/bitmap content; vector only."
+    },
+    {
+      "id": "svg.transforms",
+      "class": "judgment",
+      "evaluation": "manual",
+      "audit_rule": "impl-guide.structure.transform",
+      "scope": "svg-attributes",
+      "provenance": "impl-guide",
+      "section": "Composition rules",
+      "status": "draft",
+      "statement": "Presence of a transform attribute is surfaced for review because effective geometry would need rendering. The audit emits requires-visual-review when a transform is present, otherwise pass.",
+      "class_rationale": "No numeric metric. The automated step is only presence detection, but the decision about whether a transform is acceptable needs rendered geometry; the rule is surfaced for a human (manual/requires-visual-review), so it is classified judgment, not heuristic."
+    },
+    {
+      "id": "svg.mask-clip-defs",
+      "class": "judgment",
+      "evaluation": "manual",
+      "audit_rule": "impl-guide.structure.mask-clip-defs",
+      "scope": "svg-attributes",
+      "provenance": "impl-guide",
+      "section": "Composition rules",
+      "status": "draft",
+      "statement": "A small number of icons wrap content in <g clip-path=url(#...)> with a <defs><clipPath><rect fill='white'/></clipPath></defs> clipping to the 24x24 bounds (an export artifact). Masks/clip-paths/defs are undocumented structural variants; the audit surfaces them in a requires-visual-review row rather than silently passing them as whole-structure compliance. It does NOT assert that vector-only structure equals full structure validation.",
+      "class_rationale": "No numeric metric. The tool detects presence of mask/clip/defs, but whether the clipping effect is acceptable needs human/rendered review; the row is manual/requires-visual-review, so it is classified judgment, not heuristic."
+    },
+    {
+      "id": "css.unevaluated-references",
+      "class": "hard",
+      "evaluation": "automated",
+      "audit_rule": "css.unevaluated-references",
+      "scope": "svg-elements",
+      "provenance": "impl-guide",
+      "section": "Composition rules",
+      "status": "draft",
+      "statement": "If an icon carries a <style> sheet, a class selector, a <use>/href reference, or an inline style this tool cannot resolve (custom properties, var(), functions), the audit cannot assert paint/geometry compliance and emits requires-visual-review. CSS-wide keywords (inherit/initial/unset/revert) and simple !important ARE resolved and recorded with how they resolved; they are never emitted as bare pseudo-values. The snapshot contains no <style> or <use>, so this row passes for the observed set, but the handling is honest about not evaluating such CSS when present.",
+      "class_rationale": "The claimed rule is deterministic automated PRESENCE detection of unevaluated CSS/references (no numeric metric and no approximation/tolerance). Per the class contract, automated presence detection being the rule makes it hard, not heuristic. It remains a convention, not approved governance."
+    },
+    {
+      "id": "naming.kebab-case",
+      "class": "hard",
+      "evaluation": "automated",
+      "audit_rule": "impl-guide.naming.kebab-case",
+      "scope": "naming",
+      "provenance": "impl-guide",
+      "section": "Naming conventions",
+      "status": "draft",
+      "statement": "LEXICAL syntax only: file names are lowercase kebab-case matching <object>[-variant][-modifier], allowing a single '--' segment. This rule judges the string shape, not the meaning of '--' (see naming.double-dash-semantics)."
+    },
+    {
+      "id": "naming.double-dash-semantics",
+      "class": "judgment",
+      "evaluation": "manual",
+      "audit_rule": "impl-guide.naming.double-dash-semantics",
+      "scope": "naming",
+      "provenance": "impl-guide",
+      "section": "Naming conventions (Special: double-dash)",
+      "status": "draft",
+      "statement": "SEMANTIC judgement, separate from lexical syntax. The guide reserves '--' for rare dual-state icons and names exactly one: thumbs-up--down. The audit treats thumbs-up--down as a documented-exception; every other '--' name (arrow--left, chevron--down, aircraft--right, hand-pointing--left, ellipsis--vertical, arrow-circle--flip, and the -circled directional variants) uses '--' for a single direction or other meaning that the guide does NOT document, and is emitted as requires-visual-review for a semantic decision. These names are NOT auto-passed merely because the string is lexically valid.",
+      "observed_double_dash_names": [
+        "aircraft--left",
+        "aircraft--right",
+        "arrow--down",
+        "arrow--left",
+        "arrow--top",
+        "arrow-circle--flip",
+        "arrow-circled--down",
+        "arrow-circled--left",
+        "arrow-circled--top",
+        "arrow-to--bottom",
+        "arrow-to--top",
+        "chevron--down",
+        "chevron--left",
+        "chevron--top",
+        "chevron-circled--down",
+        "chevron-circled--left",
+        "chevron-circled--top",
+        "ellipsis--vertical",
+        "guillemet--down",
+        "guillemet--left",
+        "guillemet--up",
+        "hand-back-pointing--left",
+        "hand-pointing--left",
+        "thumbs-up--down"
+      ],
+      "documented_dual_state": [
+        "thumbs-up--down"
+      ]
+    },
+    {
+      "id": "metadata.semantic",
+      "class": "judgment",
+      "evaluation": "manual",
+      "audit_rule": null,
+      "scope": "semantic-metadata",
+      "provenance": "impl-guide",
+      "section": "Naming conventions",
+      "status": "draft",
+      "statement": "Semantic meaning is carried only by the file name; no embedded semantic metadata (title/desc) exists in assets. Concept-to-name mapping is a human decision. The audit inventories title/desc/aria presence but does not decide semantic correctness."
+    },
+    {
+      "id": "accessibility.asset-level",
+      "class": "judgment",
+      "evaluation": "manual",
+      "audit_rule": "usage-guide.a11y.metadata",
+      "scope": "accessibility",
+      "provenance": "usage-guide",
+      "section": "Accessibility",
+      "status": "draft",
+      "statement": "Accessibility (aria-hidden for decorative, aria-label for meaningful) is applied by the consuming component, not the asset. Asset-level a11y metadata is intentionally absent; the audit emits guideline-gap at the asset layer."
+    },
+    {
+      "id": "rtl.mirroring",
+      "class": "judgment",
+      "evaluation": "manual",
+      "audit_rule": "usage-guide.rtl",
+      "scope": "rtl",
+      "provenance": "usage-guide",
+      "section": "Behaviors",
+      "status": "draft",
+      "statement": "No documented RTL/mirroring behavior for directional icons. Whether directional icons should mirror in RTL contexts is an unresolved guideline gap. The audit emits guideline-gap."
+    },
+    {
+      "id": "path-order.keyshape-first",
+      "class": "judgment",
+      "evaluation": "manual",
+      "audit_rule": "impl-guide.path-order",
+      "scope": "composition",
+      "provenance": "impl-guide",
+      "section": "Composition rules",
+      "status": "draft",
+      "statement": "The guide states 'keyshape path first, then inner paths' AND cites shield-check.svg as 'checkmark path, then shield path' in the same breath. These contradict. Observed assets are inconsistent: checkmark-circled.svg draws the circle first; shield-check.svg draws the checkmark first. Path ordering cannot be auto-verified and is never auto-passed; the audit emits requires-visual-review.",
+      "contradiction_examples": [
+        "shield-check.svg: checkmark path (M8 13L11 16.043L16 9) precedes the shield outline",
+        "checkmark-circled.svg: circle keyshape precedes the checkmark",
+        "star-circled.svg and plus-circled.svg: circle keyshape precedes the inner symbol"
+      ]
+    },
+    {
+      "id": "weight.heavy-bold-not-exempt",
+      "class": "judgment",
+      "evaluation": "manual",
+      "audit_rule": null,
+      "scope": "stroke",
+      "provenance": "impl-guide",
+      "section": "Naming conventions (Modifier)",
+      "status": "draft",
+      "statement": "Filenames with -heavy/-bold/-ultrabold modifiers imply a heavier visual weight, but since stroke-width is never set explicitly the weight is achieved by geometry (doubled outlines), not by a stroke attribute. Heavy/bold filenames are NOT automatically exempted from any stroke/cap/join/width rule; the audit evaluates them like every other icon (there is no filename-based exemption in the tool)."
+    }
+  ]
+}

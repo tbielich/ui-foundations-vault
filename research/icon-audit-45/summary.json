@@ -1,0 +1,196 @@
+{
+  "counts": {
+    "affected_icon_totals": {
+      "documented-exception": 1,
+      "guideline-gap": 601,
+      "inconsistent": 600,
+      "pass": 601,
+      "requires-visual-review": 601
+    },
+    "finding_rows_total": 12621,
+    "icons_total": 601,
+    "per_rule": {
+      "css.unevaluated-references": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 601,
+        "requires-visual-review": 0
+      },
+      "impl-guide.canvas.dimensions": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 601,
+        "requires-visual-review": 0
+      },
+      "impl-guide.canvas.root-fill-none": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 601,
+        "requires-visual-review": 0
+      },
+      "impl-guide.canvas.viewbox": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 601,
+        "requires-visual-review": 0
+      },
+      "impl-guide.corner-radius": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 0,
+        "requires-visual-review": 601
+      },
+      "impl-guide.fill.no-fill-on-path": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 601,
+        "requires-visual-review": 0
+      },
+      "impl-guide.naming.double-dash-semantics": {
+        "documented-exception": 1,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 577,
+        "requires-visual-review": 23
+      },
+      "impl-guide.naming.kebab-case": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 601,
+        "requires-visual-review": 0
+      },
+      "impl-guide.optical-correction": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 0,
+        "requires-visual-review": 601
+      },
+      "impl-guide.path-order": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 0,
+        "requires-visual-review": 601
+      },
+      "impl-guide.safe-area": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 0,
+        "requires-visual-review": 601
+      },
+      "impl-guide.stroke.cap-round": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 1,
+        "pass": 600,
+        "requires-visual-review": 0
+      },
+      "impl-guide.stroke.color": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 600,
+        "pass": 1,
+        "requires-visual-review": 0
+      },
+      "impl-guide.stroke.join-round": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 1,
+        "pass": 600,
+        "requires-visual-review": 0
+      },
+      "impl-guide.stroke.width-default": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 601,
+        "requires-visual-review": 0
+      },
+      "impl-guide.structure.mask-clip-defs": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 599,
+        "requires-visual-review": 2
+      },
+      "impl-guide.structure.no-raster": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 601,
+        "requires-visual-review": 0
+      },
+      "impl-guide.structure.transform": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 601,
+        "requires-visual-review": 0
+      },
+      "usage-guide.a11y.metadata": {
+        "documented-exception": 0,
+        "guideline-gap": 601,
+        "inconsistent": 0,
+        "pass": 0,
+        "requires-visual-review": 0
+      },
+      "usage-guide.color.mask-applicability": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 0,
+        "requires-visual-review": 601
+      },
+      "usage-guide.rtl": {
+        "documented-exception": 0,
+        "guideline-gap": 601,
+        "inconsistent": 0,
+        "pass": 0,
+        "requires-visual-review": 0
+      }
+    },
+    "row_status_totals": {
+      "documented-exception": 1,
+      "guideline-gap": 1202,
+      "inconsistent": 602,
+      "pass": 7786,
+      "requires-visual-review": 3030
+    },
+    "rules_total": 21
+  },
+  "duplicates": {
+    "exact_byte_groups": 15,
+    "order_independent_groups": 16,
+    "semantic_overlap_groups": 95,
+    "structural_groups": 16
+  },
+  "notes": [
+    "Row totals count (icon, rule) pairs; affected-icon totals count distinct icons with at least one row of that status.",
+    "No status asserts approved governance compliance; impl-guide and usage-guide are conventions, not canonical numeric governance.",
+    "impl-guide.stroke.color compares against the guide's documented #9747FF; the observed color distribution is reported separately with no normative force.",
+    "requires-visual-review, manual-evaluation and judgment-class rules are never auto-passed.",
+    "Duplicate groups are candidate signatures, not rendered-visual equivalence."
+  ],
+  "observed": {
+    "documented_stroke_color": "#9747ff",
+    "observed_distribution_note": "Observed distribution is NON-NORMATIVE. The pass criterion for impl-guide.stroke.color is the guide's documented #9747FF, not the most frequent observed color.",
+    "stroke_color_distribution": {
+      "#333333": 1204,
+      "#9747ff": 2
+    }
+  },
+  "provenance": {
+    "issue": "45",
+    "runtime-commit": "aa153b79668df7c3b655a96d9541171de1899580",
+    "vault-base": "995c580ce6f162fbf9baa2f5e4819da1aa3384d8"
+  }
+}

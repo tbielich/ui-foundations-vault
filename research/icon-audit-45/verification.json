@@ -1,0 +1,398 @@
+{
+  "artifact_sha256": {
+    "benchmark-concepts.json": "76312dd93f05ce3c5444bad827f8b4968176b4b09a892b3be335e94777839225",
+    "figma-guideline-addendum.md": "60abc2cddd7b76e95c42f851e5ffbcf7a5150f7e8b77f9e9c90481fe329c4a8f",
+    "findings.json": "b98b9ac76e14b720dcbec9408db6047b13991fa78487f8359ece1da831dedbcd",
+    "grammar.json": "1b1103273cfadd2e417750365c00762b2ba41f870e0b02d03845090357d8f1ba",
+    "inventory.json": "8a7f9f6662b8aad4b6479d18cf4e1bafab4496d725adb880c5efaa3a563a1cf1",
+    "reference-set.json": "622b69c6fcab27d8efdb868fd6e2a7d2de99cdab25604373f7fc8d100cdd41cf",
+    "report.md": "8fee29cb08e285b6785fc23a6c1f07a415b94e09180f84e68fa1ae8be82ae88f",
+    "reproducibility.md": "47ff71a15ffcad50fee9dc32aa036497110e1f06f09af5866f3ee4871f16e6c5",
+    "summary.json": "b1b22a43431ca1f8a15e98d7698e3b5a59654bd690e52ffab4fb221d31289bab"
+  },
+  "constraints": {
+    "merge_authorized_or_performed": false,
+    "new_ai_provider": false,
+    "new_icons_generated": false,
+    "normalization_performed": false,
+    "production_icons_modified": false,
+    "vault_canonical_governance_preserved": true
+  },
+  "counts": {
+    "affected_icon_totals": {
+      "documented-exception": 1,
+      "guideline-gap": 601,
+      "inconsistent": 600,
+      "pass": 601,
+      "requires-visual-review": 601
+    },
+    "finding_rows_total": 12621,
+    "icons_total": 601,
+    "per_rule": {
+      "css.unevaluated-references": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 601,
+        "requires-visual-review": 0
+      },
+      "impl-guide.canvas.dimensions": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 601,
+        "requires-visual-review": 0
+      },
+      "impl-guide.canvas.root-fill-none": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 601,
+        "requires-visual-review": 0
+      },
+      "impl-guide.canvas.viewbox": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 601,
+        "requires-visual-review": 0
+      },
+      "impl-guide.corner-radius": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 0,
+        "requires-visual-review": 601
+      },
+      "impl-guide.fill.no-fill-on-path": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 601,
+        "requires-visual-review": 0
+      },
+      "impl-guide.naming.double-dash-semantics": {
+        "documented-exception": 1,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 577,
+        "requires-visual-review": 23
+      },
+      "impl-guide.naming.kebab-case": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 601,
+        "requires-visual-review": 0
+      },
+      "impl-guide.optical-correction": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 0,
+        "requires-visual-review": 601
+      },
+      "impl-guide.path-order": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 0,
+        "requires-visual-review": 601
+      },
+      "impl-guide.safe-area": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 0,
+        "requires-visual-review": 601
+      },
+      "impl-guide.stroke.cap-round": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 1,
+        "pass": 600,
+        "requires-visual-review": 0
+      },
+      "impl-guide.stroke.color": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 600,
+        "pass": 1,
+        "requires-visual-review": 0
+      },
+      "impl-guide.stroke.join-round": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 1,
+        "pass": 600,
+        "requires-visual-review": 0
+      },
+      "impl-guide.stroke.width-default": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 601,
+        "requires-visual-review": 0
+      },
+      "impl-guide.structure.mask-clip-defs": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 599,
+        "requires-visual-review": 2
+      },
+      "impl-guide.structure.no-raster": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 601,
+        "requires-visual-review": 0
+      },
+      "impl-guide.structure.transform": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 601,
+        "requires-visual-review": 0
+      },
+      "usage-guide.a11y.metadata": {
+        "documented-exception": 0,
+        "guideline-gap": 601,
+        "inconsistent": 0,
+        "pass": 0,
+        "requires-visual-review": 0
+      },
+      "usage-guide.color.mask-applicability": {
+        "documented-exception": 0,
+        "guideline-gap": 0,
+        "inconsistent": 0,
+        "pass": 0,
+        "requires-visual-review": 601
+      },
+      "usage-guide.rtl": {
+        "documented-exception": 0,
+        "guideline-gap": 601,
+        "inconsistent": 0,
+        "pass": 0,
+        "requires-visual-review": 0
+      }
+    },
+    "row_status_totals": {
+      "documented-exception": 1,
+      "guideline-gap": 1202,
+      "inconsistent": 602,
+      "pass": 7786,
+      "requires-visual-review": 3030
+    },
+    "rules_total": 21
+  },
+  "date": "2026-10-31",
+  "figma_source_addendum": {
+    "accessed": "2026-10-31",
+    "acp_sessions": [
+      {
+        "changes_complete": true,
+        "error_code": "workspace_delta_unverified_or_outside_scope",
+        "session_id": "sess_1f461349-1f33-4a55-9c3c-eb285d6d846d",
+        "status": "blocked",
+        "stop_reason": "end_turn",
+        "task_id": "vlt45-figma-source",
+        "tools_complete": true,
+        "worker_reaped": true
+      },
+      {
+        "changes_complete": true,
+        "error_code": null,
+        "session_id": "sess_ab089793-1a0b-4a25-b53c-2783de53a76a",
+        "status": "completed",
+        "stop_reason": "end_turn",
+        "task_id": "vlt45-figma-finalize",
+        "tools_complete": true,
+        "worker_reaped": true
+      }
+    ],
+    "existing_executable_rules_unchanged": true,
+    "figma_rules_executed": false,
+    "file_key": "Eprjc6hw7QyMvvD01eGgGy",
+    "first_turn_blocker": "Codex wrote its hash-baseline evidence file during the first addendum ACP turn, producing an outside-allowed-path snapshot delta. That orchestrator file is identified; changes independently inspected. Follow-up provenance turn completed. No adapter permissions changed.",
+    "human_decisions": [
+      "Membership/mapping of 601 Runtime SVGs to Figma set",
+      "Applicable immutable Figma revision",
+      "Literal 2pt versus SVG default1/export scaling",
+      "Stroke and corner token resolution",
+      "Permitted fills and keyshape scope",
+      "Figma concept overlap before generation benchmark"
+    ],
+    "immutable_figma_version": null,
+    "mcp_session": "cb67a792-4a02-4ef3-858d-30efbc79f94d",
+    "preserved_artifact_sha256": {
+      "findings.json": "b98b9ac76e14b720dcbec9408db6047b13991fa78487f8359ece1da831dedbcd",
+      "inventory.json": "8a7f9f6662b8aad4b6479d18cf4e1bafab4496d725adb880c5efaa3a563a1cf1",
+      "reference-set.json": "622b69c6fcab27d8efdb868fd6e2a7d2de99cdab25604373f7fc8d100cdd41cf",
+      "reproducibility.md": "47ff71a15ffcad50fee9dc32aa036497110e1f06f09af5866f3ee4871f16e6c5",
+      "summary.json": "b1b22a43431ca1f8a15e98d7698e3b5a59654bd690e52ffab4fb221d31289bab"
+    },
+    "reviewer_edits": "Codex filled capture hash and classified the discrete size scale as hard/not-executed rather than heuristic without tolerance.",
+    "screenshot_capture_sha256": "5be17544d471e06ff72b01db786a130ff33b9e6999cc14be00fbcc9b700869e7",
+    "section_node": "482:12945",
+    "status": "source observations verified; reconciliation NOT complete",
+    "url": "https://www.figma.com/design/Eprjc6hw7QyMvvD01eGgGy/UI-Assets-Library?node-id=482-12945"
+  },
+  "implementation_executor": "Kiro",
+  "issue": "tbielich/ui-foundations-vault#45",
+  "limitations": [
+    "No rendered visual/geometry evaluation; every such decision remains human review.",
+    "Implementation/usage sources identified at exact SHA; no external brand PDF or evidence establishing broader design-authority approval supplied.",
+    "Benchmark name absence does not prove semantic absence; future concepts remain proposals.",
+    "Structural and semantic duplicate groups are candidates, not rendering equivalence.",
+    "600 color mismatches are against the implementation guide; they do not establish production rendering defects.",
+    "User-authored Figma guideline supplied later and recorded in figma-guideline-addendum.md; original 12621 findings apply only to the pinned Runtime guides. They are not a complete design-guideline audit."
+  ],
+  "orchestrator_and_independent_verifier": "Codex",
+  "sources": [
+    {
+      "commit": "aa153b79668df7c3b655a96d9541171de1899580",
+      "git_blob": "85a6eb947ba27b3a29184e3b71a6fe13f842c414",
+      "path": "docs/agentic/icon-creation.md",
+      "repository": "tbielich/ui-foundations-runtime",
+      "sha256": "a89e6d3ec92d2829fbe778b07683d1e299f830b466bfd25c51153fbce3e48107"
+    },
+    {
+      "commit": "aa153b79668df7c3b655a96d9541171de1899580",
+      "git_blob": "6298569474d01f099c4cfba616a5f2283e7857d3",
+      "path": "site/patterns/icon.md",
+      "repository": "tbielich/ui-foundations-runtime",
+      "sha256": "159a5c96a58fc98a8c3c137da04406c1b5b549e191b23f712c89004e426d4e6e"
+    },
+    {
+      "commit": "aa153b79668df7c3b655a96d9541171de1899580",
+      "git_blob": "09b9d49dccfb80281de57965ca38ca378e98476e",
+      "path": "scripts/generate-icon-list.mjs",
+      "repository": "tbielich/ui-foundations-runtime",
+      "sha256": "e33aae10833232b6332912429839c4616f42273523502380dd1a5e88f476d8c6"
+    },
+    {
+      "commit": "aa153b79668df7c3b655a96d9541171de1899580",
+      "git_blob": "272a0820cf7f274f975e55a780361274deb5eb83",
+      "path": "scripts/build.mjs",
+      "repository": "tbielich/ui-foundations-runtime",
+      "sha256": "2854622f4d1b7831e14b280cc34fd7ce9864a40eb07da3d9aa05c7dcae201a1f"
+    },
+    {
+      "commit": "aa153b79668df7c3b655a96d9541171de1899580",
+      "git_blob": "abaa03e0fb4892a3bb89c0e4070683b4bc724326",
+      "path": ".eleventy.js",
+      "repository": "tbielich/ui-foundations-runtime",
+      "sha256": "b148087ffa21daa2fa064a6001aac0f788dd2524b733a3b10b2e9a36b76c3fa1"
+    },
+    {
+      "commit": "995c580ce6f162fbf9baa2f5e4819da1aa3384d8",
+      "git_blob": "dcfb8e72f4d62869f62bf4bfd432af283ef8b150",
+      "path": "AGENTS.md",
+      "repository": "tbielich/ui-foundations-vault",
+      "sha256": "4b376befc67c7fa10fb5348774db56592fcb82d8632a6353e0a50efe886093b3"
+    },
+    {
+      "commit": "995c580ce6f162fbf9baa2f5e4819da1aa3384d8",
+      "git_blob": "bc7eca514f17450eb8f7b194d95a36ececadb0b1",
+      "path": "governance/precedence.md",
+      "repository": "tbielich/ui-foundations-vault",
+      "sha256": "55e74d125a256fa8e5bf45b669f552bccba5fecaa51b7f4e29dec3321d18854a"
+    },
+    {
+      "commit": "995c580ce6f162fbf9baa2f5e4819da1aa3384d8",
+      "git_blob": "08ee2a9d1ce9ec37a2cc9f7f91840315b0633c19",
+      "path": "patterns/base/icon.pattern.md",
+      "repository": "tbielich/ui-foundations-vault",
+      "sha256": "3e7b5facfb61f30a9f4e58c34769f1a021acf1ea7bef4ceca39d507e93e7ed42"
+    }
+  ],
+  "transport": {
+    "cli_version": "2.34.2",
+    "command": [
+      "kiro-cli",
+      "acp",
+      "--agent-engine=v3",
+      "--auth-method=cli"
+    ],
+    "defect_feedback": [
+      "D1 source-backed color vs observed convention; no invented mask exceptions",
+      "D2 inherited widths and literal path fill",
+      "D3 SVG defaults/CSS/references/named colors/namespaces",
+      "D4 double-dash lexical and semantic separation",
+      "D5 stable paths, source immutability and empty audit failure",
+      "D6 clipped/defs variants and duplicate candidate limits",
+      "D7 deterministic hard rules, proposed numeric heuristic tolerances, manual judgment",
+      "D8 actual 601 count and selected benchmark semantic overlaps",
+      "Final documentation: exact counts, dates, executable extraction"
+    ],
+    "initial_blocker": "Initial turn rejected at delete-tool use; Codex tests had also created Python bytecode during the workspace snapshot interval. Retained blocked receipt, then ran a completed repair turn with bytecode writes disabled. No source modifications.",
+    "mode": "uif-bounded",
+    "model": "auto",
+    "protocol": "ACP",
+    "sessions": [
+      {
+        "changes_complete": true,
+        "duration_seconds": 790.2940458749945,
+        "error_code": "workspace_delta_unverified_or_outside_scope",
+        "session_id": "sess_9ff57d9d-634a-4432-9387-14c738755602",
+        "status": "blocked",
+        "stop_reason": null,
+        "task_id": "vlt45-prompt",
+        "tools_complete": null,
+        "worker_reaped": true
+      },
+      {
+        "changes_complete": true,
+        "duration_seconds": 1170.4001735420024,
+        "error_code": null,
+        "session_id": "sess_e4656071-317c-4611-8a55-cd433e651d15",
+        "status": "completed",
+        "stop_reason": "end_turn",
+        "task_id": "vlt45-repair",
+        "tools_complete": true,
+        "worker_reaped": true
+      },
+      {
+        "changes_complete": true,
+        "duration_seconds": 299.7078931249853,
+        "error_code": null,
+        "session_id": "sess_a608492d-8602-4748-b761-f47dfe548206",
+        "status": "completed",
+        "stop_reason": "end_turn",
+        "task_id": "vlt45-finalize",
+        "tools_complete": true,
+        "worker_reaped": true
+      }
+    ],
+    "tools": [
+      "read",
+      "write"
+    ],
+    "writable_paths": [
+      "tools/",
+      "vault/research/icon-audit-45/"
+    ]
+  },
+  "verification": {
+    "all_601_git_content_sha256_and_byte_sizes_match": true,
+    "audited_icon_count": 601,
+    "documented_fresh_clone_procedure": "PASS: extracted documented bash procedure executed from Vault checkout; fresh Runtime clone, 48 tests, 601 icons; all three outputs byte-identical to committed evidence",
+    "embedded_code_matches_executor_tools_byte_for_byte": true,
+    "finding_rows_reconciled": 12621,
+    "reference_icons_existing_unique": 24,
+    "replay_3_json_files_byte_identical_at_different_output_depth": true,
+    "selected_benchmark_names_absent_unique": 13,
+    "selected_overlap_references_exist": true,
+    "source_snapshot_all_603_file_hashes_unchanged": true,
+    "status": "PASS for quantitative and reproducibility checks; human governance/visual approval pending",
+    "tests": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tools -v",
+      "failed": 0,
+      "passed": 48
+    },
+    "tracked_git_paths_equal_inventory": true,
+    "unique_rules_per_icon": 21,
+    "vault_project_projection_check": "PASS ruby scripts/generate-project-projections.rb --check"
+  }
+}

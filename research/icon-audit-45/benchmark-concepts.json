@@ -1,0 +1,205 @@
+{
+  "$comment": "Proposed candidate concepts that appear MISSING from the icon set, for use as a creation/benchmark exercise. Each candidate is checked against existing names for literal and semantic overlap. These are PROPOSALS ONLY. No SVG is generated here, and no candidate is approved. 'semantic_overlap' lists EXISTING icons that are near in meaning; every file named in a semantic_overlap list was confirmed to exist in the pinned source. Absence of the proposed NAME does not prove the CONCEPT is visually absent, so each selected candidate retains a semantic-confirmation review requirement. The pinned source/Git inventory is 601 SVG files; candidate name absence was checked against those 601 names.",
+  "provenance": {
+    "issue": "tbielich/ui-foundations-vault#45",
+    "runtime_snapshot": "tbielich/ui-foundations-runtime@aa153b79668df7c3b655a96d9541171de1899580",
+    "source_dir": "src/assets/icons",
+    "source_icon_count": 601
+  },
+  "status": "draft",
+  "figma_applicability": {
+    "scope": "runtime-filename-absence-only",
+    "status": "pending-figma-comparison",
+    "note": "The 'missing concept' claims below were checked ONLY for name absence and semantic overlap against the 601-file pinned RUNTIME inventory. After PR66 a user-authored Figma design guideline (UI Assets Library, file Eprjc6hw7QyMvvD01eGgGy, section node 482:12945 'Icons') was supplied, including a large Icon Set frame (node 5051:11598). Filename-absence results remain valid ONLY against the pinned runtime inventory; Figma CONCEPT presence is pending comparison and no automatic name mapping or visual equivalence is inferred. See figma-guideline-addendum.md.",
+    "figma_source": {
+      "file": "Eprjc6hw7QyMvvD01eGgGy",
+      "section_node": "482:12945",
+      "icon_set_frame": "5051:11598",
+      "accessed": "2026-10-31",
+      "fetched_by": "Codex",
+      "mcp_session": "cb67a792-4a02-4ef3-858d-30efbc79f94d",
+      "observed_components": {
+        "Fullscreen": "5051:12335",
+        "Link External": "5051:12508",
+        "Undo Clock": "5051:13421",
+        "Thumbnails": "5051:13327"
+      }
+    },
+    "candidate_reassessment": {
+      "fullscreen": "NOT established as missing: a Fullscreen component (5051:12335) is present in the Figma Icon Set. No automatic name mapping/visual equivalence inferred; human confirmation still required.",
+      "clock-history": "NOT established as missing: an Undo Clock component (5051:13421) is present in the Figma Icon Set, which may satisfy the history/clock concept. No automatic name mapping/visual equivalence inferred; human confirmation still required.",
+      "remaining": "All other proposed candidates remain PROPOSED, not approved missing. The 13 selected concepts stay proposed-but-not-approved pending Figma comparison."
+    }
+  },
+  "methodology": {
+    "name_absence": "All proposed_name values were confirmed ABSENT from the 601-file inventory (no file of that name exists).",
+    "overlap_existence": "All icons listed under semantic_overlap were confirmed to EXIST in the 601-file inventory.",
+    "visual_confirmation_required": "Name absence is necessary but not sufficient: the concept may already be satisfied visually under a different name. Each selected candidate therefore carries review_required=true for a human semantic/visual confirmation before any creation.",
+    "selected_count": "The 'candidates' array holds the selected 10-15 plausibly-missing DISTINCT concepts. Highly-redundant concepts that are almost certainly already satisfied are held OUT of the selected set in 'conditional_reserve' and are not proposed for creation unless a human confirms the redundancy is false."
+  },
+  "candidates": [
+    {
+      "concept": "paste",
+      "proposed_name": "paste",
+      "proposed_keyshape": "rect-portrait",
+      "rationale": "copy.svg exists but there is no paste counterpart; clipboard paste is a common editing affordance.",
+      "semantic_overlap": ["copy", "postit", "notepad"],
+      "overlap_note": "Distinct action from copy; low semantic collision but shares a clipboard visual family.",
+      "review_required": true,
+      "review_note": "All overlap files exist; confirm copy/postit do not already imply paste."
+    },
+    {
+      "concept": "grid / gallery layout",
+      "proposed_name": "grid",
+      "proposed_keyshape": "square",
+      "rationale": "thumbnails.svg and layers.svg exist but there is no plain NxN grid layout icon used for view-switching.",
+      "semantic_overlap": ["thumbnails", "layers", "list", "list-square"],
+      "overlap_note": "Moderate overlap with thumbnails; differentiate as layout-toggle vs image-grid.",
+      "review_required": true,
+      "review_note": "All overlap files exist; confirm thumbnails does not already serve the grid-view toggle."
+    },
+    {
+      "concept": "notification muted",
+      "proposed_name": "bell-crossed",
+      "proposed_keyshape": "none",
+      "rationale": "bell.svg exists but no muted/disabled bell; the -crossed modifier convention (see trash-crossed) supports this.",
+      "semantic_overlap": ["bell", "service-bell", "trash-crossed", "forbidden"],
+      "overlap_note": "Uses the established -crossed modifier; low collision. Confirm bell (alert) vs service-bell (concierge) base.",
+      "review_required": true,
+      "review_note": "All overlap files exist; confirm no muted-bell state is already present."
+    },
+    {
+      "concept": "sound off / mute",
+      "proposed_name": "loudspeaker-crossed",
+      "proposed_keyshape": "none",
+      "rationale": "loudspeaker.svg and mic.svg exist but there is no muted-audio glyph.",
+      "semantic_overlap": ["loudspeaker", "mic", "megaphone", "forbidden"],
+      "overlap_note": "Low collision; follows the -crossed modifier. Decide loudspeaker vs a dedicated volume base.",
+      "review_required": true,
+      "review_note": "All overlap files exist; confirm no muted-audio glyph is already present."
+    },
+    {
+      "concept": "fullscreen expand",
+      "proposed_name": "fullscreen",
+      "proposed_keyshape": "square",
+      "rationale": "resize.svg, minimize.svg and focus.svg exist but a four-corner fullscreen-expand arrows glyph is a distinct common control.",
+      "semantic_overlap": ["resize", "minimize", "focus", "arrow-to--top", "arrow-to--bottom"],
+      "overlap_note": "Moderate overlap with resize/minimize; a decision is needed on whether resize already covers this.",
+      "review_required": true,
+      "review_note": "All overlap files exist; confirm resize does not already serve fullscreen-expand.",
+      "figma_status": "not-established-missing",
+      "figma_note": "A Fullscreen component (node 5051:12335) is present in the Figma Icon Set (5051:11598). Filename absence remains valid only against the pinned runtime inventory; this candidate is NOT established as a missing concept against Figma. No automatic name mapping/visual equivalence inferred."
+    },
+    {
+      "concept": "attachment / paperclip",
+      "proposed_name": "attachment",
+      "proposed_keyshape": "none",
+      "rationale": "No paperclip/attachment glyph exists despite mail and message icons being present.",
+      "semantic_overlap": ["linked", "mail", "folder"],
+      "overlap_note": "Low collision; genuinely absent concept.",
+      "review_required": true,
+      "review_note": "All overlap files exist; confirm linked is a chain-link rather than a paperclip."
+    },
+    {
+      "concept": "wifi off",
+      "proposed_name": "wifi-crossed",
+      "proposed_keyshape": "none",
+      "rationale": "wifi.svg exists but no offline/disabled wifi state.",
+      "semantic_overlap": ["wifi", "gsm", "network", "forbidden"],
+      "overlap_note": "Low collision; follows -crossed modifier.",
+      "review_required": true,
+      "review_note": "All overlap files exist; confirm no offline-wifi state is already present."
+    },
+    {
+      "concept": "history / recent",
+      "proposed_name": "clock-history",
+      "proposed_keyshape": "circle",
+      "rationale": "undo.svg and many clock variants exist but no 'clock with counter-clockwise arrow' history glyph.",
+      "semantic_overlap": ["undo", "sync", "clock", "clock-alarm", "arrow-circle--flip"],
+      "overlap_note": "Moderate overlap with undo and arrow-circle--flip; differentiate history vs undo action.",
+      "review_required": true,
+      "review_note": "All overlap files exist; confirm undo/arrow-circle--flip do not already read as history.",
+      "figma_status": "not-established-missing",
+      "figma_note": "An Undo Clock component (node 5051:13421) is present in the Figma Icon Set (5051:11598) and may satisfy the history/clock concept. Filename absence remains valid only against the pinned runtime inventory; this candidate is NOT established as a missing concept against Figma. No automatic name mapping/visual equivalence inferred."
+    },
+    {
+      "concept": "cart add",
+      "proposed_name": "shoppingcart-plus",
+      "proposed_keyshape": "none",
+      "rationale": "shoppingcart.svg and shopping-bag.svg exist; a cart-with-plus add-to-cart affordance is a common commerce action and follows the object-plus pattern (cf. luggage-plus, seat-plus, user-plus).",
+      "semantic_overlap": ["shoppingcart", "shopping-bag", "plus", "luggage-plus", "user-plus"],
+      "overlap_note": "Low collision; uses the established object-plus naming pattern.",
+      "review_required": true,
+      "review_note": "All overlap files exist; confirm no add-to-cart variant is already present."
+    },
+    {
+      "concept": "filter clear / remove filter",
+      "proposed_name": "filter-crossed",
+      "proposed_keyshape": "none",
+      "rationale": "filter.svg and menu-filter.svg exist but no 'clear filters' state.",
+      "semantic_overlap": ["filter", "menu-filter", "sort"],
+      "overlap_note": "Low collision; -crossed modifier. Confirm filter vs menu-filter base.",
+      "review_required": true,
+      "review_note": "All overlap files exist; confirm no clear-filters state is already present."
+    },
+    {
+      "concept": "calendar add event",
+      "proposed_name": "calendar-plus",
+      "proposed_keyshape": "rect-portrait",
+      "rationale": "Many calendar-* variants exist (checkin, checkout, day, week, month, year, price) but none for adding an event; follows object-plus pattern.",
+      "semantic_overlap": ["calendar", "calendar-day", "calendar-price", "plus"],
+      "overlap_note": "Low collision; fits the existing calendar-* family and object-plus pattern.",
+      "review_required": true,
+      "review_note": "All overlap files exist; confirm no existing calendar variant already serves 'add event' before creating."
+    },
+    {
+      "concept": "bookmark add / save for later",
+      "proposed_name": "bookmark-plus",
+      "proposed_keyshape": "rect-portrait",
+      "rationale": "bookmark.svg and save.svg exist but no 'add bookmark' affordance; follows the object-plus pattern (cf. luggage-plus, user-plus, seat-plus).",
+      "semantic_overlap": ["bookmark", "save", "plus", "heart"],
+      "overlap_note": "Low collision; distinct add-to-collection action from a plain bookmark.",
+      "review_required": true,
+      "review_note": "All overlap files exist; confirm 'bookmark' alone is not already used as the save-for-later affordance."
+    },
+    {
+      "concept": "lightbulb off / idea dismissed",
+      "proposed_name": "light-bulb-crossed",
+      "proposed_keyshape": "none",
+      "rationale": "light-bulb.svg exists but no off/disabled state; the -crossed modifier (cf. trash-crossed) supports a negated variant.",
+      "semantic_overlap": ["light-bulb", "forbidden", "view-hidden"],
+      "overlap_note": "Low collision; follows the established -crossed modifier.",
+      "review_required": true,
+      "review_note": "All overlap files exist; confirm no off-state bulb is already present under another name."
+    }
+  ],
+  "conditional_reserve": [
+    {
+      "concept": "external-link (arrow out of box)",
+      "proposed_name": "link-external",
+      "proposed_keyshape": "square",
+      "rationale": "An explicit 'box with outbound arrow' external-link glyph is a standard pattern.",
+      "semantic_overlap": ["linked", "target-blank", "share", "share-box", "linked-folder"],
+      "reserve_reason": "HIGH overlap: target-blank.svg and share-box.svg already exist and almost certainly satisfy this concept visually. Held out of the selected set; propose only if a human confirms target-blank does NOT cover external-link.",
+      "redundancy": "almost-certainly-satisfied"
+    },
+    {
+      "concept": "QR / barcode (static, no scan framing)",
+      "proposed_name": "qr-code",
+      "proposed_keyshape": "square",
+      "rationale": "A static QR-code glyph without the scan framing.",
+      "semantic_overlap": ["scan-code", "code", "keycode-e", "keycode-del"],
+      "reserve_reason": "HIGH overlap: scan-code.svg exists and almost certainly satisfies this concept. Held out of the selected set; propose only if a human confirms scan-code does NOT cover a static QR glyph.",
+      "redundancy": "almost-certainly-satisfied"
+    },
+    {
+      "concept": "verified / check badge (standalone)",
+      "proposed_name": "verified",
+      "proposed_keyshape": "none",
+      "rationale": "A scalloped verified badge may be a distinct brand concept.",
+      "semantic_overlap": ["badge-check", "cert-check", "checkmark-circled", "seal", "medal"],
+      "reserve_reason": "VERY HIGH overlap: badge-check.svg and cert-check.svg exist and almost certainly satisfy this concept. Held out of the selected set; propose only if a human confirms badge-check does NOT cover a verified badge.",
+      "redundancy": "almost-certainly-satisfied"
+    }
+  ]
+}
