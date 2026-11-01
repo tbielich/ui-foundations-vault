@@ -118,7 +118,10 @@ Before returning or committing prose, an agent should check for:
 - `repetitive-sentence-pattern`
 - `unnecessary-em-dash`
 - `generic-future-section`
-- `voice-normalization`\n- `loss-of-technical-precision`\n- `unsupported-simplification`\n- `lost-qualification`
+- `voice-normalization`
+- `loss-of-technical-precision`
+- `unsupported-simplification`
+- `lost-qualification`
 
 A detected signal is a review trigger, not an automatic rewrite. The agent must first determine whether the pattern serves the content.
 
