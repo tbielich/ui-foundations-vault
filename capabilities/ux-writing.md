@@ -71,7 +71,8 @@ UX writing improves interface language so people can understand context, make de
 - Terminology is consistent with the vault reference layer.
 - The output avoids decorative or promotional language for functional UI.
 - The output conforms to the hard rules in `governance.natural-writing`.
-- Style signals from `governance.natural-writing` have been reviewed in context rather than mechanically removed.\n- Technical meaning, necessary qualifications, and accessibility are preserved when simplifying interface terminology.
+- Style signals from `governance.natural-writing` have been reviewed in context rather than mechanically removed.
+- Technical meaning, necessary qualifications, and accessibility are preserved when simplifying interface terminology.
 
 ## Related Documents
 
